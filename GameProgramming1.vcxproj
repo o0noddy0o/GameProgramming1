@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <ProjectGuid>{59CB4A70-6085-4155-9E82-BC09AD2A372A}</ProjectGuid>
+    <RootNamespace>GameProgramming1</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IncludePath>.\;..\Common\;..\Common\DirectXTex-master\DirectXTex\;..\Common\DirectXTex-master\WICTextureLoader\;$(IncludePath)</IncludePath>
+    <EmbedManifest>true</EmbedManifest>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>.\;..\Common\;..\Common\DirectXTex-master\DirectXTex\;..\Common\DirectXTex-master\WICTextureLoader\;$(IncludePath)</IncludePath>
+    <LinkIncremental>true</LinkIncremental>
+    <EmbedManifest>true</EmbedManifest>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+      <PreprocessorDefinitions>_UNICODE;UNICODE;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\Common\CApplication.cpp" />
+    <ClCompile Include="..\Common\CCamera.cpp" />
+    <ClCompile Include="..\Common\CDirectInput.cpp" />
+    <ClCompile Include="..\Common\CFont.cpp" />
+    <ClCompile Include="..\Common\CPicture.cpp" />
+    <ClCompile Include="..\Common\CQuadPolygon.cpp" />
+    <ClCompile Include="..\Common\CSourceVoice.cpp" />
+    <ClCompile Include="..\Common\CTexture.cpp" />
+    <ClCompile Include="..\Common\CXAudio2.cpp" />
+    <ClCompile Include="..\Common\DirectXTex-master\WICTextureLoader\WICTextureLoader.cpp" />
+    <ClCompile Include="..\Common\GamePGUtil.cpp" />
+    <ClCompile Include="ActionGame.cpp" />
+    <ClCompile Include="CActionGameApp.cpp" />
+    <ClCompile Include="CObjectBase.cpp" />
+    <ClCompile Include="kadai0\Component.cpp" />
+    <ClCompile Include="kadai0\CText.cpp" />
+    <ClCompile Include="kadai0\GameClear.cpp" />
+    <ClCompile Include="kadai0\GameOver.cpp" />
+    <ClCompile Include="kadai0\GamePlay.cpp" />
+    <ClCompile Include="kadai0\GameTitle.cpp" />
+    <ClCompile Include="kadai0\InOutputFile.cpp" />
+    <ClCompile Include="kadai0\JetEngine.cpp" />
+    <ClCompile Include="kadai0\Submarine.cpp" />
+    <ClCompile Include="kadai0\Turret.cpp" />
+    <ClCompile Include="stdafx.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Common\CApplication.h" />
+    <ClInclude Include="..\Common\CCamera.h" />
+    <ClInclude Include="..\Common\CDirectInput.h" />
+    <ClInclude Include="..\Common\CFont.h" />
+    <ClInclude Include="..\Common\Common3DType.h" />
+    <ClInclude Include="..\Common\CPicture.h" />
+    <ClInclude Include="..\Common\CQuadPolygon.h" />
+    <ClInclude Include="..\Common\CSourceVoice.h" />
+    <ClInclude Include="..\Common\CTexture.h" />
+    <ClInclude Include="..\Common\CXAudio2.h" />
+    <ClInclude Include="..\Common\D3DEnv.h" />
+    <ClInclude Include="..\Common\DirectXTex-master\WICTextureLoader\WICTextureLoader.h" />
+    <ClInclude Include="..\Common\GameConst.h" />
+    <ClInclude Include="..\Common\GamePGUtil.h" />
+    <ClInclude Include="..\Common\MediaResource.h" />
+    <ClInclude Include="ActionGame.h" />
+    <ClInclude Include="CActionGameApp.h" />
+    <ClInclude Include="CObjectBase.h" />
+    <ClInclude Include="kadai0\Component.h" />
+    <ClInclude Include="kadai0\CText.h" />
+    <ClInclude Include="kadai0\Define.h" />
+    <ClInclude Include="kadai0\GameResource.h" />
+    <ClInclude Include="kadai0\InOutputFile.h" />
+    <ClInclude Include="kadai0\JetEngine.h" />
+    <ClInclude Include="kadai0\Submarine.h" />
+    <ClInclude Include="kadai0\Turret.h" />
+    <ClInclude Include="kadai0\UV.h" />
+    <ClInclude Include="Resource.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="targetver.h" />
+    <ClInclude Include="UVAnimation.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="GameProgramming1.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="GameProgramming1.ico" />
+    <Image Include="small.ico" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
