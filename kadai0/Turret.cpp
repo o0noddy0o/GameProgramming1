@@ -7,6 +7,7 @@
 #include "Turret.h"
 #include "Define.h"
 #include "GameResource.h"
+#include "Bullet.h"
 
 //━━━━━━━━━━━━━━━━━━━━━━━
 // コンストラクタ
@@ -73,26 +74,45 @@ void Turret::InputProcess()
 		m_pImg->setAngleZ(m_angle);
 	}
 
-	if (GetInput()->isKeyPressed(DIK_SPACE))
+	if (GetInput()->isKeyPressed(DIK_C))
 	{
-		/*for (unsigned int i = 0; i < m_pBullet.size(); ++i)
+		// 弾の座標を計算
+		XMFLOAT4 pos = m_pImg->getPos();
 		{
-			if (m_pBullet[i]->GetActive())
+			XMFLOAT2 pos2 = AngleToDirectionVector(m_angle + 90.f);
+			pos.x += pos2.x * (TURRET_SIZE_Y / 2.f);
+			pos.y += pos2.y * (TURRET_SIZE_Y / 2.f);
+		}
+
+		// 使える弾を探す
+		if (m_pBullet.size() >= 1)
+		{
+			for (unsigned int i = 0; i < m_pBullet.size(); ++i)
 			{
-				if (i == m_pBullet.size() - 1)
+				if (m_pBullet[i]->GetActive())
 				{
-					m_pBullet.push_back(shared_ptr<Bullet>(new Bullet()));
+					// なかったら新しいのを作る
+					if (i >= m_pBullet.size() - 1)
+					{
+						m_pBullet.push_back(shared_ptr<Bullet>(new Bullet(m_pGameInfo, XMFLOAT2(pos.x, pos.y), m_angle + 90.f)));
+						break;
+					}
 				}
-				continue;
+				else
+				{
+					// あったらそれを使う
+					m_pBullet[i]->SetActive(true);
+					m_pBullet[i]->SetPos(XMFLOAT2(pos.x, pos.y));
+					m_pBullet[i]->SetMoveDirection(m_angle + 90.f);
+					break;
+				}
 			}
-			else
-			{
-				m_pBullet[i]->SetActive(true);
-				m_pBullet[i]->SetPos();
-				m_pBullet[i]->SetAngle();
-				break;
-			}
-		}*/
+		}
+		else
+		{
+			m_pBullet.push_back(shared_ptr<Bullet>(new Bullet(m_pGameInfo, XMFLOAT2(pos.x, pos.y), m_angle + 90.f)));
+		}
+		
 	}
 }
 

@@ -17,6 +17,13 @@
 #define TURRET_ROTATION_RANGE		(180.f)
 
 //━━━━━━━━━━━━━━━━━━━━━━━
+// 弾
+//━━━━━━━━━━━━━━━━━━━━━━━
+#define BULLET_SIZE_X		(20.f)
+#define BULLET_SIZE_Y		(20.f)
+#define BULLET_MOVE_SPEED	(10.f)
+
+//━━━━━━━━━━━━━━━━━━━━━━━
 // ジェットエンジン
 //━━━━━━━━━━━━━━━━━━━━━━━
 #define JET_ENGINE_SIZE_X			(600.f)
