@@ -146,6 +146,7 @@
     <ClCompile Include="ActionGame.cpp" />
     <ClCompile Include="CActionGameApp.cpp" />
     <ClCompile Include="CObjectBase.cpp" />
+    <ClCompile Include="kadai0\Bullet.cpp" />
     <ClCompile Include="kadai0\Component.cpp" />
     <ClCompile Include="kadai0\CText.cpp" />
     <ClCompile Include="kadai0\GameClear.cpp" />
@@ -177,6 +178,7 @@
     <ClInclude Include="ActionGame.h" />
     <ClInclude Include="CActionGameApp.h" />
     <ClInclude Include="CObjectBase.h" />
+    <ClInclude Include="kadai0\Bullet.h" />
     <ClInclude Include="kadai0\Component.h" />
     <ClInclude Include="kadai0\CText.h" />
     <ClInclude Include="kadai0\Define.h" />

@@ -8,6 +8,7 @@
 #include "GameResource.h"
 #include "Turret.h"
 #include "JetEngine.h"
+#include "Bullet.h"
 
 //━━━━━━━━━━━━━━━━━━━━━━━
 // コンストラクタ
@@ -68,6 +69,14 @@ void Submarine::Tick(float _deltaTime)
 	MoveProcess(_deltaTime);
 
 	MoveCamera();
+
+	for (int i = 0; i < 4; ++i)
+	{
+		for (int j = 0; j < (int)m_pBullet[i]->size(); ++j)
+		{
+			(*m_pBullet[i])[j]->MoveProcess(_deltaTime);
+		}
+	}
 }
 
 //━━━━━━━━━━━━━━━━━━━━━━━
@@ -85,6 +94,14 @@ void Submarine::RenderProcess()
 			continue;
 		}
 		m_pComponent[i]->renderSprite();
+	}
+
+	for (int i = 0; i < 4; ++i)
+	{
+		for (int j = 0; j < (int)m_pBullet[i]->size(); ++j)
+		{
+			(*m_pBullet[i])[j]->renderSprite();
+		}
 	}
 }
 
