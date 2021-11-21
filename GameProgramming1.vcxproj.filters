@@ -117,6 +117,9 @@
     <ClCompile Include="kadai0\Bullet.cpp">
       <Filter>ソース ファイル\Object\Component</Filter>
     </ClCompile>
+    <ClCompile Include="kadai0\Barrier.cpp">
+      <Filter>ソース ファイル\Object\Component</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Common\CApplication.h">
@@ -213,6 +216,9 @@
       <Filter>ヘッダー ファイル\Object\Component</Filter>
     </ClInclude>
     <ClInclude Include="kadai0\Bullet.h">
+      <Filter>ヘッダー ファイル\Object\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="kadai0\Barrier.h">
       <Filter>ヘッダー ファイル\Object\Component</Filter>
     </ClInclude>
   </ItemGroup>

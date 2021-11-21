@@ -14,7 +14,7 @@ public:
 	Component(GameInfo* _pGameInfo, XMFLOAT2 _relativePos = {0.f, 0.f});
 	virtual ~Component();
 
-	CPicture* GetImg();						// 画像を取得する
+	virtual CPicture* GetImg();				// 画像を取得する
 	virtual void renderSprite();			// 画像を描画する
 	virtual void InputProcess() = 0;		// プレイヤーの入力処理
 	virtual void SetPos(XMFLOAT2 _pos);		// 画像の位置を設置する

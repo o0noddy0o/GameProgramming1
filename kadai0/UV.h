@@ -20,6 +20,11 @@ const std::vector <QuadrangleTexel>  singleTexels =
 	{ { 0.f, 1.f },{ 0.f, 0.f },{ 1.f, 1.f },{ 1.f, 0.f } }	//!< 指定するUV座標の配列が一つの配列
 };
 
+const std::vector <QuadrangleTexel>  kTexelBarrier =
+{
+	{ { 0.f, 1.f },{ 0.f, 0.f },{ 1.f, 1.f },{ 1.f, 0.f } }	//!< 指定するUV座標の配列が一つの配列
+};
+
 const std::vector <QuadrangleTexel>  kTexelText =
 {
 	// 数字
