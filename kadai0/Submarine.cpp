@@ -9,6 +9,7 @@
 #include "Turret.h"
 #include "JetEngine.h"
 #include "Bullet.h"
+#include "Barrier.h"
 
 //━━━━━━━━━━━━━━━━━━━━━━━
 // コンストラクタ
@@ -30,7 +31,7 @@ Submarine::Submarine(GameInfo* _pGameInfo)
 	m_pComponent[2] = shared_ptr<Component>(new Turret(m_pGameInfo, 2, m_pos));
 	m_pComponent[3] = shared_ptr<Component>(new Turret(m_pGameInfo, 3, m_pos));
 	m_pComponent[4] = shared_ptr<Component>(new JetEngine(m_pGameInfo));
-	/*m_pComponent[5] = shared_ptr<Component>(new Barrier());*/
+	m_pComponent[5] = shared_ptr<Component>(new Barrier(m_pGameInfo));
 
 	// 弾の配列のアドレス保存しておく
 	for (int i = 0; i < 4; ++i)
@@ -85,11 +86,12 @@ void Submarine::Tick(float _deltaTime)
 void Submarine::RenderProcess()
 {
 	m_pComponent[4]->renderSprite();
+	m_pComponent[5]->renderSprite();
 	RenderSprite(m_pImg);
 	for (int i = 0; i < NUM_OF_COMPONENT; ++i)
 	{
-		// ジェットエンジンは潜水艦の下の描画する
-		if (i == 4)
+		// ジェットエンジンとバリアは潜水艦の下の描画する
+		if (i == 4 || i == 5)
 		{
 			continue;
 		}

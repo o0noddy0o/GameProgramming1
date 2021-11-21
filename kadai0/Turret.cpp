@@ -3,6 +3,7 @@
 // 概要　　　　　：タレットのクラス
 // 作成者　　　　：20CU0314 ゴコケン
 // 更新内容　　　：2021/11/17 作成
+// 　　　　　　　：2021/11/21 弾を打つのカウントダウンを追加
 //━━━━━━━━━━━━━━━━━━━━━━━
 #include "Turret.h"
 #include "Define.h"
@@ -12,11 +13,12 @@
 //━━━━━━━━━━━━━━━━━━━━━━━
 // コンストラクタ
 // 引数１：ゲームの情報
-// 引数２：タレットが向いている方向（０－＞上、１－＞左、２ー＞下、３ー＞右）
+// 引数２：タレットが向いている方向（０－＞右、１－＞上、２ー＞左、３ー＞下）
 // 引数３：潜水艦の座標
 //━━━━━━━━━━━━━━━━━━━━━━━
 Turret::Turret(GameInfo* _pGameInfo, int _turretFace, XMFLOAT2 _pos)
 	: Super(_pGameInfo)
+	, m_coolDownCnt(0)
 {
 	m_pImg = CreateSprite(Tex_Turret, TURRET_SIZE_X, TURRET_SIZE_Y);
 	
@@ -29,16 +31,16 @@ Turret::Turret(GameInfo* _pGameInfo, int _turretFace, XMFLOAT2 _pos)
 	switch(_turretFace % 4)
 	{
 	case 0:
-		m_relativePos.y += TURRET_DISTANCE;
+		m_relativePos.x += TURRET_DISTANCE;
 		break;
 	case 1:
-		m_relativePos.x -= TURRET_DISTANCE;
+		m_relativePos.y += TURRET_DISTANCE;
 		break;
 	case 2:
-		m_relativePos.y -= TURRET_DISTANCE;
+		m_relativePos.x -= TURRET_DISTANCE;
 		break;
 	case 3:
-		m_relativePos.x += TURRET_DISTANCE;
+		m_relativePos.y -= TURRET_DISTANCE;
 		break;
 	}
 
@@ -74,45 +76,56 @@ void Turret::InputProcess()
 		m_pImg->setAngleZ(m_angle);
 	}
 
-	if (GetInput()->isKeyPressed(DIK_C))
+	// 弾を打つ速度の制御
+	if (m_coolDownCnt < TURRET_COOL_DOWN)
 	{
-		// 弾の座標を計算
-		XMFLOAT4 pos = m_pImg->getPos();
+		++m_coolDownCnt;
+	}
+	else
+	{
+		if (GetInput()->isKeyPressed(DIK_C))
 		{
-			XMFLOAT2 pos2 = AngleToDirectionVector(m_angle + 90.f);
-			pos.x += pos2.x * (TURRET_SIZE_Y / 2.f);
-			pos.y += pos2.y * (TURRET_SIZE_Y / 2.f);
-		}
+			// カウンターをリセットする
+			m_coolDownCnt = 0;
 
-		// 使える弾を探す
-		if (m_pBullet.size() >= 1)
-		{
-			for (unsigned int i = 0; i < m_pBullet.size(); ++i)
+			// 弾の座標を計算
+			XMFLOAT4 pos = m_pImg->getPos();
 			{
-				if (m_pBullet[i]->GetActive())
+				XMFLOAT2 pos2 = AngleToDirectionVector(m_angle);
+				pos.x += pos2.x * (TURRET_SIZE_X / 2.f);
+				pos.y += pos2.y * (TURRET_SIZE_X / 2.f);
+			}
+
+			// 使える弾を探す
+			if (m_pBullet.size() >= 1)
+			{
+				for (unsigned int i = 0; i < m_pBullet.size(); ++i)
 				{
-					// なかったら新しいのを作る
-					if (i >= m_pBullet.size() - 1)
+					if (m_pBullet[i]->GetActive())
 					{
-						m_pBullet.push_back(shared_ptr<Bullet>(new Bullet(m_pGameInfo, XMFLOAT2(pos.x, pos.y), m_angle + 90.f)));
+						// なかったら新しいのを作る
+						if (i >= m_pBullet.size() - 1)
+						{
+							m_pBullet.push_back(shared_ptr<Bullet>(new Bullet(m_pGameInfo, XMFLOAT2(pos.x, pos.y), m_angle)));
+							break;
+						}
+					}
+					else
+					{
+						// あったらそれを使う
+						m_pBullet[i]->SetActive(true);
+						m_pBullet[i]->SetPos(XMFLOAT2(pos.x, pos.y));
+						m_pBullet[i]->SetMoveDirection(m_angle);
 						break;
 					}
 				}
-				else
-				{
-					// あったらそれを使う
-					m_pBullet[i]->SetActive(true);
-					m_pBullet[i]->SetPos(XMFLOAT2(pos.x, pos.y));
-					m_pBullet[i]->SetMoveDirection(m_angle + 90.f);
-					break;
-				}
 			}
+			else
+			{
+				m_pBullet.push_back(shared_ptr<Bullet>(new Bullet(m_pGameInfo, XMFLOAT2(pos.x, pos.y), m_angle)));
+			}
+
 		}
-		else
-		{
-			m_pBullet.push_back(shared_ptr<Bullet>(new Bullet(m_pGameInfo, XMFLOAT2(pos.x, pos.y), m_angle + 90.f)));
-		}
-		
 	}
 }
 
