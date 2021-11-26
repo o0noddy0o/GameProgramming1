@@ -37,6 +37,12 @@
     <Filter Include="ヘッダー ファイル\Object\Component">
       <UniqueIdentifier>{6fcfb5ef-f4cb-43ad-8a06-c932fcd41d0f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Object\Bounding box">
+      <UniqueIdentifier>{e4501fca-3da0-47a1-9c3d-beb43763238f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Object\Bounding Box">
+      <UniqueIdentifier>{e2fc7be5-fc7d-489b-970a-13c85526a55e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Common\CApplication.cpp">
@@ -119,6 +125,15 @@
     </ClCompile>
     <ClCompile Include="kadai0\Barrier.cpp">
       <Filter>ソース ファイル\Object\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="kadai0\CircleBoundingBox.cpp">
+      <Filter>ソース ファイル\Object\Bounding box</Filter>
+    </ClCompile>
+    <ClCompile Include="kadai0\RectangleBoundingBox.cpp">
+      <Filter>ソース ファイル\Object\Bounding box</Filter>
+    </ClCompile>
+    <ClCompile Include="kadai0\PolygonBoundingBox.cpp">
+      <Filter>ソース ファイル\Object\Bounding box</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -220,6 +235,15 @@
     </ClInclude>
     <ClInclude Include="kadai0\Barrier.h">
       <Filter>ヘッダー ファイル\Object\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="kadai0\CircleBoundingBox.h">
+      <Filter>ヘッダー ファイル\Object\Bounding Box</Filter>
+    </ClInclude>
+    <ClInclude Include="kadai0\RectangleBoundingBox.h">
+      <Filter>ヘッダー ファイル\Object\Bounding Box</Filter>
+    </ClInclude>
+    <ClInclude Include="kadai0\PolygonBoundingBox.h">
+      <Filter>ヘッダー ファイル\Object\Bounding Box</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
