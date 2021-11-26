@@ -148,6 +148,7 @@
     <ClCompile Include="CObjectBase.cpp" />
     <ClCompile Include="kadai0\Barrier.cpp" />
     <ClCompile Include="kadai0\Bullet.cpp" />
+    <ClCompile Include="kadai0\CircleBoundingBox.cpp" />
     <ClCompile Include="kadai0\Component.cpp" />
     <ClCompile Include="kadai0\CText.cpp" />
     <ClCompile Include="kadai0\GameClear.cpp" />
@@ -156,6 +157,8 @@
     <ClCompile Include="kadai0\GameTitle.cpp" />
     <ClCompile Include="kadai0\InOutputFile.cpp" />
     <ClCompile Include="kadai0\JetEngine.cpp" />
+    <ClCompile Include="kadai0\PolygonBoundingBox.cpp" />
+    <ClCompile Include="kadai0\RectangleBoundingBox.cpp" />
     <ClCompile Include="kadai0\Player.cpp" />
     <ClCompile Include="kadai0\Submarine.cpp" />
     <ClCompile Include="kadai0\Turret.cpp" />
@@ -182,12 +185,15 @@
     <ClInclude Include="CObjectBase.h" />
     <ClInclude Include="kadai0\Barrier.h" />
     <ClInclude Include="kadai0\Bullet.h" />
+    <ClInclude Include="kadai0\CircleBoundingBox.h" />
     <ClInclude Include="kadai0\Component.h" />
     <ClInclude Include="kadai0\CText.h" />
     <ClInclude Include="kadai0\Define.h" />
     <ClInclude Include="kadai0\GameResource.h" />
     <ClInclude Include="kadai0\InOutputFile.h" />
     <ClInclude Include="kadai0\JetEngine.h" />
+    <ClInclude Include="kadai0\PolygonBoundingBox.h" />
+    <ClInclude Include="kadai0\RectangleBoundingBox.h" />
     <ClInclude Include="kadai0\Player.h" />
     <ClInclude Include="kadai0\Submarine.h" />
     <ClInclude Include="kadai0\Turret.h" />
