@@ -3,6 +3,7 @@
 // 概要　　　　　：タレットのクラス
 // 作成者　　　　：20CU0314 ゴコケン
 // 更新内容　　　：2021/11/17 作成
+// 　　　　　　　：2021/11/21 弾を打つのカウントダウンを追加
 //━━━━━━━━━━━━━━━━━━━━━━━
 #pragma once
 #include "Component.h"
@@ -23,4 +24,5 @@ private:
 	vector<shared_ptr<Bullet>> m_pBullet;		// 弾の配列
 	float m_angle;								// タレットの角度
 	float m_rotationRange[2];					// タレットが回転できる範囲
+	float m_coolDownCnt;						// タレットのクールダウンのカウンター
 };

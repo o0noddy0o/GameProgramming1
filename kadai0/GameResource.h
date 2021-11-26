@@ -9,6 +9,8 @@
 #define Tex_Submarine				L"Media/Sprite/ActionGame_Sprite/Submarine.png"
 #define Tex_Turret					L"Media/Sprite/ActionGame_Sprite/TestImage2.png"
 #define Tex_JetEngine				L"Media/Sprite/ActionGame_Sprite/TestImage1.png"
+#define Tex_Bullet					L"Media/Sprite/ActionGame_Sprite/TestImage1.png"
+#define Tex_Barrier					L"Media/Sprite/ActionGame_Sprite/TestImage2.png"
 
 // テスト用
 #define Tex_TestImage1				L"Media/Sprite/ActionGame_Sprite/TestImage1.png"
