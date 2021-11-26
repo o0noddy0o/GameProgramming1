@@ -156,6 +156,7 @@
     <ClCompile Include="kadai0\GameTitle.cpp" />
     <ClCompile Include="kadai0\InOutputFile.cpp" />
     <ClCompile Include="kadai0\JetEngine.cpp" />
+    <ClCompile Include="kadai0\Player.cpp" />
     <ClCompile Include="kadai0\Submarine.cpp" />
     <ClCompile Include="kadai0\Turret.cpp" />
     <ClCompile Include="stdafx.cpp" />
@@ -187,6 +188,7 @@
     <ClInclude Include="kadai0\GameResource.h" />
     <ClInclude Include="kadai0\InOutputFile.h" />
     <ClInclude Include="kadai0\JetEngine.h" />
+    <ClInclude Include="kadai0\Player.h" />
     <ClInclude Include="kadai0\Submarine.h" />
     <ClInclude Include="kadai0\Turret.h" />
     <ClInclude Include="kadai0\UV.h" />

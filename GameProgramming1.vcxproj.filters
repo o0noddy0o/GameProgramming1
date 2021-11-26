@@ -114,6 +114,8 @@
     <ClCompile Include="kadai0\JetEngine.cpp">
       <Filter>ソース ファイル\Object\Component</Filter>
     </ClCompile>
+    <ClCompile Include="kadai0\Player.cpp">
+      <Filter>ソース ファイル</Filter>
     <ClCompile Include="kadai0\Bullet.cpp">
       <Filter>ソース ファイル\Object\Component</Filter>
     </ClCompile>
@@ -215,6 +217,8 @@
     <ClInclude Include="kadai0\JetEngine.h">
       <Filter>ヘッダー ファイル\Object\Component</Filter>
     </ClInclude>
+    <ClInclude Include="kadai0\Player.h">
+      <Filter>ヘッダー ファイル</Filter>
     <ClInclude Include="kadai0\Bullet.h">
       <Filter>ヘッダー ファイル\Object\Component</Filter>
     </ClInclude>
