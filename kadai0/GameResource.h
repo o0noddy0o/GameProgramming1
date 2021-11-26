@@ -16,3 +16,6 @@
 
 #define Tex_Text					L"Media/Sprite/ActionGame_Sprite/Text_UV.png"
 #define Tex_Number					L"Media/Sprite/ActionGame_Sprite/Number_UV.png"
+
+// プレイヤー用
+#define Tex_Player1					L"Media/Sprite/ActionGame_Sprite/Player1.jpg"

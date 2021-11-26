@@ -8,6 +8,7 @@
 #include "GameResource.h"
 #include "Turret.h"
 #include "JetEngine.h"
+#include "Player.h"
 
 //━━━━━━━━━━━━━━━━━━━━━━━
 // コンストラクタ
@@ -20,8 +21,8 @@ Submarine::Submarine(GameInfo* _pGameInfo)
 	m_pImg->setPos(m_pos);
 
 	// プレイヤーオブジェクトの作成
-	/*m_pPlayer[0] = shared_ptr<Player>(new Player());
-	m_pPlayer[1] = shared_ptr<Player>(new Player());*/
+	m_pPlayer[0] = shared_ptr<Player>(new Player(m_pGameInfo));
+	m_pPlayer[1] = shared_ptr<Player>(new Player(m_pGameInfo));
 
 	// 部品オブジェクトのの作成
 	m_pComponent[0] = shared_ptr<Component>(new Turret(m_pGameInfo, 0, m_pos));
@@ -86,6 +87,8 @@ void Submarine::RenderProcess()
 		}
 		m_pComponent[i]->renderSprite();
 	}
+	m_pPlayer[0]->RenderChara();
+	m_pPlayer[1]->RenderChara();
 }
 
 //━━━━━━━━━━━━━━━━━━━━━━━
