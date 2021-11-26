@@ -10,6 +10,9 @@ eGameStatus goNextStatusFromPlaying = (eGameStatus)eNone;
 
 shared_ptr<Submarine> pSubmarine = nullptr;
 
+// カメラの初期座標を保存用変数
+XMFLOAT3 cameraPos;
+
 //━━━━━━━━━━━━━━━━━━━━━━━
 // インゲーム画面が始まる時に呼び出すメソッド
 //━━━━━━━━━━━━━━━━━━━━━━━
@@ -20,6 +23,8 @@ void CActionGameApp::procPlayBegin()
 	pText->SetText("INGAME");
 
 	if (!pSubmarine)pSubmarine = shared_ptr<Submarine>(new Submarine(getGameInfo()));
+
+	cameraPos = m_pCamera->getPos();
 }
 
 //PhanXuanDung
@@ -57,6 +62,8 @@ void CActionGameApp::procPlayEnd()
 {
 	renderSprite(pBackground);
 
+	// カメラの座標をリセットする
+	m_pCamera->setPos(cameraPos);
 }
 
 //━━━━━━━━━━━━━━━━━━━━━━━

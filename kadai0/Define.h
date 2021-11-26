@@ -4,17 +4,25 @@
 // 潜水艦
 //━━━━━━━━━━━━━━━━━━━━━━━
 #define SUBMARINE_MOVE_SPEED		(30.f)
-#define NUM_OF_OPERATION_DEVICE		(5)
-#define NUM_OF_COMPONENT			(5)
+#define NUM_OF_OPERATION_DEVICE		(6)
+#define NUM_OF_COMPONENT			(6)
 
 //━━━━━━━━━━━━━━━━━━━━━━━
 // タレット
 //━━━━━━━━━━━━━━━━━━━━━━━
 #define TURRET_DISTANCE				(300.f)
-#define TURRET_SIZE_X				(30.f)
-#define TURRET_SIZE_Y				(40.f)
+#define TURRET_SIZE_X				(40.f)
+#define TURRET_SIZE_Y				(30.f)
 #define TURRET_ROTATION_SPEED		(10.f)
 #define TURRET_ROTATION_RANGE		(180.f)
+#define TURRET_COOL_DOWN			(0)
+
+//━━━━━━━━━━━━━━━━━━━━━━━
+// 弾
+//━━━━━━━━━━━━━━━━━━━━━━━
+#define BULLET_SIZE_X		(20.f)
+#define BULLET_SIZE_Y		(20.f)
+#define BULLET_MOVE_SPEED	(30.f)
 
 //━━━━━━━━━━━━━━━━━━━━━━━
 // ジェットエンジン
@@ -22,6 +30,14 @@
 #define JET_ENGINE_SIZE_X			(600.f)
 #define JET_ENGINE_SIZE_Y			(600.f)
 #define JET_ENGINE_ROTATION_SPEED	(15.f)
+
+//━━━━━━━━━━━━━━━━━━━━━━━
+// バリア
+//━━━━━━━━━━━━━━━━━━━━━━━
+#define BARRIER_SIZE_X			(600.f)
+#define BARRIER_SIZE_Y			(600.f)
+#define BARRIER_RANGE			(90.f)
+#define BARRIER_ROTATION_SPEED	(15.f)
 
 //━━━━━━━━━━━━━━━━━━━━━━━
 // カメラ

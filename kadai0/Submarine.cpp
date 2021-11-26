@@ -1,43 +1,46 @@
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
-// ƒtƒ@ƒCƒ‹–¼@@FSubmarine.cpp
-// ŠT—v@@@@@Fö…ŠÍ‚ÌƒNƒ‰ƒX
-// ì¬Ò@@@@F20CU0314 ƒSƒRƒPƒ“
-// XV“à—e@@@F2021/11/17 ì¬
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
+// ãƒ•ã‚¡ã‚¤ãƒ«åã€€ã€€ï¼šSubmarine.cpp
+// æ¦‚è¦ã€€ã€€ã€€ã€€ã€€ï¼šæ½œæ°´è‰¦ã®ã‚¯ãƒ©ã‚¹
+// ä½œæˆè€…ã€€ã€€ã€€ã€€ï¼š20CU0314 ã‚´ã‚³ã‚±ãƒ³
+// æ›´æ–°å†…å®¹ã€€ã€€ã€€ï¼š2021/11/17 ä½œæˆ
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
 #include "Submarine.h"
 #include "GameResource.h"
 #include "Turret.h"
 #include "JetEngine.h"
+#include "Player.h"
+#include "Bullet.h"
+#include "Barrier.h"
 
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
-// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
-// ˆø”‚PFƒQ[ƒ€‚Ìî•ñ
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
+// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+// å¼•æ•°ï¼‘ï¼šã‚²ãƒ¼ãƒ ã®æƒ…å ±
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
 Submarine::Submarine(GameInfo* _pGameInfo)
 	: Super(_pGameInfo)
 {
 	m_pImg = CreateSprite(Tex_Submarine, 512.f, 512.f);
 	m_pImg->setPos(m_pos);
 
-	// ƒvƒŒƒCƒ„[ƒIƒuƒWƒFƒNƒg‚Ìì¬
-	/*m_pPlayer[0] = shared_ptr<Player>(new Player());
-	m_pPlayer[1] = shared_ptr<Player>(new Player());*/
+	// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ä½œæˆ
+	m_pPlayer[0] = shared_ptr<Player>(new Player(m_pGameInfo));
+	m_pPlayer[1] = shared_ptr<Player>(new Player(m_pGameInfo));
 
-	// •”•iƒIƒuƒWƒFƒNƒg‚Ì‚Ìì¬
+	// éƒ¨å“ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ã®ä½œæˆ
 	m_pComponent[0] = shared_ptr<Component>(new Turret(m_pGameInfo, 0, m_pos));
 	m_pComponent[1] = shared_ptr<Component>(new Turret(m_pGameInfo, 1, m_pos));
 	m_pComponent[2] = shared_ptr<Component>(new Turret(m_pGameInfo, 2, m_pos));
 	m_pComponent[3] = shared_ptr<Component>(new Turret(m_pGameInfo, 3, m_pos));
 	m_pComponent[4] = shared_ptr<Component>(new JetEngine(m_pGameInfo));
-	/*m_pComponent[5] = shared_ptr<Component>(new Barrier());*/
+	m_pComponent[5] = shared_ptr<Component>(new Barrier(m_pGameInfo));
 
-	// ’e‚Ì”z—ñ‚ÌƒAƒhƒŒƒX•Û‘¶‚µ‚Ä‚¨‚­
+	// å¼¾ã®é…åˆ—ã®ã‚¢ãƒ‰ãƒ¬ã‚¹ä¿å­˜ã—ã¦ãŠã
 	for (int i = 0; i < 4; ++i)
 	{
 		m_pBullet[i] = ((Turret*)(m_pComponent[i].get()))->GetBullet();
 	}
 
-	// ‘€ì‘•’uƒIƒuƒWƒFƒNƒg‚Ìì¬
+	// æ“ä½œè£…ç½®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ä½œæˆ
 	/*for (int i = 0; i < NUM_OF_OPERATION_DEVICE; ++i)
 	{
 		m_pOperationDevice[i] = shared_ptr<OperationDevice>(new OperationDevice());
@@ -46,20 +49,20 @@ Submarine::Submarine(GameInfo* _pGameInfo)
 	
 }
 
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
-// ƒfƒXƒgƒ‰ƒNƒ^
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
+// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
 Submarine::~Submarine()
 {
 	DisposeSprite(m_pImg);
 }
 
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
-// –ˆƒtƒŒ[ƒ€‚É‚â‚éˆ—
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
+// æ¯ãƒ•ãƒ¬ãƒ¼ãƒ ã«ã‚„ã‚‹å‡¦ç†
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
 void Submarine::Tick(float _deltaTime)
 {
-	// ƒeƒXƒg—p
+	// ãƒ†ã‚¹ãƒˆç”¨
 	for (int i = 0; i < NUM_OF_COMPONENT; ++i)
 	{
 		m_pComponent[i]->InputProcess();
@@ -68,29 +71,49 @@ void Submarine::Tick(float _deltaTime)
 	MoveProcess(_deltaTime);
 
 	MoveCamera();
+
+	for (int i = 0; i < 4; ++i)
+	{
+		for (int j = 0; j < (int)m_pBullet[i]->size(); ++j)
+		{
+			(*m_pBullet[i])[j]->MoveProcess(_deltaTime);
+		}
+	}
 }
 
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
-// ‰æ‘œ‚ğ•`‰æ‚·‚é
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
+// ç”»åƒã‚’æç”»ã™ã‚‹
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
 void Submarine::RenderProcess()
 {
 	m_pComponent[4]->renderSprite();
+	m_pComponent[5]->renderSprite();
 	RenderSprite(m_pImg);
 	for (int i = 0; i < NUM_OF_COMPONENT; ++i)
 	{
-		// ƒWƒFƒbƒgƒGƒ“ƒWƒ“‚Íö…ŠÍ‚Ì‰º‚Ì•`‰æ‚·‚é
-		if (i == 4)
+		// ã‚¸ã‚§ãƒƒãƒˆã‚¨ãƒ³ã‚¸ãƒ³ã¨ãƒãƒªã‚¢ã¯æ½œæ°´è‰¦ã®ä¸‹ã®æç”»ã™ã‚‹
+		if (i == 4 || i == 5)
 		{
 			continue;
 		}
 		m_pComponent[i]->renderSprite();
 	}
+  
+	m_pPlayer[0]->RenderChara();
+	m_pPlayer[1]->RenderChara();
+
+	for (int i = 0; i < 4; ++i)
+	{
+		for (int j = 0; j < (int)m_pBullet[i]->size(); ++j)
+		{
+			(*m_pBullet[i])[j]->renderSprite();
+		}
+	}
 }
 
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
-// “–‚½‚è”»’è
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
+// å½“ãŸã‚Šåˆ¤å®š
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
 void Submarine::CollisionProcess(
 	vector < shared_ptr < Enemy> >* _pEnemy,
 	vector < shared_ptr < SceneryObject > >* _pSceneryObject,
@@ -99,27 +122,27 @@ void Submarine::CollisionProcess(
 {
 }
 
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
-// ö…ŠÍ‘S‘Ì‚ÌˆÚ“®
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
+// æ½œæ°´è‰¦å…¨ä½“ã®ç§»å‹•
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
 void Submarine::MoveProcess(float _deltaTime)
 {
 	static JetEngine* pJetEngine = (JetEngine*)m_pComponent[4].get();
 
-	// ˆÚ“®’†‚©‚ğƒ`ƒFƒbƒN‚·‚é
+	// ç§»å‹•ä¸­ã‹ã‚’ãƒã‚§ãƒƒã‚¯ã™ã‚‹
 	if (!pJetEngine->GetIsMoving())return;
 
 	float moveDirection = pJetEngine->GetMoveDirection();
 
-	// ö…ŠÍ‚ÌV‚µ‚¢À•W‚ğŒvZ
+	// æ½œæ°´è‰¦ã®æ–°ã—ã„åº§æ¨™ã‚’è¨ˆç®—
 	XMFLOAT2 offsetPos = AngleToDirectionVector(moveDirection);
 	m_pos.x += offsetPos.x * SUBMARINE_MOVE_SPEED;
 	m_pos.y += offsetPos.y * SUBMARINE_MOVE_SPEED;
 
-	// ö…ŠÍ‚ÌˆÊ’u‚ğİ’u‚·‚é
+	// æ½œæ°´è‰¦ã®ä½ç½®ã‚’è¨­ç½®ã™ã‚‹
 	m_pImg->setPos(m_pos);
 
-	// ‚·‚×‚Ä•”•i‚ğˆÚ“®‚³‚¹‚é
+	// ã™ã¹ã¦éƒ¨å“ã‚’ç§»å‹•ã•ã›ã‚‹
 	for (int i = 0; i < NUM_OF_COMPONENT; ++i)
 	{
 		m_pComponent[i]->SetPos(m_pos);
@@ -128,22 +151,22 @@ void Submarine::MoveProcess(float _deltaTime)
 	pJetEngine->SetIsMoveingToFalse();
 }
 
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
-// ƒAƒCƒeƒ€‚ğæ“¾‚µ‚½Œã‚Ìˆ—
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
+// ã‚¢ã‚¤ãƒ†ãƒ ã‚’å–å¾—ã—ãŸå¾Œã®å‡¦ç†
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
 void Submarine::GetItem(int _itemType)
 {
 }
 
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
-// ƒJƒƒ‰‚ÌˆÚ“®ˆ—
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
+// ã‚«ãƒ¡ãƒ©ã®ç§»å‹•å‡¦ç†
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
 void Submarine::MoveCamera()
 {
-	// ƒJƒƒ‰‚ÌÀ•W‚ğæ“¾‚·‚é
+	// ã‚«ãƒ¡ãƒ©ã®åº§æ¨™ã‚’å–å¾—ã™ã‚‹
 	XMFLOAT3 cameraPos = m_pGameInfo->pCamera->get()->getPos();
 
-	// ƒJƒƒ‰‚Æö…ŠÍ‚ÌŠÔ‚Ì‹——£‚ğŒvZ
+	// ã‚«ãƒ¡ãƒ©ã¨æ½œæ°´è‰¦ã®é–“ã®è·é›¢ã‚’è¨ˆç®—
 	XMFLOAT2 distanceBetweenCameraAndSubmarine = 
 	{ m_pos.x - cameraPos.x, m_pos.y - cameraPos.y };
 
