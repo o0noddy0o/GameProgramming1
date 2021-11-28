@@ -21,6 +21,7 @@ CircleBoundingBox::CircleBoundingBox(XMFLOAT2 _pos, float _radius, XMFLOAT2 _rel
 	: m_pos(_pos)
 	, m_radius(_radius)
 	, m_relativePos(_relativePos)
+	, Super(1)
 {
 }
 
@@ -73,6 +74,26 @@ void CircleBoundingBox::ChangeRadius(float _newRadius)
 void CircleBoundingBox::SetRelativePos(XMFLOAT2 _newRelativePos)
 {
 	m_relativePos = _newRelativePos;
+}
+
+//━━━━━━━━━━━━━━━━━━━━━━━
+// 他バウンディングボックスとの当たり判定
+//━━━━━━━━━━━━━━━━━━━━━━━
+bool CircleBoundingBox::Collision(const BoundingBox* _target)const
+{
+	if (_target->m_boundingBoxType == 1)
+	{
+		return Collision((CircleBoundingBox*)_target);
+	}
+	else if(_target->m_boundingBoxType == 2)
+	{
+		return Collision((RectangleBoundingBox*)_target);
+	}
+	else if (_target->m_boundingBoxType == 3)
+	{
+		return Collision((PolygonBoundingBox*)_target);
+	}
+	return false;
 }
 
 //━━━━━━━━━━━━━━━━━━━━━━━

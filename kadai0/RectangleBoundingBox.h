@@ -7,13 +7,15 @@
 //━━━━━━━━━━━━━━━━━━━━━━━
 #pragma once
 #include "stdafx.h"
+#include "BoundingBox.h"
 
 class CPicture;
 class CircleBoundingBox;
 class PolygonBoundingBox;
 
-class RectangleBoundingBox
+class RectangleBoundingBox : public BoundingBox
 {
+	typedef BoundingBox Super;
 public:
 	// コンストラクタ
 	RectangleBoundingBox(XMFLOAT2 _pos, XMFLOAT2 _size, XMFLOAT2 _relativePos = { 0.f, 0.f });
@@ -31,6 +33,7 @@ public:
 	void SetRelativePos(XMFLOAT2 _newRelativePos = { 0.f,0.f });
 
 	// 当たり判定
+	bool Collision(const BoundingBox* _target)const;
 	bool Collision(CPicture* _target)const;						// 画像
 	bool Collision(const CircleBoundingBox* _target)const;		// 丸いバウンディングボックス
 	bool Collision(const RectangleBoundingBox* _target)const;	// 四角形バウンディングボックス

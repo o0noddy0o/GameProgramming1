@@ -184,6 +184,7 @@
     <ClInclude Include="CActionGameApp.h" />
     <ClInclude Include="CObjectBase.h" />
     <ClInclude Include="kadai0\Barrier.h" />
+    <ClInclude Include="kadai0\BoundingBox.h" />
     <ClInclude Include="kadai0\Bullet.h" />
     <ClInclude Include="kadai0\CircleBoundingBox.h" />
     <ClInclude Include="kadai0\Component.h" />

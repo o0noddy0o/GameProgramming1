@@ -23,6 +23,7 @@ PolygonBoundingBox::PolygonBoundingBox(XMFLOAT2 _pos, vector<XMFLOAT2>& _vertexP
 	, m_pVertexPos(new vector<XMFLOAT2>(_vertexPos))
 	, m_pVector(new vector<XMFLOAT2>())
 	, m_relativePos(_relativePos)
+	, Super(3)
 {
 	// 頂点座標の配列の要素数を取得しておく
 	int arraySize = (int)m_pVertexPos->size();
@@ -412,6 +413,26 @@ void PolygonBoundingBox::RotateVertex(float _angle)
 		// 保存する
 		m_pVector->push_back(vector);
 	}
+}
+
+//━━━━━━━━━━━━━━━━━━━━━━━
+// 他バウンディングボックスとの当たり判定
+//━━━━━━━━━━━━━━━━━━━━━━━
+bool PolygonBoundingBox::Collision(const BoundingBox* _target)const
+{
+	if (_target->m_boundingBoxType == 1)
+	{
+		return Collision((CircleBoundingBox*)_target);
+	}
+	else if (_target->m_boundingBoxType == 2)
+	{
+		return Collision((RectangleBoundingBox*)_target);
+	}
+	else if (_target->m_boundingBoxType == 3)
+	{
+		return Collision((PolygonBoundingBox*)_target);
+	}
+	return false;
 }
 
 //━━━━━━━━━━━━━━━━━━━━━━━
