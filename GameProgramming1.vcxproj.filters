@@ -251,6 +251,9 @@
     <ClInclude Include="kadai0\PolygonBoundingBox.h">
       <Filter>ヘッダー ファイル\Object\Bounding Box</Filter>
     </ClInclude>
+    <ClInclude Include="kadai0\BoundingBox.h">
+      <Filter>ヘッダー ファイル\Object\Bounding Box</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="GameProgramming1.rc">

@@ -21,6 +21,7 @@ RectangleBoundingBox::RectangleBoundingBox(XMFLOAT2 _pos, XMFLOAT2 _size, XMFLOA
 	: m_pos(_pos)
 	, m_size(_size)
 	, m_relativePos(_relativePos)
+	, Super(2)
 {
 }
 
@@ -73,6 +74,26 @@ void RectangleBoundingBox::ChangeSize(XMFLOAT2 _newSize)
 void RectangleBoundingBox::SetRelativePos(XMFLOAT2 _newRelativePos)
 {
 	m_relativePos = _newRelativePos;
+}
+
+//━━━━━━━━━━━━━━━━━━━━━━━
+// 他バウンディングボックスとの当たり判定
+//━━━━━━━━━━━━━━━━━━━━━━━
+bool RectangleBoundingBox::Collision(const BoundingBox* _target)const
+{
+	if (_target->m_boundingBoxType == 1)
+	{
+		return Collision((CircleBoundingBox*)_target);
+	}
+	else if (_target->m_boundingBoxType == 2)
+	{
+		return Collision((RectangleBoundingBox*)_target);
+	}
+	else if (_target->m_boundingBoxType == 3)
+	{
+		return Collision((PolygonBoundingBox*)_target);
+	}
+	return false;
 }
 
 //━━━━━━━━━━━━━━━━━━━━━━━

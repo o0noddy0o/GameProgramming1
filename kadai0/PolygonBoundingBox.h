@@ -6,9 +6,11 @@
 //━━━━━━━━━━━━━━━━━━━━━━━
 #pragma once
 #include "stdafx.h"
+#include "BoundingBox.h"
 
-class PolygonBoundingBox
+class PolygonBoundingBox : public BoundingBox
 {
+	typedef BoundingBox Super;
 public:
 	// コンストラクタ
 	PolygonBoundingBox(XMFLOAT2 _pos, vector<XMFLOAT2>& _vertexPos, XMFLOAT2 _relativePos = { 0.f, 0.f });
@@ -30,6 +32,7 @@ public:
 	void RotateVertex(float _angle);
 	
 	// 当たり判定
+	bool Collision(const BoundingBox* _target)const;
 	bool Collision(CPicture* _target)const;						// 画像
 	bool Collision(const CircleBoundingBox* _target)const;		// 丸いバウンディングボックス
 	bool Collision(const RectangleBoundingBox* _target)const;	// 四角形バウンディングボックス
