@@ -21,3 +21,4 @@
 
 // プレイヤー用
 #define Tex_Player1					L"Media/Sprite/ActionGame_Sprite/Player1.jpg"
+#define Tex_Player2					L"Media/Sprite/ActionGame_Sprite/Player2.jpg"

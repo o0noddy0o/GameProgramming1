@@ -2,7 +2,9 @@
 // ファイル名　　：Submarine.cpp
 // 概要　　　　　：潜水艦のクラス
 // 作成者　　　　：20CU0314 ゴコケン
-// 更新内容　　　：2021/11/17 作成
+// 更新内容　　　：2021/11/17 作成（ゴ）
+//				   2021/11/28 移動メソッドを修正（ズン）
+//							  プレイヤー数を分ける（ズン）		   
 //━━━━━━━━━━━━━━━━━━━━━━━
 #include "Submarine.h"
 #include "GameResource.h"
@@ -23,8 +25,8 @@ Submarine::Submarine(GameInfo* _pGameInfo)
 	m_pImg->setPos(m_pos);
 
 	// プレイヤーオブジェクトの作成
-	m_pPlayer[0] = shared_ptr<Player>(new Player(m_pGameInfo));
-	m_pPlayer[1] = shared_ptr<Player>(new Player(m_pGameInfo));
+	m_pPlayer[0] = shared_ptr<Player>(new Player(m_pGameInfo, { 0.f, 0.f }, m_pos, 1));
+	m_pPlayer[1] = shared_ptr<Player>(new Player(m_pGameInfo, { 0.f, 0.f }, m_pos, 2));
 
 	// 部品オブジェクトのの作成
 	m_pComponent[0] = shared_ptr<Component>(new Turret(m_pGameInfo, 0, m_pos));
@@ -79,6 +81,8 @@ void Submarine::Tick(float _deltaTime)
 			(*m_pBullet[i])[j]->MoveProcess(_deltaTime);
 		}
 	}
+
+	m_pPlayer[0]->Tick(_deltaTime);
 }
 
 //━━━━━━━━━━━━━━━━━━━━━━━
@@ -127,6 +131,9 @@ void Submarine::CollisionProcess(
 //━━━━━━━━━━━━━━━━━━━━━━━
 void Submarine::MoveProcess(float _deltaTime)
 {
+	//プレイヤーを一緒に移動させる
+	m_pPlayer[0]->SetPos(m_pos);
+
 	static JetEngine* pJetEngine = (JetEngine*)m_pComponent[4].get();
 
 	// 移動中かをチェックする
@@ -147,6 +154,8 @@ void Submarine::MoveProcess(float _deltaTime)
 	{
 		m_pComponent[i]->SetPos(m_pos);
 	}
+
+	
 
 	pJetEngine->SetIsMoveingToFalse();
 }
