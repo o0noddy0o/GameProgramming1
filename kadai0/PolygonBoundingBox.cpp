@@ -693,25 +693,36 @@ bool PolygonBoundingBox::Collision(const CircleBoundingBox* _target)const
 		// ‚’¼ü‚ª‰~‚Ì”¼Œa‚æ‚è’·‚¢
 		if (d2 > targetRadius)return true;
 
-		// ‚’¼ü‚ª‰~‚Ì”¼Œa‚æ‚è’Z‚¢
-		// Šp“x‚ğ‹‚ß‚é
-		float angle = RadianToDegree(asin(z));
-
-		// Šp“x‚ª“İŠp‚¾‚Á‚½‚ç
-		if (angle > 90.f)return false;
-
 		// Ÿ‚Ì’¸“_‚ÌÀ•W‚ğæ“¾‚µ‚Ä‚¨‚­
 		XMFLOAT2 pos2 = (*m_pVertexPos)[1];
+		pos2.x += m_pos.x;
+		pos2.y += m_pos.y;
 
-		// Ÿ‚Ì’¸“_‚©‚ç‰~‚Ì’†S‚Ü‚Å‚Ì‹——£‚ğ‹‚ß‚é
+		XMFLOAT2 pos1ToPos2Vector = { pos2.x - pos.x, pos2.y - pos.y };
+		XMFLOAT2 pos2ToPos1Vector = { -pos1ToPos2Vector.x, -pos1ToPos2Vector.y };
 		XMFLOAT2 targetVector2 = { targetPos.x - pos2.x, targetPos.y - pos2.y };
-		float d3 = sqrtf(targetVector.x * targetVector.x + targetVector.y * targetVector.y);
 
-		// Šp“x‚ğ‹‚ß‚é
-		float angle2 = RadianToDegree(asin(d2 / d3));
+		float lengthOfline = sqrtf(pos1ToPos2Vector.x * pos1ToPos2Vector.x + pos1ToPos2Vector.y * pos1ToPos2Vector.y);
+		float d3 = sqrtf(targetPos.x * targetPos.x + targetPos.y * targetPos.y);
 
-		// Šp“x‚ª‰sŠp‚¾‚Á‚½‚ç
-		if (angle2 < 90.f)return true;
+		if (d > lengthOfline + targetRadius)
+		{
+			return false;
+		}
+		if (d3 > lengthOfline + targetRadius)
+		{
+			return false;
+		}
+
+		if (d < targetRadius)
+		{
+			return true;
+		}
+
+		if (d3 < targetRadius)
+		{
+			return true;
+		}
 	}
 	return false;
 }
