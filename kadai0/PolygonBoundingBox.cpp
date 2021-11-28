@@ -404,7 +404,7 @@ void PolygonBoundingBox::RotateVertex(float _angle)
 		// ベクトルを計算
 		XMFLOAT2 vector = { pos1.x - pos.x, pos1.y - pos.y };
 
-		// 単位化
+		// 正規化
 		float distance = sqrtf(vector.x * vector.x + vector.y * vector.y);
 		vector.x /= distance;
 		vector.y /= distance;
@@ -461,7 +461,7 @@ bool PolygonBoundingBox::Collision(CPicture* _target)const
 					// 計算用のベクトル
 					vector = { vertex[j].x - pos.x, vertex[j].y - pos.y };
 
-					// 標準化
+					// 正規化
 					float r = sqrtf(vector.x * vector.x + vector.y * vector.y);
 					vector.x /= r;
 					vector.y /= r;
@@ -487,7 +487,7 @@ bool PolygonBoundingBox::Collision(CPicture* _target)const
 		// ここまでやっても結果が出ない場合
 		// ターゲットからもう一度やる
 
-		// 画像の標準化ベクトル
+		// 画像の単位ベクトル
 		XMFLOAT2 vector[4] = { {0.f, 0.f} };	
 		vector[0].y = -1;
 		vector[1].x = -1;
@@ -508,7 +508,7 @@ bool PolygonBoundingBox::Collision(CPicture* _target)const
 				// 計算用のベクトル
 				XMFLOAT2 vector2 = { pos.x - vertex[i].x , pos.y - vertex[i].y };
 
-				// 標準化
+				// 正規化
 				float r = sqrtf(vector2.x * vector2.x + vector2.y * vector2.y);
 				vector2.x /= r;
 				vector2.y /= r;
@@ -543,7 +543,7 @@ bool PolygonBoundingBox::Collision(CPicture* _target)const
 			// 計算用のベクトル
 			vector = { vertex[j].x - pos.x, vertex[j].y - pos.y };
 
-			// 標準化
+			// 正規化
 			float r = sqrtf(vector.x * vector.x + vector.y * vector.y);
 			vector.x /= r;
 			vector.y /= r;
@@ -568,6 +568,151 @@ bool PolygonBoundingBox::Collision(CPicture* _target)const
 //━━━━━━━━━━━━━━━━━━━━━━━
 bool PolygonBoundingBox::Collision(const CircleBoundingBox* _target)const
 {
+	// 対象の座標とサイズを取得しておく
+	float targetRadius = _target->GetRadius();
+	XMFLOAT2 targetPos = _target->GetPos();
+
+	// 当たれない場所にいたら、直接falseをreturnする
+	if (m_pos.x + m_minPos.x > targetPos.x + targetRadius)return false;
+	if (m_pos.x + m_maxPos.x < targetPos.x - targetRadius)return false;
+	if (m_pos.y + m_minPos.y > targetPos.y + targetRadius)return false;
+	if (m_pos.y + m_maxPos.y < targetPos.y - targetRadius)return false;
+
+	// 頂点数を取得
+	int arraySize = (int)m_pVertexPos->size();
+
+	// 頂点数が３以上（図形）
+	if (arraySize >= 3)
+	{
+		// 計算用の変数
+		XMFLOAT2 targetVector;
+		XMFLOAT2 pos;
+		int cnt = 0;
+
+		// 円の中心点がどの線の左にあるかを調べる
+		for (int i = 0; i < arraySize; ++i)
+		{
+			// 現在処理中の頂点の座標を取得しておく
+			pos = (*m_pVertexPos)[i];
+			pos.x += m_pos.x;
+			pos.y += m_pos.y;
+
+			// 現在処理中の頂点から円の中心までのベクトル
+			targetVector = { targetPos.x - pos.x,targetPos.y - pos.y };
+
+			// ベクトルの正規化
+			XMFLOAT2 vector = targetVector;
+			float d = sqrtf(vector.x * vector.x + vector.y * vector.y);
+			vector.x /= d;
+			vector.y /= d;
+
+			// 外積
+			float z = (*m_pVector)[i].x * vector.y - (*m_pVector)[i].y * vector.x;
+
+			// 右だったら、これ以上やっても意味ない
+			if (z < 0)
+			{
+				++cnt;
+				continue;
+			}
+			// 左だったら
+			// 垂直線の長さを計算
+			float d2 = d * z;
+
+			// 垂直線が円の半径より長い
+			if (d2 > targetRadius)
+			{
+				return false;
+			}
+
+			// 次の頂点の座標を取得しておく
+			XMFLOAT2 pos2 = (*m_pVertexPos)[(i == arraySize - 1) ? (0) : (i + 1)];
+			pos2.x += m_pos.x;
+			pos2.y += m_pos.y;
+
+			XMFLOAT2 pos1ToPos2Vector = { pos2.x - pos.x, pos2.y - pos.y };
+			XMFLOAT2 pos2ToPos1Vector = { -pos1ToPos2Vector.x, -pos1ToPos2Vector.y };
+			XMFLOAT2 targetVector2 = { targetPos.x - pos2.x, targetPos.y - pos2.y };
+
+			float lengthOfline = sqrtf(pos1ToPos2Vector.x * pos1ToPos2Vector.x + pos1ToPos2Vector.y * pos1ToPos2Vector.y);
+			float d3 = sqrtf(targetPos.x * targetPos.x + targetPos.y * targetPos.y);
+
+			if (d > lengthOfline + targetRadius)
+			{
+				return false;
+			}
+			if (d3 > lengthOfline + targetRadius)
+			{
+				return false;
+			}
+
+			if (d < targetRadius)
+			{
+				return true;
+			}
+
+			if (d3 < targetRadius)
+			{
+				return true;
+			}
+			++cnt;
+		}
+		if (cnt >= arraySize)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	// 頂点数が２（線）
+	else if(arraySize == 2)
+	{
+		XMFLOAT2 pos = (*m_pVertexPos)[0];
+
+		// ターゲットへのベクトル
+		XMFLOAT2 targetVector = { targetPos.x - pos.x,targetPos.y - pos.y };
+
+		// ベクトルの正規化
+		XMFLOAT2 vector = targetVector;
+		float d = sqrtf(vector.x * vector.x + vector.y * vector.y);
+		vector.x /= d;
+		vector.y /= d;
+
+		// 外積
+		float z = (*m_pVector)[0].x * vector.y - (*m_pVector)[0].y * vector.x;
+
+		// 右だったら、これ以上やっても意味ない
+		if (z < 0)return true;
+
+		// 左だったら
+		// 垂直線の長さを計算
+		float d2 = d * z;
+
+		// 垂直線が円の半径より長い
+		if (d2 > targetRadius)return true;
+
+		// 垂直線が円の半径より短い
+		// 角度を求める
+		float angle = RadianToDegree(asin(z));
+
+		// 角度が鈍角だったら
+		if (angle > 90.f)return false;
+
+		// 次の頂点の座標を取得しておく
+		XMFLOAT2 pos2 = (*m_pVertexPos)[1];
+
+		// 次の頂点から円の中心までの距離を求める
+		XMFLOAT2 targetVector2 = { targetPos.x - pos2.x, targetPos.y - pos2.y };
+		float d3 = sqrtf(targetVector.x * targetVector.x + targetVector.y * targetVector.y);
+
+		// 角度を求める
+		float angle2 = RadianToDegree(asin(d2 / d3));
+
+		// 角度が鋭角だったら
+		if (angle2 < 90.f)return true;
+	}
 	return false;
 }
 
@@ -618,7 +763,7 @@ bool PolygonBoundingBox::Collision(const RectangleBoundingBox* _target)const
 					// 計算用のベクトル
 					vector = { vertex[j].x - pos.x, vertex[j].y - pos.y };
 
-					// 標準化
+					// 正規化
 					float r = sqrtf(vector.x * vector.x + vector.y * vector.y);
 					vector.x /= r;
 					vector.y /= r;
@@ -644,7 +789,7 @@ bool PolygonBoundingBox::Collision(const RectangleBoundingBox* _target)const
 		// ここまでやっても結果が出ない場合
 		// ターゲットからもう一度やる
 
-		// ターゲットの標準化ベクトル
+		// ターゲットの単位ベクトル
 		XMFLOAT2 vector[4] = { {0.f, 0.f} };
 		vector[0].y = -1;
 		vector[1].x = -1;
@@ -665,7 +810,7 @@ bool PolygonBoundingBox::Collision(const RectangleBoundingBox* _target)const
 				// 計算用のベクトル
 				XMFLOAT2 vector2 = { pos.x - vertex[i].x , pos.y - vertex[i].y };
 
-				// 標準化
+				// 正規化
 				float r = sqrtf(vector2.x * vector2.x + vector2.y * vector2.y);
 				vector2.x /= r;
 				vector2.y /= r;
@@ -701,7 +846,7 @@ bool PolygonBoundingBox::Collision(const RectangleBoundingBox* _target)const
 			// 計算用のベクトル
 			vector = { vertex[j].x - pos.x, vertex[j].y - pos.y };
 
-			// 標準化
+			// 正規化
 			float r = sqrtf(vector.x * vector.x + vector.y * vector.y);
 			vector.x /= r;
 			vector.y /= r;
@@ -767,7 +912,7 @@ bool PolygonBoundingBox::Collision(const PolygonBoundingBox* _target)const
 					// 計算用のベクトル
 					vector = { targetVertex[j].x - pos.x, targetVertex[j].y - pos.y };
 
-					// 標準化
+					// 正規化
 					float r = sqrtf(vector.x * vector.x + vector.y * vector.y);
 					vector.x /= r;
 					vector.y /= r;
@@ -810,7 +955,7 @@ bool PolygonBoundingBox::Collision(const PolygonBoundingBox* _target)const
 				// 計算用のベクトル
 				XMFLOAT2 vector2 = { pos.x - targetVertex[i].x , pos.y - targetVertex[i].y };
 
-				// 標準化
+				// 正規化
 				float r = sqrtf(vector2.x * vector2.x + vector2.y * vector2.y);
 				vector2.x /= r;
 				vector2.y /= r;
@@ -847,7 +992,7 @@ bool PolygonBoundingBox::Collision(const PolygonBoundingBox* _target)const
 			// 計算用のベクトル
 			vector = { targetVertex[j].x - pos.x, targetVertex[j].y - pos.y };
 
-			// 標準化
+			// 正規化
 			float r = sqrtf(vector.x * vector.x + vector.y * vector.y);
 			vector.x /= r;
 			vector.y /= r;
