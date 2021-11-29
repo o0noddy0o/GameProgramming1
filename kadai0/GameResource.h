@@ -22,3 +22,10 @@
 // プレイヤー用
 #define Tex_Player1					L"Media/Sprite/ActionGame_Sprite/Player1.jpg"
 #define Tex_Player2					L"Media/Sprite/ActionGame_Sprite/Player2.jpg"
+
+
+// 操作装置用
+#define Tex_Operation_Device_1		L"Media/Sprite/ActionGame_Sprite/Player2.jpg"
+#define Tex_Operation_Device_2		L"Media/Sprite/ActionGame_Sprite/Player2.jpg"
+#define Tex_Operation_Device_3		L"Media/Sprite/ActionGame_Sprite/Player2.jpg"
+#define Tex_Operation_Device_4		L"Media/Sprite/ActionGame_Sprite/Player2.jpg"
