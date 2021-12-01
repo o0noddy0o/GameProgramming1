@@ -13,7 +13,10 @@
 #include "Player.h"
 #include "Bullet.h"
 #include "Barrier.h"
+<<<<<<< HEAD
 #include "OperationDevice.h"
+=======
+>>>>>>> e1c34234400996c219dc3fad9478311ade5f9f8b
 
 //━━━━━━━━━━━━━━━━━━━━━━━
 // コンストラクタ
