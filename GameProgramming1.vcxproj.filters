@@ -254,13 +254,11 @@
     <ClInclude Include="kadai0\PolygonBoundingBox.h">
       <Filter>ヘッダー ファイル\Object\Bounding Box</Filter>
     </ClInclude>
-<<<<<<< HEAD
     <ClInclude Include="kadai0\OperationDevice.h">
       <Filter>ヘッダー ファイル</Filter>
-=======
+    </ClInclude>
     <ClInclude Include="kadai0\BoundingBox.h">
       <Filter>ヘッダー ファイル\Object\Bounding Box</Filter>
->>>>>>> ccf026227fc4c31e1ca49a38ea4680055abd26c1
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
