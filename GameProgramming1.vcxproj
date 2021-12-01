@@ -157,6 +157,7 @@
     <ClCompile Include="kadai0\GameTitle.cpp" />
     <ClCompile Include="kadai0\InOutputFile.cpp" />
     <ClCompile Include="kadai0\JetEngine.cpp" />
+    <ClCompile Include="kadai0\OperationDevice.cpp" />
     <ClCompile Include="kadai0\PolygonBoundingBox.cpp" />
     <ClCompile Include="kadai0\RectangleBoundingBox.cpp" />
     <ClCompile Include="kadai0\Player.cpp" />
@@ -193,6 +194,7 @@
     <ClInclude Include="kadai0\GameResource.h" />
     <ClInclude Include="kadai0\InOutputFile.h" />
     <ClInclude Include="kadai0\JetEngine.h" />
+    <ClInclude Include="kadai0\OperationDevice.h" />
     <ClInclude Include="kadai0\PolygonBoundingBox.h" />
     <ClInclude Include="kadai0\RectangleBoundingBox.h" />
     <ClInclude Include="kadai0\Player.h" />

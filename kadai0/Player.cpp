@@ -2,23 +2,43 @@
 // ファイル名　　：Player.cpp
 // 概要　　　　　：プレイヤーのクラス
 // 作成者　　　　：20CU0332 フアンスアンズン
-// 更新内容　　　：2021/11/24 作成
+// 更新内容　　　：2021/11/24 作成（ズン）
+//				   2021/11/25 基本のメソッドを追加（ズン）
+//				   2021/11/26 基本のメソッドを修正（ズン）
+//				   2021/11/28 移動メソッドを修正（ズン）
+//							  プレイヤー数を分ける（ズン）
 //━━━━━━━━━━━━━━━━━━━━━━━
 #include "Player.h"
 #include "Define.h"
 #include "GameResource.h"
+#include "Submarine.h"
 
 //━━━━━━━━━━━━━━━━━━━━━━━
 // コンストラクタ
+// 引数１：ゲームの情報
+// 引数２：プレイヤーの初期座標
+// 引数３：プレイヤーの座標と潜水艦の座標の差
+// 引数４：プレイヤーの番号
 //━━━━━━━━━━━━━━━━━━━━━━━
-Player::Player(GameInfo* _pGameInfo, XMFLOAT2 _pos, XMFLOAT2 _relativePos)
+Player::Player(GameInfo* _pGameInfo, XMFLOAT2 _pos, XMFLOAT2 _relativePos, int _index)
 	: Super(_pGameInfo)
 	, m_bMoveable(true)
 	, m_pJumping(false)
 	, m_relativePos(_pos)
 {
-	m_pImg = CreateSprite(Tex_Player1, 256.f, 256.f);
-	m_pImg->setPos(_pos);
+	switch (_index)
+	{
+	//プレイヤー１の画像を作成
+	case 1:
+		m_pImg = CreateSprite(Tex_Player1, 256.f, 256.f);
+		m_pImg->setPos(_pos);
+		break;
+	//プレイヤー１の画像を作成
+	case 2:
+		m_pImg = CreateSprite(Tex_Player2, 128.f, 128.f);
+		m_pImg->setPos(_pos);
+		break;
+	}
 
 }
 
@@ -35,7 +55,7 @@ Player::~Player()
 //━━━━━━━━━━━━━━━━━━━━━━━
 void Player::Tick(float _deltaTime)
 {
-
+	InputProcess();
 }
 
 //━━━━━━━━━━━━━━━━━━━━━━━
@@ -67,7 +87,20 @@ void Player::SetPos(XMFLOAT2 _newPos)
 //━━━━━━━━━━━━━━━━━━━━━━━
 void Player::InputProcess()
 {
-
+	if (m_bMoveable)
+	{
+		//左に移動
+		if (GetInput()->isKeyPressed(DIK_O))
+		{
+			m_relativePos.x -= 25.f;
+		}
+		//右に移動2
+		else if (GetInput()->isKeyPressed(DIK_P))
+		{
+			m_relativePos.x += 25.f;
+		}
+	}
+	
 }
 
 //━━━━━━━━━━━━━━━━━━━━━━━
@@ -83,7 +116,7 @@ void Player::CollisionWithOperationDevice(vector<shared_ptr<OperationDevice>>* _
 //━━━━━━━━━━━━━━━━━━━━━━━
 void Player::Move(float _deltaTime, bool _right)
 {
-
+	
 }
 
 //━━━━━━━━━━━━━━━━━━━━━━━

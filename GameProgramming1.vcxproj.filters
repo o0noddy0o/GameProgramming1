@@ -138,6 +138,9 @@
     <ClCompile Include="kadai0\PolygonBoundingBox.cpp">
       <Filter>ソース ファイル\Object\Bounding box</Filter>
     </ClCompile>
+    <ClCompile Include="kadai0\OperationDevice.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Common\CApplication.h">
@@ -250,6 +253,9 @@
     </ClInclude>
     <ClInclude Include="kadai0\PolygonBoundingBox.h">
       <Filter>ヘッダー ファイル\Object\Bounding Box</Filter>
+    </ClInclude>
+    <ClInclude Include="kadai0\OperationDevice.h">
+      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="kadai0\BoundingBox.h">
       <Filter>ヘッダー ファイル\Object\Bounding Box</Filter>

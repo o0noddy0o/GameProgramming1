@@ -2,7 +2,11 @@
 // ファイル名　　：Player.h
 // 概要　　　　　：プレイヤーのクラス
 // 作成者　　　　：20CU0332 フアンスアンズン
-// 更新内容　　　：2021/11/24 作成
+// 更新内容　　　：2021/11/24 作成（ズン）
+//				   2021/11/25 基本のメソッドを追加（ズン）
+//				   2021/11/26 基本のメソッドを修正（ズン）
+//				   2021/11/28 移動メソッドを修正（ズン）
+//							  プレイヤー数を分ける（ズン）
 //━━━━━━━━━━━━━━━━━━━━━━━
 #pragma once
 #include "Define.h"
@@ -14,7 +18,7 @@ class Player : public CObjectBase
 {
 	typedef CObjectBase Super;
 public:
-	Player(GameInfo* _pGameInfo, XMFLOAT2 _subPos = { 0.f, 0.f }, XMFLOAT2 _pos = { 0.f, 0.f });
+	Player(GameInfo* _pGameInfo, XMFLOAT2 _pos = { 0.f, 0.f }, XMFLOAT2 _relativePos = { 0.f, 0.f }, int _index = 0);
 	~Player();
 
 	//毎フレームにやる処理
@@ -28,6 +32,8 @@ public:
 
 	//プレイーの座標を更新
 	void SetPos(XMFLOAT2 _newPos);
+
+	
 
 private:
 	//プレイヤーの入力処理
