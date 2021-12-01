@@ -13,6 +13,7 @@
 #include "Player.h"
 #include "Bullet.h"
 #include "Barrier.h"
+#include "OperationDevice.h"
 
 //━━━━━━━━━━━━━━━━━━━━━━━
 // コンストラクタ
@@ -43,11 +44,11 @@ Submarine::Submarine(GameInfo* _pGameInfo)
 	}
 
 	// 操作装置オブジェクトの作成
-	/*for (int i = 0; i < NUM_OF_OPERATION_DEVICE; ++i)
+	for (int i = 0; i < NUM_OF_OPERATION_DEVICE; ++i)
 	{
-		m_pOperationDevice[i] = shared_ptr<OperationDevice>(new OperationDevice());
-		m_pOperationDevice[i]->SetComponent(m_pComponent[i]);
-	}*/
+		m_pOperationDevice[i] = shared_ptr<OperationDevice>(new OperationDevice(m_pGameInfo, { 0.f, 0.f}, m_pos, i));
+		//m_pOperationDevice[i]->SetComponent(m_pComponent[i]);
+	}
 	
 }
 
@@ -102,9 +103,16 @@ void Submarine::RenderProcess()
 		}
 		m_pComponent[i]->renderSprite();
 	}
-  
+	
+	//プレイヤーの画像を描画
 	m_pPlayer[0]->RenderChara();
 	m_pPlayer[1]->RenderChara();
+
+	//操作装置の画像を描画
+	for (int i = 0; i < NUM_OF_OPERATION_DEVICE; ++i)
+	{
+		m_pOperationDevice[i]->RenderDevice();
+	}
 
 	for (int i = 0; i < 4; ++i)
 	{
@@ -131,13 +139,23 @@ void Submarine::CollisionProcess(
 //━━━━━━━━━━━━━━━━━━━━━━━
 void Submarine::MoveProcess(float _deltaTime)
 {
-	//プレイヤーを一緒に移動させる
-	m_pPlayer[0]->SetPos(m_pos);
-
+	
 	static JetEngine* pJetEngine = (JetEngine*)m_pComponent[4].get();
 
 	// 移動中かをチェックする
-	if (!pJetEngine->GetIsMoving())return;
+	if (!pJetEngine->GetIsMoving())
+	{
+		//プレイヤーを一緒に移動させる
+		m_pPlayer[0]->SetPos(m_pos);
+
+		//操作装置を移動させる
+		for (int i = 0; i < NUM_OF_OPERATION_DEVICE; ++i)
+		{
+			m_pOperationDevice[i]->SetPos(m_pos);
+		}
+		
+		return;
+	}
 
 	float moveDirection = pJetEngine->GetMoveDirection();
 
@@ -155,7 +173,14 @@ void Submarine::MoveProcess(float _deltaTime)
 		m_pComponent[i]->SetPos(m_pos);
 	}
 
-	
+	//プレイヤーを一緒に移動させる
+	m_pPlayer[0]->SetPos(m_pos);
+
+	//操作装置を移動させる
+	for (int i = 0; i < NUM_OF_OPERATION_DEVICE; ++i)
+	{
+		m_pOperationDevice[i]->SetPos(m_pos);
+	}
 
 	pJetEngine->SetIsMoveingToFalse();
 }

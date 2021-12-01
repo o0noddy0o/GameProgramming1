@@ -28,10 +28,12 @@ Player::Player(GameInfo* _pGameInfo, XMFLOAT2 _pos, XMFLOAT2 _relativePos, int _
 {
 	switch (_index)
 	{
+	//プレイヤー１の画像を作成
 	case 1:
 		m_pImg = CreateSprite(Tex_Player1, 256.f, 256.f);
 		m_pImg->setPos(_pos);
 		break;
+	//プレイヤー１の画像を作成
 	case 2:
 		m_pImg = CreateSprite(Tex_Player2, 128.f, 128.f);
 		m_pImg->setPos(_pos);
@@ -92,6 +94,7 @@ void Player::InputProcess()
 		{
 			m_relativePos.x -= 25.f;
 		}
+		//右に移動2
 		else if (GetInput()->isKeyPressed(DIK_P))
 		{
 			m_relativePos.x += 25.f;

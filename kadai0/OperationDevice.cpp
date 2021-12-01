@@ -3,6 +3,7 @@
 // 概要　　　　　：操作装置のクラス
 // 作成者　　　　：20CU0332 フアンスアンズン
 // 更新内容　　　：2021/11/29 作成（ズン）
+//				  2021/12/01 描画メソッドを定義（ズン）
 //━━━━━━━━━━━━━━━━━━━━━━━
 #include "OperationDevice.h"
 #include "GameResource.h"
@@ -11,24 +12,33 @@
 // コンストラクタ
 // 引数１：ゲームの情報
 //━━━━━━━━━━━━━━━━━━━━━━━
-OperationDevice::OperationDevice(GameInfo* _pGameInfo, XMFLOAT2 _pos, int _index)
+OperationDevice::OperationDevice(GameInfo* _pGameInfo, XMFLOAT2 _pos, XMFLOAT2 _relativePos, int _index)
 	: Super(_pGameInfo)
+	, m_relativePos(_pos)
 {
 	switch (_index)
 	{
-	case 1:
+	case 0:
 		m_pImg = CreateSprite(Tex_Operation_Device_1, 64.f, 64.f);
 		m_pImg->setPos(_pos);
 		break;
-	case 2:
+	case 1:
 		m_pImg = CreateSprite(Tex_Operation_Device_2, 64.f, 64.f);
 		m_pImg->setPos(_pos);
 		break;
-	case 3:
+	case 2:
 		m_pImg = CreateSprite(Tex_Operation_Device_3, 64.f, 64.f);
 		m_pImg->setPos(_pos);
 		break;
+	case 3:
+		m_pImg = CreateSprite(Tex_Operation_Device_4, 64.f, 64.f);
+		m_pImg->setPos(_pos);
+		break;
 	case 4:
+		m_pImg = CreateSprite(Tex_Operation_Device_4, 64.f, 64.f);
+		m_pImg->setPos(_pos);
+		break;
+	case 5:
 		m_pImg = CreateSprite(Tex_Operation_Device_4, 64.f, 64.f);
 		m_pImg->setPos(_pos);
 		break;
@@ -41,6 +51,22 @@ OperationDevice::OperationDevice(GameInfo* _pGameInfo, XMFLOAT2 _pos, int _index
 OperationDevice::~OperationDevice()
 {
 	DisposeSprite(m_pImg);
+}
+
+//━━━━━━━━━━━━━━━━━━━━━━━
+// 毎フレームにやる処理
+//━━━━━━━━━━━━━━━━━━━━━━━
+void OperationDevice::Tick(float _deltaTime)
+{
+	
+}
+
+//━━━━━━━━━━━━━━━━━━━━━━━
+// 画像を描画
+//━━━━━━━━━━━━━━━━━━━━━━━
+void OperationDevice::RenderDevice()
+{
+	RenderSprite(m_pImg);
 }
 
 //━━━━━━━━━━━━━━━━━━━━━━━
@@ -64,5 +90,5 @@ void OperationDevice::SetComponent(shared_ptr<Component> _component)
 //━━━━━━━━━━━━━━━━━━━━━━━
 void OperationDevice::SetPos(XMFLOAT2 _newPos)
 {
-
+	m_pImg->setPos(_newPos.x + m_relativePos.x, _newPos.y + m_relativePos.y);
 }
