@@ -4,8 +4,20 @@
 // 潜水艦
 //━━━━━━━━━━━━━━━━━━━━━━━
 #define SUBMARINE_MOVE_SPEED		(30.f)
-#define NUM_OF_OPERATION_DEVICE		(6)
+#define NUM_OF_OPERATION_DEVICE		(5)
 #define NUM_OF_COMPONENT			(6)
+
+//━━━━━━━━━━━━━━━━━━━━━━━
+// プレイヤー１
+//━━━━━━━━━━━━━━━━━━━━━━━
+#define PLAYER_1_SIZE_X				(128.f)
+#define PLAYER_1_SIZE_Y				(128.f)
+
+//━━━━━━━━━━━━━━━━━━━━━━━
+// プレイヤー２
+//━━━━━━━━━━━━━━━━━━━━━━━
+#define PLAYER_2_SIZE_X				(128.f)
+#define PLAYER_2_SIZE_Y				(128.f)
 
 //━━━━━━━━━━━━━━━━━━━━━━━
 // タレット
@@ -23,6 +35,7 @@
 #define BULLET_SIZE_X		(20.f)
 #define BULLET_SIZE_Y		(20.f)
 #define BULLET_MOVE_SPEED	(30.f)
+#define BULLET_BOUNDING_BOX_RADIUS	(10.f)
 
 //━━━━━━━━━━━━━━━━━━━━━━━
 // ジェットエンジン
@@ -38,6 +51,20 @@
 #define BARRIER_SIZE_Y			(600.f)
 #define BARRIER_RANGE			(90.f)
 #define BARRIER_ROTATION_SPEED	(15.f)
+
+//━━━━━━━━━━━━━━━━━━━━━━━
+// マップサイズ
+//━━━━━━━━━━━━━━━━━━━━━━━
+#define Map_X_SIZE				(19)
+#define Map_Y_SIZE				(24)
+#define Block_X_SIZE			(60.f)
+#define Block_Y_SIZE			(60.f)
+
+//━━━━━━━━━━━━━━━━━━━━━━━
+// エネミーのサイズ
+//━━━━━━━━━━━━━━━━━━━━━━━
+#define Enemy_X_SIZE			(60.f)
+#define Enemy_Y_SIZE			(60.f)
 
 //━━━━━━━━━━━━━━━━━━━━━━━
 // カメラ
@@ -74,3 +101,5 @@
 #define MsgBox(message)
 #define MsgBox_T(message, title)
 #endif
+
+

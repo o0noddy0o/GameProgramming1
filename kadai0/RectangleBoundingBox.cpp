@@ -175,5 +175,7 @@ bool RectangleBoundingBox::Collision(const RectangleBoundingBox* _target)const
 //„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
 bool RectangleBoundingBox::Collision(const PolygonBoundingBox* _target)const
 {
-	return false;
+	RectangleBoundingBox ob(m_pos, m_size, m_relativePos);
+
+	return _target->Collision(&ob);
 }

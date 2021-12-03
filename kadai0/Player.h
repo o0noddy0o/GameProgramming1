@@ -33,7 +33,7 @@ public:
 	//プレイーの座標を更新
 	void SetPos(XMFLOAT2 _newPos);
 
-	
+	CPicture* GetImg() const;
 
 private:
 	//プレイヤーの入力処理

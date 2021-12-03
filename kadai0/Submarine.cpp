@@ -27,7 +27,7 @@ Submarine::Submarine(GameInfo* _pGameInfo)
 
 	// プレイヤーオブジェクトの作成
 	m_pPlayer[0] = shared_ptr<Player>(new Player(m_pGameInfo, { 0.f, 0.f }, m_pos, 1));
-	m_pPlayer[1] = shared_ptr<Player>(new Player(m_pGameInfo, { 0.f, 0.f }, m_pos, 2));
+	//m_pPlayer[1] = shared_ptr<Player>(new Player(m_pGameInfo, { 0.f, 0.f }, m_pos, 2));
 
 	// 部品オブジェクトのの作成
 	m_pComponent[0] = shared_ptr<Component>(new Turret(m_pGameInfo, 0, m_pos));
@@ -43,11 +43,20 @@ Submarine::Submarine(GameInfo* _pGameInfo)
 		m_pBullet[i] = ((Turret*)(m_pComponent[i].get()))->GetBullet();
 	}
 
+	vector<XMFLOAT2> pos = {
+		{ 202.f, -2.f },
+		{ 0.f, -206.f },
+		{ -196.f, -4.f },
+		{ 15.f, 190.f },
+		{ -64.f, 0.f },
+		{ 98.f, 64.f },
+	};
+
 	// 操作装置オブジェクトの作成
 	for (int i = 0; i < NUM_OF_OPERATION_DEVICE; ++i)
 	{
-		m_pOperationDevice[i] = shared_ptr<OperationDevice>(new OperationDevice(m_pGameInfo, { 0.f, 0.f}, m_pos, i));
-		//m_pOperationDevice[i]->SetComponent(m_pComponent[i]);
+		m_pOperationDevice[i] = shared_ptr<OperationDevice>(new OperationDevice(m_pGameInfo, XMFLOAT2(m_pos.x + pos[i].x, m_pos.y + pos[i].y), pos[i], i));
+		m_pOperationDevice[i]->SetComponent(m_pComponent[i]);
 	}
 	
 }
@@ -68,7 +77,7 @@ void Submarine::Tick(float _deltaTime)
 	// テスト用
 	for (int i = 0; i < NUM_OF_COMPONENT; ++i)
 	{
-		m_pComponent[i]->InputProcess();
+		//m_pComponent[i]->InputProcess();
 	}
 
 	MoveProcess(_deltaTime);
@@ -80,6 +89,14 @@ void Submarine::Tick(float _deltaTime)
 		for (int j = 0; j < (int)m_pBullet[i]->size(); ++j)
 		{
 			(*m_pBullet[i])[j]->MoveProcess(_deltaTime);
+		}
+	}
+
+	for (int i = 0; i < NUM_OF_OPERATION_DEVICE; ++i)
+	{
+		for (int j = 0; j < 1; ++j)
+		{
+			m_pOperationDevice[i]->collisionWithPlayer(m_pPlayer[j].get());
 		}
 	}
 
@@ -106,7 +123,7 @@ void Submarine::RenderProcess()
 	
 	//プレイヤーの画像を描画
 	m_pPlayer[0]->RenderChara();
-	m_pPlayer[1]->RenderChara();
+	//m_pPlayer[1]->RenderChara();
 
 	//操作装置の画像を描画
 	for (int i = 0; i < NUM_OF_OPERATION_DEVICE; ++i)
