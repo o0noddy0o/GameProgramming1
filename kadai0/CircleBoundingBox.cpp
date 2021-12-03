@@ -183,5 +183,7 @@ bool CircleBoundingBox::Collision(const RectangleBoundingBox* _target)const
 //„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
 bool CircleBoundingBox::Collision(const PolygonBoundingBox* _target)const
 {
-	return false;
+	CircleBoundingBox ob(m_pos, m_radius, m_relativePos);
+
+	return _target->Collision(&ob);
 }

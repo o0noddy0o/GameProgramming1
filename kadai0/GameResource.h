@@ -25,7 +25,12 @@
 
 
 // ëÄçÏëïíuóp
-#define Tex_Operation_Device_1		L"Media/Sprite/ActionGame_Sprite/Player1.jpg"
-#define Tex_Operation_Device_2		L"Media/Sprite/ActionGame_Sprite/Player1.jpg"
-#define Tex_Operation_Device_3		L"Media/Sprite/ActionGame_Sprite/Player1.jpg"
-#define Tex_Operation_Device_4		L"Media/Sprite/ActionGame_Sprite/Player1.jpg"
+#define Tex_Operation_Device_1		L"Media/Sprite/ActionGame_Sprite/Controller.jpg"
+#define Tex_Operation_Device_2		L"Media/Sprite/ActionGame_Sprite/Controller.jpg"
+#define Tex_Operation_Device_3		L"Media/Sprite/ActionGame_Sprite/Controller.jpg"
+#define Tex_Operation_Device_4		L"Media/Sprite/ActionGame_Sprite/Controller.jpg"
+#define Tex_Operation_Device_5		L"Media/Sprite/ActionGame_Sprite/Ido.jpg"
+
+//
+#define Tex_Rock					L"Media/Sprite/ActionGame_Sprite/TestImage1.png"
+#define Tex_Enemy					L"Media/Sprite/ActionGame_Sprite/TestImage1.png"

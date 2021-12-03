@@ -16,7 +16,7 @@ class OperationDevice : public CObjectBase
 {
 	typedef CObjectBase Super;
 public:
-	OperationDevice(GameInfo* _pGameInfo, XMFLOAT2 _pos = { 50.f, 50.f }, XMFLOAT2 _relativePos = { 0.f, 0.f }, int _index = 0);
+	OperationDevice(GameInfo* _pGameInfo, XMFLOAT2 _pos = { 0.f, 0.f }, XMFLOAT2 _relativePos = { 0.f, 0.f }, int _index = 0);
 	~OperationDevice();
 
 	//毎フレームの更新処理
@@ -26,7 +26,7 @@ public:
 	void RenderDevice();
 
 	//プレイヤーとの当たり判定
-	void collisionWithPlayer(Player _player);
+	void collisionWithPlayer(Player* _player);
 
 	//対応する部品のアドレス（潜水艦クラス用）
 	void SetComponent(shared_ptr<Component> _component);

@@ -36,13 +36,13 @@ Barrier::~Barrier()
 //„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
 void Barrier::InputProcess()
 {
-	if (GetInput()->isKeyPressed(DIK_Q))
+	if (GetInput()->isKeyPressed(DIK_LEFTARROW))
 	{
 		m_angle += BARRIER_ROTATION_SPEED;
 		m_pImg->addAngleZ(m_angle);
 		m_bIsBarrierOn = false;
 	}
-	else if (GetInput()->isKeyPressed(DIK_E))
+	else if (GetInput()->isKeyPressed(DIK_RIGHTARROW))
 	{
 		m_angle -= BARRIER_ROTATION_SPEED;
 		m_pImg->addAngleZ(m_angle);

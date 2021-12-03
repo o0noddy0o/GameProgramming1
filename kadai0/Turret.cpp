@@ -59,7 +59,7 @@ Turret::~Turret()
 //━━━━━━━━━━━━━━━━━━━━━━━
 void Turret::InputProcess()
 {
-	if (GetInput()->isKeyPressed(DIK_A))
+	if (GetInput()->isKeyPressed(DIK_LEFTARROW))
 	{
 		if ((m_angle += TURRET_ROTATION_SPEED) > m_rotationRange[1])
 		{
@@ -67,7 +67,7 @@ void Turret::InputProcess()
 		}
 		m_pImg->setAngleZ(m_angle);
 	}
-	else if (GetInput()->isKeyPressed(DIK_D))
+	else if (GetInput()->isKeyPressed(DIK_RIGHTARROW))
 	{
 		if ((m_angle -= TURRET_ROTATION_SPEED) < m_rotationRange[0])
 		{
@@ -83,7 +83,7 @@ void Turret::InputProcess()
 	}
 	else
 	{
-		if (GetInput()->isKeyPressed(DIK_C))
+		if (GetInput()->isKeyPressed(DIK_SPACE))
 		{
 			// カウンターをリセットする
 			m_coolDownCnt = 0;
@@ -136,3 +136,4 @@ vector<shared_ptr<Bullet>>* Turret::GetBullet()
 {
 	return &m_pBullet;
 }
+

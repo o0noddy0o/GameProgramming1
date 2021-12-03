@@ -20,7 +20,7 @@ OperationDevice::OperationDevice(GameInfo* _pGameInfo, XMFLOAT2 _pos, XMFLOAT2 _
 	{
 	case 0:
 		m_pImg = CreateSprite(Tex_Operation_Device_1, 64.f, 64.f);
-		m_pImg->setPos(_pos);
+		m_pImg->setPos(1500.f, 1500.f);
 		break;
 	case 1:
 		m_pImg = CreateSprite(Tex_Operation_Device_2, 64.f, 64.f);
@@ -35,13 +35,13 @@ OperationDevice::OperationDevice(GameInfo* _pGameInfo, XMFLOAT2 _pos, XMFLOAT2 _
 		m_pImg->setPos(_pos);
 		break;
 	case 4:
-		m_pImg = CreateSprite(Tex_Operation_Device_4, 64.f, 64.f);
+		m_pImg = CreateSprite(Tex_Operation_Device_5, 64.f, 64.f);
 		m_pImg->setPos(_pos);
 		break;
-	case 5:
+	/*case 5:
 		m_pImg = CreateSprite(Tex_Operation_Device_4, 64.f, 64.f);
 		m_pImg->setPos(_pos);
-		break;
+		break;*/
 	}
 }
 
@@ -72,9 +72,21 @@ void OperationDevice::RenderDevice()
 //„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
 // ƒvƒŒƒCƒ„[‚Æ‚Ì“–‚½‚è”»’è
 //„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
-void OperationDevice::collisionWithPlayer(Player _player)
+void OperationDevice::collisionWithPlayer(Player* _player)
 {
-
+	static bool b = false;
+	if ((bool)m_pImg->collision(_player->GetImg()) == true)
+	{
+		if (GetInput()->isPressedOnce(DIK_M))
+		{
+			b = !b;
+			_player->SetMoveAble(!b);
+		}
+		if (b)
+		{
+			m_pComponent->InputProcess();
+		}
+	}
 }
 
 //„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
@@ -82,7 +94,7 @@ void OperationDevice::collisionWithPlayer(Player _player)
 //„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
 void OperationDevice::SetComponent(shared_ptr<Component> _component)
 {
-
+	m_pComponent = _component.get();
 }
 
 //„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª

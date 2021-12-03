@@ -30,12 +30,12 @@ Player::Player(GameInfo* _pGameInfo, XMFLOAT2 _pos, XMFLOAT2 _relativePos, int _
 	{
 	//プレイヤー１の画像を作成
 	case 1:
-		m_pImg = CreateSprite(Tex_Player1, 256.f, 256.f);
+		m_pImg = CreateSprite(Tex_Player1, PLAYER_1_SIZE_X, PLAYER_1_SIZE_Y);
 		m_pImg->setPos(_pos);
 		break;
 	//プレイヤー１の画像を作成
 	case 2:
-		m_pImg = CreateSprite(Tex_Player2, 128.f, 128.f);
+		m_pImg = CreateSprite(Tex_Player2, PLAYER_2_SIZE_X, PLAYER_2_SIZE_Y);
 		m_pImg->setPos(_pos);
 		break;
 	}
@@ -71,7 +71,14 @@ void Player::RenderChara()
 //━━━━━━━━━━━━━━━━━━━━━━━
 void Player::SetMoveAble(bool _b)
 {
-
+	if (_b == false)
+	{
+		m_bMoveable = false;
+	}
+	else
+	{
+		m_bMoveable = true;
+	}
 }
 
 //━━━━━━━━━━━━━━━━━━━━━━━
@@ -90,12 +97,12 @@ void Player::InputProcess()
 	if (m_bMoveable)
 	{
 		//左に移動
-		if (GetInput()->isKeyPressed(DIK_O))
+		if (GetInput()->isKeyPressed(DIK_LEFTARROW))
 		{
 			m_relativePos.x -= 25.f;
 		}
 		//右に移動2
-		else if (GetInput()->isKeyPressed(DIK_P))
+		else if (GetInput()->isKeyPressed(DIK_RIGHTARROW))
 		{
 			m_relativePos.x += 25.f;
 		}
@@ -125,4 +132,9 @@ void Player::Move(float _deltaTime, bool _right)
 void Player::Jump(float _deltaTime)
 {
 
+}
+
+CPicture* Player::GetImg() const
+{
+	return m_pImg;
 }

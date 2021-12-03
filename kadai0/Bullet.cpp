@@ -7,6 +7,7 @@
 #include "Bullet.h"
 #include "Define.h"
 #include "GameResource.h"
+#include "CircleBoundingBox.h"
 
 //━━━━━━━━━━━━━━━━━━━━━━━
 // コンストラクタ
@@ -16,10 +17,13 @@
 //━━━━━━━━━━━━━━━━━━━━━━━
 Bullet::Bullet(GameInfo* _pGameInfo, XMFLOAT2 _pos, float _angle)
 	: Super(_pGameInfo)
+	, m_pBoundingBox(NULL)
 {
 	m_pImg = CreateSprite(Tex_Bullet, BULLET_SIZE_X, BULLET_SIZE_Y);
 	m_pImg->setPos(_pos);
 	m_moveDirection = XMFLOAT2(AngleToDirectionVector(_angle));
+
+	m_pBoundingBox = new CircleBoundingBox(_pos, BULLET_BOUNDING_BOX_RADIUS);
 }
 
 //━━━━━━━━━━━━━━━━━━━━━━━
@@ -28,6 +32,7 @@ Bullet::Bullet(GameInfo* _pGameInfo, XMFLOAT2 _pos, float _angle)
 Bullet::~Bullet()
 {
 	DisposeSprite(m_pImg);
+	delete m_pBoundingBox;
 }
 
 //━━━━━━━━━━━━━━━━━━━━━━━
@@ -36,6 +41,11 @@ Bullet::~Bullet()
 CPicture* Bullet::GetImg()const
 {
 	return m_pImg;
+}
+
+BoundingBox* Bullet::GetBoundingBox()const
+{
+	return m_pBoundingBox;
 }
 
 //━━━━━━━━━━━━━━━━━━━━━━━
@@ -91,6 +101,7 @@ void Bullet::MoveProcess(float _deltaTime)
 	{
 		m_pImg->offsetPos(XMFLOAT4(m_moveDirection.x * BULLET_MOVE_SPEED * _deltaTime, m_moveDirection.y * BULLET_MOVE_SPEED * _deltaTime, 0.f, 0.f));
 		XMFLOAT2 newPos = { m_pImg->getPos().x, m_pImg->getPos().y };
+		m_pBoundingBox->SetPos(newPos);
 		XMFLOAT3 cameraPos = m_pGameInfo->pCamera->get()->getPos();
 		
 		if (newPos.x > cameraPos.x + 1000.f ||

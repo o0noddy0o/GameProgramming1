@@ -43,6 +43,12 @@
     <Filter Include="ヘッダー ファイル\Object\Bounding Box">
       <UniqueIdentifier>{e2fc7be5-fc7d-489b-970a-13c85526a55e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\Object\Stage">
+      <UniqueIdentifier>{cef12121-88de-402f-af40-cade797abe0a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Object\Stage">
+      <UniqueIdentifier>{edf7e8fa-77c7-4de5-b212-0e761772e948}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Common\CApplication.cpp">
@@ -140,6 +146,18 @@
     </ClCompile>
     <ClCompile Include="kadai0\OperationDevice.cpp">
       <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="kadai0\Fish.cpp">
+      <Filter>ソース ファイル\Object\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="kadai0\SceneryObject.cpp">
+      <Filter>ソース ファイル\Object\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="kadai0\Stage.cpp">
+      <Filter>ソース ファイル\Object\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="kadai0\Enemy.cpp">
+      <Filter>ソース ファイル\Object\Stage</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -259,6 +277,21 @@
     </ClInclude>
     <ClInclude Include="kadai0\BoundingBox.h">
       <Filter>ヘッダー ファイル\Object\Bounding Box</Filter>
+    </ClInclude>
+    <ClInclude Include="kadai0\Map.h">
+      <Filter>ヘッダー ファイル\Object\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="kadai0\SceneryObject.h">
+      <Filter>ヘッダー ファイル\Object\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="kadai0\Stage.h">
+      <Filter>ヘッダー ファイル\Object\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="kadai0\Enemy.h">
+      <Filter>ヘッダー ファイル\Object\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="kadai0\Fish.h">
+      <Filter>ヘッダー ファイル\Object\Stage</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
