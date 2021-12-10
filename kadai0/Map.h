@@ -35,4 +35,26 @@
  { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, }, \
 };
 
+class Map : public CObjectBase
+{
+public:
+	Map(GameInfo* _pGameInfo, XMFLOAT2 _pos = { 0.f,0.f }, float _angle = 0.f);
+	~Map();
+
+	// 画像を描画する
+	void RenderSprite();
+
+	// 画像の位置を設置する
+	void SetPos();
+		
+	// 地図を更新する
+	void UpdateMap();
+
+private:
+	// 地図の画像
+	CPicture* m_pImg;
+	// 地図の枠の画像
+	CPicture* m_pMapFrame;
+
+};
 

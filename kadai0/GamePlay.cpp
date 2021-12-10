@@ -1,24 +1,16 @@
 ﻿#include "Define.h"
+#include "Stage.h"
 #include "CActionGameApp.h"
-#include "kadai0/GameResource.h"
 #include "CText.h"
-#include "Submarine.h"
-#include "Fish.h"
-#include "CircleBoundingBox.h"
-#include "RectangleBoundingBox.h"
-#include "Bullet.h"
 
 // ゲームフロー用変数
 ePhase GamePhase = (ePhase)eBegin;
 eGameStatus goNextStatusFromPlaying = (eGameStatus)eNone;
 
-shared_ptr<Submarine> pSubmarine = nullptr;
+shared_ptr<Stage> pStage = nullptr;
 
 // カメラの初期座標を保存用変数
 XMFLOAT3 cameraPos;
-
-//
-Fish* enemy[10] = {NULL};
 
 //━━━━━━━━━━━━━━━━━━━━━━━
 // インゲーム画面が始まる時に呼び出すメソッド
@@ -29,18 +21,7 @@ void CActionGameApp::procPlayBegin()
 	pText->setPos(-96.f, 200.f);
 	pText->SetText("INGAME");
 
-	if (!pSubmarine)pSubmarine = shared_ptr<Submarine>(new Submarine(getGameInfo()));
-
-	enemy[0] = new Fish(getGameInfo(), XMFLOAT2( 600.f,850.f ));
-	enemy[1] = new Fish(getGameInfo(), XMFLOAT2( 810.f,10.f ));
-	enemy[2] = new Fish(getGameInfo(), XMFLOAT2( -800.f,200.f ));
-	enemy[3] = new Fish(getGameInfo(), XMFLOAT2( 720.f,-900.f ));
-	enemy[4] = new Fish(getGameInfo(), XMFLOAT2( -720.f,90.f ));
-	enemy[5] = new Fish(getGameInfo(), XMFLOAT2( 580.f,450.f ));
-	enemy[6] = new Fish(getGameInfo(), XMFLOAT2( 360.f,180.f ));
-	enemy[7] = new Fish(getGameInfo(), XMFLOAT2( 410.f,680.f ));
-	enemy[8] = new Fish(getGameInfo(), XMFLOAT2( -860.f,210.f ));
-	enemy[9] = new Fish(getGameInfo(), XMFLOAT2( 380.f,70.f ));
+	pStage = shared_ptr<Stage>(new Stage(getGameInfo()));
 
 	cameraPos = m_pCamera->getPos();
 }
@@ -57,8 +38,9 @@ void CActionGameApp::procPlayMain()
 	renderSprite(pBackground);
 	pText->RenderText();
 
-	pSubmarine->RenderProcess();
-	pSubmarine->Tick(1.f);
+	pStage->Tick();
+	pStage->CollisionProcess();
+	pStage->RenderProcess();
 
 	// Xキーを押したら、インゲーム画面からゲームクリア画面へ移す
 	if (getInput()->isPressedOnce(DIK_X))
@@ -71,11 +53,6 @@ void CActionGameApp::procPlayMain()
 		GamePhase = eEnd;
 		goNextStatusFromPlaying = eGameOver;
 	}
-	for (int i = 0; i < 10; ++i)
-	{
-		if(enemy[i])enemy[i]->renderSprite();
-	}
-	
 }
 
 //━━━━━━━━━━━━━━━━━━━━━━━
@@ -87,11 +64,6 @@ void CActionGameApp::procPlayEnd()
 
 	// カメラの座標をリセットする
 	m_pCamera->setPos(cameraPos);
-
-	for (int i = 0; i < 10; ++i)
-	{
-		delete enemy[i];
-	}
 	
 }
 

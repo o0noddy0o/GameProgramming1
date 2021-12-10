@@ -7,6 +7,7 @@
 //━━━━━━━━━━━━━━━━━━━━━━━
 #include "OperationDevice.h"
 #include "GameResource.h"
+#include "Player.h"
 
 //━━━━━━━━━━━━━━━━━━━━━━━
 // コンストラクタ
@@ -15,6 +16,7 @@
 OperationDevice::OperationDevice(GameInfo* _pGameInfo, XMFLOAT2 _pos, XMFLOAT2 _relativePos, int _index)
 	: Super(_pGameInfo)
 	, m_relativePos(_pos)
+	, m_playerindex(0)
 {
 	switch (_index)
 	{
@@ -74,19 +76,65 @@ void OperationDevice::RenderDevice()
 //━━━━━━━━━━━━━━━━━━━━━━━
 void OperationDevice::collisionWithPlayer(Player* _player)
 {
-	static bool b = false;
-	if ((bool)m_pImg->collision(_player->GetImg()) == true)
+	static bool b1 = false;
+	static bool b2 = false;
+	switch (_player->getPlayerIdx())
 	{
-		if (GetInput()->isPressedOnce(DIK_M))
+	case 1:
+		if (m_playerindex == 2)return;
+		if ((bool)m_pImg->collision(_player->GetImg()) == true)
 		{
-			b = !b;
-			_player->SetMoveAble(!b);
+			if (GetInput()->isPressedOnce(DIK_NUMPAD3))
+			{
+				b1 = !b1;
+				if (b1)
+				{
+					m_playerindex = 1;
+				}
+				else
+				{
+					m_playerindex = 0;
+				}
+				_player->SetMoveAble(!b1);
+			}
+			if (b1)
+			{
+				m_pComponent->InputProcess(1);
+				if (GetInput()->isPressedOnce(DIK_RETURN))
+				{
+					if (GetInput()->isPressedOnce(DIK_RETURN))
+					{
+
+					}
+				}
+			}
 		}
-		if (b)
+		break;
+
+	case 2:
+		if (m_playerindex == 1)return;
+		if ((bool)m_pImg->collision(_player->GetImg()) == true)
 		{
-			m_pComponent->InputProcess();
+			if (GetInput()->isPressedOnce(DIK_M))
+			{
+				b2 = !b2;
+				if (b2)
+				{
+					m_playerindex = 2;
+				}
+				else
+				{
+					m_playerindex = 0;
+				}
+				_player->SetMoveAble(!b2);
+			}
+			if (b2)
+			{
+				m_pComponent->InputProcess(2);
+			}
 		}
-	}
+		break;
+	}	
 }
 
 //━━━━━━━━━━━━━━━━━━━━━━━

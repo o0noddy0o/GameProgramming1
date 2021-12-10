@@ -1,36 +1,44 @@
 /**
- * ‚±‚±‚Å‰æ‘œƒtƒ@ƒCƒ‹‚Ö‚ÌƒpƒX‚ğéŒ¾‚·‚é
+ * ã“ã“ã§ç”»åƒãƒ•ã‚¡ã‚¤ãƒ«ã¸ã®ãƒ‘ã‚¹ã‚’å®£è¨€ã™ã‚‹
  */
 
-// ƒtƒ[
+// ãƒ•ãƒ­ãƒ¼
 #define Tex_Ingame					L"Media/Sprite/ActionGame_Sprite/Ingame.jpg"
 
-// ƒIƒuƒWƒFƒNƒg‚Ì‰æ‘œ
+// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç”»åƒ
 #define Tex_Submarine				L"Media/Sprite/ActionGame_Sprite/Submarine.png"
-#define Tex_Turret					L"Media/Sprite/ActionGame_Sprite/TestImage2.png"
-#define Tex_JetEngine				L"Media/Sprite/ActionGame_Sprite/TestImage1.png"
-#define Tex_Bullet					L"Media/Sprite/ActionGame_Sprite/TestImage1.png"
+#define Tex_Wall					L"Media/Sprite/ActionGame_Sprite/Wall.png"
+#define Tex_Turret					L"Media/Sprite/ActionGame_Sprite/Turret.png"
+#define Tex_JetEngine				L"Media/Sprite/ActionGame_Sprite/JetEngine.png"
+#define Tex_Bullet					L"Media/Sprite/ActionGame_Sprite/Bullet.png"
 #define Tex_Barrier					L"Media/Sprite/ActionGame_Sprite/TestImage2.png"
+#define Tex_Yuka					L"Media/Sprite/ActionGame_Sprite/Yuka.png"
 
-// ƒeƒXƒg—p
+// ãƒ†ã‚¹ãƒˆç”¨
 #define Tex_TestImage1				L"Media/Sprite/ActionGame_Sprite/TestImage1.png"
 #define Tex_TestImage2				L"Media/Sprite/ActionGame_Sprite/TestImage2.png"
 
 #define Tex_Text					L"Media/Sprite/ActionGame_Sprite/Text_UV.png"
 #define Tex_Number					L"Media/Sprite/ActionGame_Sprite/Number_UV.png"
 
-// ƒvƒŒƒCƒ„[—p
-#define Tex_Player1					L"Media/Sprite/ActionGame_Sprite/Player1.jpg"
-#define Tex_Player2					L"Media/Sprite/ActionGame_Sprite/Player2.jpg"
+
+// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ç”¨
+#define Tex_Player1					L"Media/Sprite/ActionGame_Sprite/Player1.png"
+#define Tex_Player2					L"Media/Sprite/ActionGame_Sprite/Player2.png"
 
 
-// ‘€ì‘•’u—p
-#define Tex_Operation_Device_1		L"Media/Sprite/ActionGame_Sprite/Controller.jpg"
-#define Tex_Operation_Device_2		L"Media/Sprite/ActionGame_Sprite/Controller.jpg"
-#define Tex_Operation_Device_3		L"Media/Sprite/ActionGame_Sprite/Controller.jpg"
-#define Tex_Operation_Device_4		L"Media/Sprite/ActionGame_Sprite/Controller.jpg"
-#define Tex_Operation_Device_5		L"Media/Sprite/ActionGame_Sprite/Ido.jpg"
+// æ“ä½œè£…ç½®ç”¨
+#define Tex_Operation_Device_1		L"Media/Sprite/ActionGame_Sprite/ControlShoot.png"
+#define Tex_Operation_Device_2		L"Media/Sprite/ActionGame_Sprite/ControlShoot.png"
+#define Tex_Operation_Device_3		L"Media/Sprite/ActionGame_Sprite/ControlShoot.png"
+#define Tex_Operation_Device_4		L"Media/Sprite/ActionGame_Sprite/ControlShoot.png"
+#define Tex_Operation_Device_5		L"Media/Sprite/ActionGame_Sprite/ControlMove.png"
 
-//
+// æ•µç”¨
 #define Tex_Rock					L"Media/Sprite/ActionGame_Sprite/TestImage1.png"
-#define Tex_Enemy					L"Media/Sprite/ActionGame_Sprite/TestImage1.png"
+#define Tex_Enemy					L"Media/Sprite/ActionGame_Sprite/Fish.png"
+#define Tex_EnemyBullet				L"Media/Sprite/ActionGame_Sprite/EnemyBullet.png"
+
+// UI
+#define Tex_HPBar					L"Media/Sprite/ActionGame_Sprite/HpBar.jpg"
+#define Tex_HPBarFream				L"Media/Sprite/ActionGame_Sprite/HpBarFream.png"

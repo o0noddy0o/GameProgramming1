@@ -16,7 +16,7 @@ class Barrier : public Component
 public:
 	Barrier(GameInfo* _pGameInfo, float _angle = 0.f, XMFLOAT2 _pos = { 0.f, 0.f });
 	~Barrier();
-	void InputProcess();
+	void InputProcess(int _playerIndex);
 	void renderSprite();
 	bool Collision(vector<shared_ptr<Enemy>>* _target);				// ’e‚Ì“–‚½‚è”»’èi“G‚Æ‚Ìj
 	bool Collision(vector<shared_ptr<SceneryObject>>* _target);		// ’e‚Ì“–‚½‚è”»’èiáŠQ•¨‚Æ‚Ìj

@@ -43,4 +43,6 @@ private:
 
 	//対応する部品のアドレス
 	Component* m_pComponent;
+
+	int m_playerindex;
 };
