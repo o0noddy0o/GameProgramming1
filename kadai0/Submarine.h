@@ -48,6 +48,9 @@ public:
 
 	void MoveCamera();
 
+	// ö…ŠÍÀ•W‚Ìæ“¾
+	XMFLOAT2 GetPos()const;
+
 private:
 	CPicture*					m_pImg;
 	CPicture*					m_pFloor;

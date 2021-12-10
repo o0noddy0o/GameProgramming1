@@ -3,6 +3,8 @@
 // 概要　　　　　：敵クラス
 // 作成者　　　　：20CU0340 林星
 // 更新内容　　　：2021/12/03 作成
+//			　　　2021/12/08　敵の弾を発射機能を追加
+//			　　　2021/12/10　敵の移動処理を追加
 //━━━━━━━━━━━━━━━━━━━━━━━
 #include "GameResource.h"
 #include "Enemy.h"
@@ -34,11 +36,11 @@ void Enemy::renderSprite()
 }
 
 //━━━━━━━━━━━━━━━━━━━━━━━
-// 
+// 弾の取得
 //━━━━━━━━━━━━━━━━━━━━━━━
 vector<shared_ptr<EnemyBullet>>* Enemy::GetBullet()
 {
-	return &m_pBullet;
+	return &m_pEnemyBullet;
 }
 
 

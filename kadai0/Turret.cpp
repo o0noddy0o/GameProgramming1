@@ -21,7 +21,7 @@ Turret::Turret(GameInfo* _pGameInfo, int _turretFace, XMFLOAT2 _pos)
 	, m_coolDownCnt(0)
 {
 	m_pImg = CreateSprite(Tex_Turret, TURRET_SIZE_X, TURRET_SIZE_Y);
-	
+
 	m_angle = (float)_turretFace * 90.f;
 	m_pImg->setAngleZ(m_angle);
 
@@ -117,8 +117,8 @@ void Turret::InputProcess(int _playerIndex)
 			XMFLOAT4 pos = m_pImg->getPos();
 			{
 				XMFLOAT2 pos2 = AngleToDirectionVector(m_angle);
-				pos.x += pos2.x * (TURRET_SIZE_X / 2.f);
-				pos.y += pos2.y * (TURRET_SIZE_X / 2.f);
+				pos.x += pos2.x * (TURRET_SIZE_X / 2.f) + pos2.x * 10.f;
+				pos.y += pos2.y * (TURRET_SIZE_X / 2.f) + pos2.y * 10.f;
 			}
 
 			// Žg‚¦‚é’e‚ð’T‚·

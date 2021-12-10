@@ -4,7 +4,8 @@
 // 作成者　　　　：20CU0314 ゴコケン
 // 更新内容　　　：2021/11/17 作成（ゴ）
 //				   2021/11/28 移動メソッドを修正（ズン）
-//							  プレイヤー数を分ける（ズン）		   
+//							  プレイヤー数を分ける（ズン）		
+//			　　　2021/12/10　敵移動のため、潜水艦座標取得メソッドを追加（林）  
 //━━━━━━━━━━━━━━━━━━━━━━━
 #include "Submarine.h"
 #include "GameResource.h"
@@ -128,7 +129,6 @@ void Submarine::RenderProcess()
 		}
 		m_pComponent[i]->renderSprite();
 	}
-	
 
 	//操作装置の画像を描画
 	for (int i = 0; i < NUM_OF_OPERATION_DEVICE; ++i)
@@ -143,7 +143,7 @@ void Submarine::RenderProcess()
 			(*m_pBullet[i])[j]->renderSprite();
 		}
 	}
-	
+  
 	//プレイヤーの画像を描画
 	m_pPlayer[0]->RenderChara();
 	m_pPlayer[1]->RenderChara();
@@ -237,4 +237,13 @@ void Submarine::MoveCamera()
 	cameraPos.y += distanceBetweenCameraAndSubmarine.y * PERCENNTAGE_OF_CAMERA_MOVE_TO_SUBMARINNE;
 
 	m_pGameInfo->pCamera->get()->setPos(cameraPos);
+}
+
+//━━━━━━━━━━━━━━━━━━━━━━━
+// 潜水艦の座標の取得
+//━━━━━━━━━━━━━━━━━━━━━━━
+XMFLOAT2 Submarine::GetPos()const
+{
+	XMFLOAT4 SubPos = m_pImg->getPos();
+	return XMFLOAT2(SubPos.x, SubPos.y);
 }
