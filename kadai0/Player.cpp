@@ -1,39 +1,42 @@
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
-// ƒtƒ@ƒCƒ‹–¼@@FPlayer.cpp
-// ŠT—v@@@@@FƒvƒŒƒCƒ„[‚ÌƒNƒ‰ƒX
-// ì¬ŽÒ@@@@F20CU0332 ƒtƒAƒ“ƒXƒAƒ“ƒYƒ“
-// XV“à—e@@@F2021/11/24 ì¬iƒYƒ“j
-//				   2021/11/25 Šî–{‚Ìƒƒ\ƒbƒh‚ð’Ç‰ÁiƒYƒ“j
-//				   2021/11/26 Šî–{‚Ìƒƒ\ƒbƒh‚ðC³iƒYƒ“j
-//				   2021/11/28 ˆÚ“®ƒƒ\ƒbƒh‚ðC³iƒYƒ“j
-//							  ƒvƒŒƒCƒ„[”‚ð•ª‚¯‚éiƒYƒ“j
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
+// ãƒ•ã‚¡ã‚¤ãƒ«åã€€ã€€ï¼šPlayer.cpp
+// æ¦‚è¦ã€€ã€€ã€€ã€€ã€€ï¼šãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ã‚¯ãƒ©ã‚¹
+// ä½œæˆè€…ã€€ã€€ã€€ã€€ï¼š20CU0332 ãƒ•ã‚¢ãƒ³ã‚¹ã‚¢ãƒ³ã‚ºãƒ³
+// æ›´æ–°å†…å®¹ã€€ã€€ã€€ï¼š2021/11/24 ä½œæˆï¼ˆã‚ºãƒ³ï¼‰
+//				   2021/11/25 åŸºæœ¬ã®ãƒ¡ã‚½ãƒƒãƒ‰ã‚’è¿½åŠ ï¼ˆã‚ºãƒ³ï¼‰
+//				   2021/11/26 åŸºæœ¬ã®ãƒ¡ã‚½ãƒƒãƒ‰ã‚’ä¿®æ­£ï¼ˆã‚ºãƒ³ï¼‰
+//				   2021/11/28 ç§»å‹•ãƒ¡ã‚½ãƒƒãƒ‰ã‚’ä¿®æ­£ï¼ˆã‚ºãƒ³ï¼‰
+//							  ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼æ•°ã‚’åˆ†ã‘ã‚‹ï¼ˆã‚ºãƒ³ï¼‰
+//				   2021/12/03 ç§»å‹•ãƒ¡ã‚½ãƒƒãƒ‰ã‚’ä¿®æ­£ï¼ˆã‚ºãƒ³ï¼‰
+//	
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
 #include "Player.h"
 #include "Define.h"
 #include "GameResource.h"
 #include "Submarine.h"
 
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
-// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
-// ˆø”‚PFƒQ[ƒ€‚Ìî•ñ
-// ˆø”‚QFƒvƒŒƒCƒ„[‚Ì‰ŠúÀ•W
-// ˆø”‚RFƒvƒŒƒCƒ„[‚ÌÀ•W‚Æö…ŠÍ‚ÌÀ•W‚Ì·
-// ˆø”‚SFƒvƒŒƒCƒ„[‚Ì”Ô†
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
+// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+// å¼•æ•°ï¼‘ï¼šã‚²ãƒ¼ãƒ ã®æƒ…å ±
+// å¼•æ•°ï¼’ï¼šãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®åˆæœŸåº§æ¨™
+// å¼•æ•°ï¼“ï¼šãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®åº§æ¨™ã¨æ½œæ°´è‰¦ã®åº§æ¨™ã®å·®
+// å¼•æ•°ï¼”ï¼šãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ç•ªå·
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
 Player::Player(GameInfo* _pGameInfo, XMFLOAT2 _pos, XMFLOAT2 _relativePos, int _index)
 	: Super(_pGameInfo)
 	, m_bMoveable(true)
 	, m_pJumping(false)
 	, m_relativePos(_pos)
+	, m__playerIndex(_index)
 {
 	switch (_index)
 	{
-	//ƒvƒŒƒCƒ„[‚P‚Ì‰æ‘œ‚ðì¬
+	//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ï¼‘ã®ç”»åƒã‚’ä½œæˆ
 	case 1:
 		m_pImg = CreateSprite(Tex_Player1, PLAYER_1_SIZE_X, PLAYER_1_SIZE_Y);
 		m_pImg->setPos(_pos);
 		break;
-	//ƒvƒŒƒCƒ„[‚P‚Ì‰æ‘œ‚ðì¬
+	//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ï¼‘ã®ç”»åƒã‚’ä½œæˆ
 	case 2:
 		m_pImg = CreateSprite(Tex_Player2, PLAYER_2_SIZE_X, PLAYER_2_SIZE_Y);
 		m_pImg->setPos(_pos);
@@ -42,33 +45,33 @@ Player::Player(GameInfo* _pGameInfo, XMFLOAT2 _pos, XMFLOAT2 _relativePos, int _
 
 }
 
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
-// ƒfƒXƒgƒ‰ƒNƒ^
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
+// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
 Player::~Player()
 {
 	DisposeSprite(m_pImg);
 }
 
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
-// –ˆƒtƒŒ[ƒ€‚É‚â‚éˆ—
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
+// æ¯Žãƒ•ãƒ¬ãƒ¼ãƒ ã«ã‚„ã‚‹å‡¦ç†
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
 void Player::Tick(float _deltaTime)
 {
 	InputProcess();
 }
 
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
-// ‰æ‘œ‚ð•`‰æ
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
+// ç”»åƒã‚’æç”»
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
 void Player::RenderChara()
 {
 	RenderSprite(m_pImg);
 }
 
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
-// m_bMoveable‚Ì’†g‚ð•Ï‚¦‚é
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
+// m_bMoveableã®ä¸­èº«ã‚’å¤‰ãˆã‚‹
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
 void Player::SetMoveAble(bool _b)
 {
 	if (_b == false)
@@ -81,60 +84,89 @@ void Player::SetMoveAble(bool _b)
 	}
 }
 
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
-// ƒvƒŒƒC[‚ÌÀ•W‚ðXV
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
+// ãƒ—ãƒ¬ã‚¤ãƒ¼ã®åº§æ¨™ã‚’æ›´æ–°
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
 void Player::SetPos(XMFLOAT2 _newPos)
 {
 	m_pImg->setPos(_newPos.x + m_relativePos.x, _newPos.y + m_relativePos.y);
 }
 
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
-// ƒvƒŒƒCƒ„[‚Ì“ü—Íˆ—
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
+// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®å…¥åŠ›å‡¦ç†
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
 void Player::InputProcess()
 {
-	if (m_bMoveable)
+	switch (getPlayerIdx())
 	{
-		//¶‚ÉˆÚ“®
-		if (GetInput()->isKeyPressed(DIK_LEFTARROW))
+	case 1:
+		if (m_bMoveable)
 		{
-			m_relativePos.x -= 10.f;
+			//å·¦ã«ç§»å‹•
+			if (GetInput()->isKeyPressed(DIK_LEFTARROW))
+			{
+				m_relativePos.x -= PLAYER_1_MOVE_SPEED;
+			}
+			//å³ã«ç§»å‹•
+			else if (GetInput()->isKeyPressed(DIK_RIGHTARROW))
+			{
+				m_relativePos.x += PLAYER_1_MOVE_SPEED;
+			}
 		}
-		//‰E‚ÉˆÚ“®2
-		else if (GetInput()->isKeyPressed(DIK_RIGHTARROW))
+		break;
+	case 2:
+		if (m_bMoveable)
 		{
-			m_relativePos.x += 10.f;
+			//å·¦ã«ç§»å‹•
+			if (GetInput()->isKeyPressed(DIK_A))
+			{
+				m_relativePos.x -= PLAYER_2_MOVE_SPEED;
+			}
+			//å³ã«ç§»å‹•
+			else if (GetInput()->isKeyPressed(DIK_D))
+			{
+				m_relativePos.x += PLAYER_2_MOVE_SPEED;
+			}
 		}
+		break;
 	}
+	
 	
 }
 
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
-// ƒvƒŒƒCƒ„[ƒLƒƒƒ‰ƒNƒ^[‚ÆŠe‘€ì‘•’u‚Ì“–‚½‚è”»’è
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
+// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã¨å„æ“ä½œè£…ç½®ã®å½“ãŸã‚Šåˆ¤å®š
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
 void Player::CollisionWithOperationDevice(vector<shared_ptr<OperationDevice>>* _pOperationDevice)
 {
 
 }
 
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
-// ƒvƒŒƒCƒ„[‚ÌˆÚ“®
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
+// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ç§»å‹•
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
 void Player::Move(float _deltaTime, bool _right)
 {
 	
 }
 
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
-// ƒvƒŒƒCƒ„[‚ÌƒWƒƒƒ“ƒv
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
+// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ã‚¸ãƒ£ãƒ³ãƒ—
+//
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
 void Player::Jump(float _deltaTime)
 {
 
 }
 
+//
 CPicture* Player::GetImg() const
 {
 	return m_pImg;
+}
+
+//
+int Player::getPlayerIdx() const
+{
+	return m__playerIndex;
 }

@@ -17,7 +17,7 @@ public:
 	Turret(GameInfo* _pGameInfo, int _turretFace = 0, XMFLOAT2 _pos = { 0.f, 0.f });
 	~Turret();
 
-	void InputProcess();						// プレイヤーの入力処理
+	void InputProcess(int _playerIndex);			// プレイヤーの入力処理
 	vector<shared_ptr<Bullet>>* GetBullet();	// 弾の配列のアドレスを取得する
 
 private:
