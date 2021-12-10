@@ -7,6 +7,8 @@
 //				   2021/11/26 基本のメソッドを修正（ズン）
 //				   2021/11/28 移動メソッドを修正（ズン）
 //							  プレイヤー数を分ける（ズン）
+//				   2021/12/03 移動メソッドを修正（ズン）
+//	
 //━━━━━━━━━━━━━━━━━━━━━━━
 #include "Player.h"
 #include "Define.h"
@@ -25,6 +27,7 @@ Player::Player(GameInfo* _pGameInfo, XMFLOAT2 _pos, XMFLOAT2 _relativePos, int _
 	, m_bMoveable(true)
 	, m_pJumping(false)
 	, m_relativePos(_pos)
+	, m__playerIndex(_index)
 {
 	switch (_index)
 	{
@@ -94,19 +97,40 @@ void Player::SetPos(XMFLOAT2 _newPos)
 //━━━━━━━━━━━━━━━━━━━━━━━
 void Player::InputProcess()
 {
-	if (m_bMoveable)
+	switch (getPlayerIdx())
 	{
-		//左に移動
-		if (GetInput()->isKeyPressed(DIK_LEFTARROW))
+	case 1:
+		if (m_bMoveable)
 		{
-			m_relativePos.x -= 25.f;
+			//左に移動
+			if (GetInput()->isKeyPressed(DIK_LEFTARROW))
+			{
+				m_relativePos.x -= PLAYER_1_MOVE_SPEED;
+			}
+			//右に移動
+			else if (GetInput()->isKeyPressed(DIK_RIGHTARROW))
+			{
+				m_relativePos.x += PLAYER_1_MOVE_SPEED;
+			}
 		}
-		//右に移動2
-		else if (GetInput()->isKeyPressed(DIK_RIGHTARROW))
+		break;
+	case 2:
+		if (m_bMoveable)
 		{
-			m_relativePos.x += 25.f;
+			//左に移動
+			if (GetInput()->isKeyPressed(DIK_A))
+			{
+				m_relativePos.x -= PLAYER_2_MOVE_SPEED;
+			}
+			//右に移動
+			else if (GetInput()->isKeyPressed(DIK_D))
+			{
+				m_relativePos.x += PLAYER_2_MOVE_SPEED;
+			}
 		}
+		break;
 	}
+	
 	
 }
 
@@ -128,13 +152,21 @@ void Player::Move(float _deltaTime, bool _right)
 
 //━━━━━━━━━━━━━━━━━━━━━━━
 // プレイヤーのジャンプ
+//
 //━━━━━━━━━━━━━━━━━━━━━━━
 void Player::Jump(float _deltaTime)
 {
 
 }
 
+//
 CPicture* Player::GetImg() const
 {
 	return m_pImg;
+}
+
+//
+int Player::getPlayerIdx() const
+{
+	return m__playerIndex;
 }

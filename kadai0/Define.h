@@ -10,14 +10,16 @@
 //━━━━━━━━━━━━━━━━━━━━━━━
 // プレイヤー１
 //━━━━━━━━━━━━━━━━━━━━━━━
-#define PLAYER_1_SIZE_X				(128.f)
-#define PLAYER_1_SIZE_Y				(128.f)
+#define PLAYER_1_SIZE_X				(40.f)
+#define PLAYER_1_SIZE_Y				(52.f)
+#define PLAYER_1_MOVE_SPEED			(10.f)
 
 //━━━━━━━━━━━━━━━━━━━━━━━
 // プレイヤー２
 //━━━━━━━━━━━━━━━━━━━━━━━
-#define PLAYER_2_SIZE_X				(128.f)
-#define PLAYER_2_SIZE_Y				(128.f)
+#define PLAYER_2_SIZE_X				(40.f)
+#define PLAYER_2_SIZE_Y				(52.f)
+#define PLAYER_2_MOVE_SPEED			(10.f)
 
 //━━━━━━━━━━━━━━━━━━━━━━━
 // タレット
@@ -30,6 +32,11 @@
 #define TURRET_COOL_DOWN			(0)
 
 //━━━━━━━━━━━━━━━━━━━━━━━
+// 床
+//━━━━━━━━━━━━━━━━━━━━━━━
+#define YUKA_POSITION				(30.f)
+
+//━━━━━━━━━━━━━━━━━━━━━━━
 // 弾
 //━━━━━━━━━━━━━━━━━━━━━━━
 #define BULLET_SIZE_X		(20.f)
@@ -40,15 +47,15 @@
 //━━━━━━━━━━━━━━━━━━━━━━━
 // ジェットエンジン
 //━━━━━━━━━━━━━━━━━━━━━━━
-#define JET_ENGINE_SIZE_X			(600.f)
-#define JET_ENGINE_SIZE_Y			(600.f)
+#define JET_ENGINE_SIZE_X			(800.f)
+#define JET_ENGINE_SIZE_Y			(512.f)
 #define JET_ENGINE_ROTATION_SPEED	(15.f)
 
 //━━━━━━━━━━━━━━━━━━━━━━━
 // バリア
 //━━━━━━━━━━━━━━━━━━━━━━━
-#define BARRIER_SIZE_X			(600.f)
-#define BARRIER_SIZE_Y			(600.f)
+#define BARRIER_SIZE_X			(6.f)
+#define BARRIER_SIZE_Y			(6.f)
 #define BARRIER_RANGE			(90.f)
 #define BARRIER_ROTATION_SPEED	(15.f)
 

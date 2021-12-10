@@ -25,9 +25,14 @@ Submarine::Submarine(GameInfo* _pGameInfo)
 	m_pImg = CreateSprite(Tex_Submarine, 512.f, 512.f);
 	m_pImg->setPos(m_pos);
 
+	m_pFloor = CreateSprite(Tex_Yuka, 400.f, 10.f);
+	m_pFloor->setPos(m_pos.x, m_pos.y - YUKA_POSITION);
+
+
+
 	// プレイヤーオブジェクトの作成
 	m_pPlayer[0] = shared_ptr<Player>(new Player(m_pGameInfo, { 0.f, 0.f }, m_pos, 1));
-	//m_pPlayer[1] = shared_ptr<Player>(new Player(m_pGameInfo, { 0.f, 0.f }, m_pos, 2));
+	m_pPlayer[1] = shared_ptr<Player>(new Player(m_pGameInfo, { 0.f, 0.f }, m_pos, 2));
 
 	// 部品オブジェクトのの作成
 	m_pComponent[0] = shared_ptr<Component>(new Turret(m_pGameInfo, 0, m_pos));
@@ -67,6 +72,7 @@ Submarine::Submarine(GameInfo* _pGameInfo)
 Submarine::~Submarine()
 {
 	DisposeSprite(m_pImg);
+	DisposeSprite(m_pFloor);
 }
 
 //━━━━━━━━━━━━━━━━━━━━━━━
@@ -94,13 +100,14 @@ void Submarine::Tick(float _deltaTime)
 
 	for (int i = 0; i < NUM_OF_OPERATION_DEVICE; ++i)
 	{
-		for (int j = 0; j < 1; ++j)
+		for (int j = 0; j < 2; ++j)
 		{
 			m_pOperationDevice[i]->collisionWithPlayer(m_pPlayer[j].get());
 		}
 	}
 
 	m_pPlayer[0]->Tick(_deltaTime);
+	m_pPlayer[1]->Tick(_deltaTime);
 }
 
 //━━━━━━━━━━━━━━━━━━━━━━━
@@ -111,6 +118,7 @@ void Submarine::RenderProcess()
 	m_pComponent[4]->renderSprite();
 	m_pComponent[5]->renderSprite();
 	RenderSprite(m_pImg);
+	RenderSprite(m_pFloor);
 	for (int i = 0; i < NUM_OF_COMPONENT; ++i)
 	{
 		// ジェットエンジンとバリアは潜水艦の下の描画する
@@ -121,9 +129,6 @@ void Submarine::RenderProcess()
 		m_pComponent[i]->renderSprite();
 	}
 	
-	//プレイヤーの画像を描画
-	m_pPlayer[0]->RenderChara();
-	//m_pPlayer[1]->RenderChara();
 
 	//操作装置の画像を描画
 	for (int i = 0; i < NUM_OF_OPERATION_DEVICE; ++i)
@@ -138,6 +143,10 @@ void Submarine::RenderProcess()
 			(*m_pBullet[i])[j]->renderSprite();
 		}
 	}
+	
+	//プレイヤーの画像を描画
+	m_pPlayer[0]->RenderChara();
+	m_pPlayer[1]->RenderChara();
 }
 
 //━━━━━━━━━━━━━━━━━━━━━━━
@@ -164,6 +173,7 @@ void Submarine::MoveProcess(float _deltaTime)
 	{
 		//プレイヤーを一緒に移動させる
 		m_pPlayer[0]->SetPos(m_pos);
+		m_pPlayer[1]->SetPos(m_pos);
 
 		//操作装置を移動させる
 		for (int i = 0; i < NUM_OF_OPERATION_DEVICE; ++i)
@@ -183,6 +193,7 @@ void Submarine::MoveProcess(float _deltaTime)
 
 	// 潜水艦の位置を設置する
 	m_pImg->setPos(m_pos);
+	m_pFloor->setPos(m_pos.x, m_pos.y - YUKA_POSITION);
 
 	// すべて部品を移動させる
 	for (int i = 0; i < NUM_OF_COMPONENT; ++i)
@@ -192,6 +203,7 @@ void Submarine::MoveProcess(float _deltaTime)
 
 	//プレイヤーを一緒に移動させる
 	m_pPlayer[0]->SetPos(m_pos);
+	m_pPlayer[1]->SetPos(m_pos);
 
 	//操作装置を移動させる
 	for (int i = 0; i < NUM_OF_OPERATION_DEVICE; ++i)
