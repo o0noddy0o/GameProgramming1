@@ -26,10 +26,6 @@ void CActionGameApp::procPlayBegin()
 	cameraPos = m_pCamera->getPos();
 }
 
-//PhanXuanDung
-
-//ズン
-
 //━━━━━━━━━━━━━━━━━━━━━━━
 // インゲーム画面のメイン処理
 //━━━━━━━━━━━━━━━━━━━━━━━
@@ -65,6 +61,7 @@ void CActionGameApp::procPlayEnd()
 	// カメラの座標をリセットする
 	m_pCamera->setPos(cameraPos);
 	
+	pStage = nullptr;
 }
 
 //━━━━━━━━━━━━━━━━━━━━━━━

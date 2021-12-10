@@ -16,7 +16,8 @@
 OperationDevice::OperationDevice(GameInfo* _pGameInfo, XMFLOAT2 _pos, XMFLOAT2 _relativePos, int _index)
 	: Super(_pGameInfo)
 	, m_relativePos(_pos)
-	, m_playerindex(0)
+	, m_bPlayer1IsUsing(false)
+	, m_bPlayer2IsUsing(false)
 {
 	switch (_index)
 	{
@@ -76,59 +77,34 @@ void OperationDevice::RenderDevice()
 //„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
 void OperationDevice::collisionWithPlayer(Player* _player)
 {
-	static bool b1 = false;
-	static bool b2 = false;
 	switch (_player->getPlayerIdx())
 	{
 	case 1:
-		if (m_playerindex == 2)return;
+		if (m_bPlayer2IsUsing)return;
 		if ((bool)m_pImg->collision(_player->GetImg()) == true)
 		{
 			if (GetInput()->isPressedOnce(DIK_NUMPAD3))
 			{
-				b1 = !b1;
-				if (b1)
-				{
-					m_playerindex = 1;
-				}
-				else
-				{
-					m_playerindex = 0;
-				}
-				_player->SetMoveAble(!b1);
+				m_bPlayer1IsUsing = !m_bPlayer1IsUsing;
+				_player->SetMoveAble(!m_bPlayer1IsUsing);
 			}
-			if (b1)
+			if (m_bPlayer1IsUsing)
 			{
 				m_pComponent->InputProcess(1);
-				if (GetInput()->isPressedOnce(DIK_RETURN))
-				{
-					if (GetInput()->isPressedOnce(DIK_RETURN))
-					{
-
-					}
-				}
 			}
 		}
 		break;
 
 	case 2:
-		if (m_playerindex == 1)return;
+		if (m_bPlayer1IsUsing)return;
 		if ((bool)m_pImg->collision(_player->GetImg()) == true)
 		{
 			if (GetInput()->isPressedOnce(DIK_M))
 			{
-				b2 = !b2;
-				if (b2)
-				{
-					m_playerindex = 2;
-				}
-				else
-				{
-					m_playerindex = 0;
-				}
-				_player->SetMoveAble(!b2);
+				m_bPlayer2IsUsing = !m_bPlayer2IsUsing;
+				_player->SetMoveAble(!m_bPlayer2IsUsing);
 			}
-			if (b2)
+			if (m_bPlayer2IsUsing)
 			{
 				m_pComponent->InputProcess(2);
 			}

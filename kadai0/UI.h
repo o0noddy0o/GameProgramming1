@@ -36,5 +36,5 @@ private:
 	Map*      m_pMap;
 	CText*	  m_pNumOfEnemy;
 	XMFLOAT2  m_hpBarRelativePos;
-	string m_text;
+	string	  m_text;
 };

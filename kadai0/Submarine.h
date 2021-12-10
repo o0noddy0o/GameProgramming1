@@ -19,6 +19,7 @@ class OperationDevice;
 class Component;
 class MapDevice;
 class UI;
+class JetEngine;
 
 class Submarine : public CObjectBase
 {
@@ -46,20 +47,27 @@ public:
 	// アイテムを取得した後の処理
 	void GetItem(int _itemType);
 
+	// カメラの移動の処理
 	void MoveCamera();
 
 	// 潜水艦座標の取得
 	XMFLOAT2 GetPos()const;
 
+	// ダメージを受けた後の処理
+	void GetDamaged(float _damage);
+
 private:
 	CPicture*					m_pImg;
 	CPicture*					m_pFloor;
 
+	float						m_hp;
 	XMFLOAT2					m_pos;
 	shared_ptr<Player>			m_pPlayer[2];
 	shared_ptr<OperationDevice> m_pOperationDevice[NUM_OF_OPERATION_DEVICE];
 	shared_ptr<Component>		m_pComponent[NUM_OF_COMPONENT];
 	//shared_ptr<MapDevice>		m_pMapDevice;
 	vector<shared_ptr<Bullet>>* m_pBullet[4];
-	//shared_ptr<UI>				m_pUI;
+	shared_ptr<UI>				m_pUI;
+
+	JetEngine*					m_pJetEngine;
 };

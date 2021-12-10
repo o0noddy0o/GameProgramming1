@@ -44,5 +44,6 @@ private:
 	//対応する部品のアドレス
 	Component* m_pComponent;
 
-	int m_playerindex;
+	bool m_bPlayer1IsUsing;
+	bool m_bPlayer2IsUsing;
 };

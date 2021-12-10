@@ -22,6 +22,7 @@
 //„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
 Stage::Stage(GameInfo* _pGameInfo)
 	: Super(_pGameInfo)
+	, m_pSubmarine(NULL)
 {
 
 	m_pSubmarine = (shared_ptr<Submarine>)new Submarine(_pGameInfo);
