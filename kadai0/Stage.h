@@ -45,5 +45,7 @@ public:
 	// 前1フレームの時間(deltaTime計算用)
 	clock_t m_lastFrameTime;
 
+	float m_deltaTime;
+
 	int m_map[Map_Y_SIZE][Map_X_SIZE];
 };

@@ -57,14 +57,14 @@ Turret::~Turret()
 //━━━━━━━━━━━━━━━━━━━━━━━
 // プレイヤーの入力処理
 //━━━━━━━━━━━━━━━━━━━━━━━
-void Turret::InputProcess(int _playerIndex)
+void Turret::InputProcess(int _playerIndex, float _deltaTime)
 {
 	switch (_playerIndex)
 	{
 	case 1:
 		if (GetInput()->isKeyPressed(DIK_LEFTARROW))
 		{
-			if ((m_angle += TURRET_ROTATION_SPEED) > m_rotationRange[1])
+			if ((m_angle += TURRET_ROTATION_SPEED * _deltaTime) > m_rotationRange[1])
 			{
 				m_angle = m_rotationRange[1];
 			}
@@ -72,7 +72,7 @@ void Turret::InputProcess(int _playerIndex)
 		}
 		else if (GetInput()->isKeyPressed(DIK_RIGHTARROW))
 		{
-			if ((m_angle -= TURRET_ROTATION_SPEED) < m_rotationRange[0])
+			if ((m_angle -= TURRET_ROTATION_SPEED * _deltaTime) < m_rotationRange[0])
 			{
 				m_angle = m_rotationRange[0];
 			}
@@ -82,7 +82,7 @@ void Turret::InputProcess(int _playerIndex)
 	case 2:
 		if (GetInput()->isKeyPressed(DIK_A))
 		{
-			if ((m_angle += TURRET_ROTATION_SPEED) > m_rotationRange[1])
+			if ((m_angle += TURRET_ROTATION_SPEED * _deltaTime) > m_rotationRange[1])
 			{
 				m_angle = m_rotationRange[1];
 			}
@@ -90,7 +90,7 @@ void Turret::InputProcess(int _playerIndex)
 		}
 		else if (GetInput()->isKeyPressed(DIK_D))
 		{
-			if ((m_angle -= TURRET_ROTATION_SPEED) < m_rotationRange[0])
+			if ((m_angle -= TURRET_ROTATION_SPEED * _deltaTime) < m_rotationRange[0])
 			{
 				m_angle = m_rotationRange[0];
 			}
@@ -103,7 +103,7 @@ void Turret::InputProcess(int _playerIndex)
 	// 弾を打つ速度の制御
 	if (m_coolDownCnt < TURRET_COOL_DOWN)
 	{
-		++m_coolDownCnt;
+		m_coolDownCnt += _deltaTime;
 	}
 	else
 	{

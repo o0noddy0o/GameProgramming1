@@ -21,19 +21,19 @@ JetEngine::~JetEngine()
 {
 }
 
-void JetEngine::InputProcess(int _playerIndex)
+void JetEngine::InputProcess(int _playerIndex, float _deltaTime)
 {
 	switch (_playerIndex)
 	{
 	case 1:
 		if (GetInput()->isKeyPressed(DIK_LEFTARROW))
 		{
-			m_moveDirection += JET_ENGINE_ROTATION_SPEED;
+			m_moveDirection += JET_ENGINE_ROTATION_SPEED * _deltaTime;
 			m_pImg->setAngleZ(m_moveDirection);
 		}
 		else if (GetInput()->isKeyPressed(DIK_RIGHTARROW))
 		{
-			m_moveDirection -= JET_ENGINE_ROTATION_SPEED;
+			m_moveDirection -= JET_ENGINE_ROTATION_SPEED * _deltaTime;
 			m_pImg->setAngleZ(m_moveDirection);
 		}
 
@@ -45,12 +45,12 @@ void JetEngine::InputProcess(int _playerIndex)
 	case 2:
 		if (GetInput()->isKeyPressed(DIK_A))
 		{
-			m_moveDirection += JET_ENGINE_ROTATION_SPEED;
+			m_moveDirection += JET_ENGINE_ROTATION_SPEED * _deltaTime;
 			m_pImg->setAngleZ(m_moveDirection);
 		}
 		else if (GetInput()->isKeyPressed(DIK_D))
 		{
-			m_moveDirection -= JET_ENGINE_ROTATION_SPEED;
+			m_moveDirection -= JET_ENGINE_ROTATION_SPEED * _deltaTime;
 			m_pImg->setAngleZ(m_moveDirection);
 		}
 

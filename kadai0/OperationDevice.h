@@ -26,7 +26,7 @@ public:
 	void RenderDevice();
 
 	//プレイヤーとの当たり判定
-	void collisionWithPlayer(Player* _player);
+	void collisionWithPlayer(Player* _player, float _deltaTime);
 
 	//対応する部品のアドレス（潜水艦クラス用）
 	void SetComponent(shared_ptr<Component> _component);

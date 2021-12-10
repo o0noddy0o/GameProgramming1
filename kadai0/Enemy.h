@@ -29,7 +29,7 @@ public:
 	virtual void AttackProcess() = 0;
 
 	// 移動の処理(ステージ用)
-	virtual void MoveProcess(XMFLOAT2 _SubmarinePos) = 0;
+	virtual void MoveProcess(XMFLOAT2 _SubmarinePos, float _deltaTime) = 0;
 
 	// 弾の配列のアドレスを取得する
 	virtual vector < shared_ptr < EnemyBullet > >* GetBullet();

@@ -97,9 +97,8 @@ void Fish::AttackProcess()
 //„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
 // ˆÚ“®ˆ—
 //„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
-void Fish::MoveProcess(XMFLOAT2 _SubmarinePos)
+void Fish::MoveProcess(XMFLOAT2 _SubmarinePos, float _deltaTime)
 {
-	
 	// “G‚ÌÀ•W‚ğæ“¾
 	XMFLOAT4 _EnemyPos = m_pImg->getPos();
 	float diffX = _SubmarinePos.x - _EnemyPos.x;
@@ -117,16 +116,16 @@ void Fish::MoveProcess(XMFLOAT2 _SubmarinePos)
 
 	if (cross >= 0)
 	{
-		m_angle += 10.f;
+		m_angle += 200.f * _deltaTime;
 	}
 	else
 	{
-		m_angle -= 10.f;
+		m_angle -= 200.f * _deltaTime;
 	}
 
 	// “G‚ÌˆÚ“®•ûŒü‚Ìİ’è
 	EnemyMoveDir = AngleToDirectionVector(m_angle);
-	XMFLOAT4 EnemyMove = { EnemyMoveDir.x * ENEMY_1_MOVE_SPEED, EnemyMoveDir.y * ENEMY_1_MOVE_SPEED, 0.f, 0.f };
+	XMFLOAT4 EnemyMove = { EnemyMoveDir.x * ENEMY_1_MOVE_SPEED * _deltaTime, EnemyMoveDir.y * ENEMY_1_MOVE_SPEED * _deltaTime, 0.f, 0.f };
 	m_pImg->offsetPos(EnemyMove);
 	{
 		// “G‚ÌŒü‚±‚¤‚Ìİ’è

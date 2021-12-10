@@ -15,6 +15,7 @@
 #include "Enemy.h"
 #include "EnemyBullet.h"
 #include "Fish.h"
+#include <time.h>
 
 //━━━━━━━━━━━━━━━━━━━━━━━
 // コンストラクタ
@@ -24,6 +25,7 @@ Stage::Stage(GameInfo* _pGameInfo)
 	: Super(_pGameInfo)
 	, m_pSubmarine(NULL)
 {
+	srand((unsigned)time(NULL));
 
 	m_pSubmarine = (shared_ptr<Submarine>)new Submarine(_pGameInfo);
 	//
@@ -45,6 +47,8 @@ Stage::Stage(GameInfo* _pGameInfo)
 	{
 		m_pEnemyBullet.push_back((vector<shared_ptr<EnemyBullet>>*)(m_pEnemy[i])->GetBullet());
 	}
+
+	m_lastFrameTime = clock();
 }
 
 //━━━━━━━━━━━━━━━━━━━━━━━
@@ -87,21 +91,27 @@ void Stage::CollisionProcess()
 //━━━━━━━━━━━━━━━━━━━━━━━
 void Stage::Tick()
 {
-	m_pSubmarine->Tick(1.f);
+	{
+		clock_t thisFrameTime = clock();
+		m_deltaTime = (float)(thisFrameTime - m_lastFrameTime) / 1000.f;
+		m_lastFrameTime = thisFrameTime;
+	}
+
+	m_pSubmarine->Tick(m_deltaTime);
 	{
 		XMFLOAT2 SubmarinePos(m_pSubmarine->GetPos());
 		for (int i = 0; i < (int)m_pEnemy.size(); ++i)
 		{
 			m_pEnemy[i]->AttackProcess();
-			m_pEnemy[i]->MoveProcess(SubmarinePos);
+			m_pEnemy[i]->MoveProcess(SubmarinePos, m_deltaTime);
 		}
 	}
 	for (int i = 0; i < (int)m_pEnemyBullet.size(); ++i)
 	{
 		for (int j = 0; j < (int)m_pEnemyBullet[i]->size(); ++j)
 		{
-			(*m_pEnemyBullet[i])[j].get()->MoveProcess(1.f);
+			(*m_pEnemyBullet[i])[j].get()->MoveProcess(m_deltaTime);
 		}
 	}
-	m_pSubmarine->MoveProcess(1.f);
+	m_pSubmarine->MoveProcess(m_deltaTime);
 }

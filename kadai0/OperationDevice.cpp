@@ -75,7 +75,7 @@ void OperationDevice::RenderDevice()
 //„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
 // ƒvƒŒƒCƒ„[‚Æ‚Ì“–‚½‚è”»’è
 //„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
-void OperationDevice::collisionWithPlayer(Player* _player)
+void OperationDevice::collisionWithPlayer(Player* _player, float _deltaTime)
 {
 	switch (_player->getPlayerIdx())
 	{
@@ -90,7 +90,7 @@ void OperationDevice::collisionWithPlayer(Player* _player)
 			}
 			if (m_bPlayer1IsUsing)
 			{
-				m_pComponent->InputProcess(1);
+				m_pComponent->InputProcess(1, _deltaTime);
 			}
 		}
 		break;
@@ -106,7 +106,7 @@ void OperationDevice::collisionWithPlayer(Player* _player)
 			}
 			if (m_bPlayer2IsUsing)
 			{
-				m_pComponent->InputProcess(2);
+				m_pComponent->InputProcess(2, _deltaTime);
 			}
 		}
 		break;

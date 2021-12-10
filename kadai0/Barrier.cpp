@@ -34,20 +34,20 @@ Barrier::~Barrier()
 //„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
 // ƒvƒŒƒCƒ„[‚Ì“ü—Íˆ—
 //„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
-void Barrier::InputProcess(int _playerIndex)
+void Barrier::InputProcess(int _playerIndex, float _deltaTime)
 {
 	switch (_playerIndex)
 	{
 	case 1:
 		if (GetInput()->isKeyPressed(DIK_LEFTARROW))
 		{
-			m_angle += BARRIER_ROTATION_SPEED;
+			m_angle += BARRIER_ROTATION_SPEED * _deltaTime;
 			m_pImg->addAngleZ(m_angle);
 			m_bIsBarrierOn = false;
 		}
 		else if (GetInput()->isKeyPressed(DIK_RIGHTARROW))
 		{
-			m_angle -= BARRIER_ROTATION_SPEED;
+			m_angle -= BARRIER_ROTATION_SPEED * _deltaTime;
 			m_pImg->addAngleZ(m_angle);
 			m_bIsBarrierOn = false;
 		}
@@ -59,13 +59,13 @@ void Barrier::InputProcess(int _playerIndex)
 	case 2:
 		if (GetInput()->isKeyPressed(DIK_A))
 		{
-			m_angle += BARRIER_ROTATION_SPEED;
+			m_angle += BARRIER_ROTATION_SPEED * _deltaTime;
 			m_pImg->addAngleZ(m_angle);
 			m_bIsBarrierOn = false;
 		}
 		else if (GetInput()->isKeyPressed(DIK_D))
 		{
-			m_angle -= BARRIER_ROTATION_SPEED;
+			m_angle -= BARRIER_ROTATION_SPEED * _deltaTime;
 			m_pImg->addAngleZ(m_angle);
 			m_bIsBarrierOn = false;
 		}

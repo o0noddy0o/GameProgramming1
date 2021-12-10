@@ -17,7 +17,7 @@ public:
 	JetEngine(GameInfo* _pGameInfo, XMFLOAT2 _pos = { 0.f, 0.f }, float m_moveDirection = 0.f);
 	~JetEngine();
 
-	void InputProcess(int _playerIndex);
+	void InputProcess(int _playerIndex, float _deltaTime);
 	bool GetIsMoving()const;
 	void SetIsMoveingToFalse();
 	float GetMoveDirection()const;

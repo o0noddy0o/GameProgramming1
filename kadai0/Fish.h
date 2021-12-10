@@ -22,7 +22,7 @@ public:
 	virtual void AttackProcess();
 		
 	// ˆÚ“®ˆ—
-	virtual void MoveProcess(XMFLOAT2 _SubmarinePos);
+	virtual void MoveProcess(XMFLOAT2 _SubmarinePos, float _deltaTime);
 
 	virtual BoundingBox* GetBoundingBox()const;
 private:

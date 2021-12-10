@@ -9,6 +9,7 @@
 #include <memory>
 #include "Define.h"
 #include "CObjectBase.h"
+#include "CText.h"
 
 class Enemy;
 class SceneryObject;
@@ -70,4 +71,9 @@ private:
 	shared_ptr<UI>				m_pUI;
 
 	JetEngine*					m_pJetEngine;
+
+
+#if ShowDeltaTimeAndFPS
+	shared_ptr<CText> pDeltaTimeText;
+#endif
 };

@@ -41,7 +41,7 @@ public:
 
 private:
 	//プレイヤーの入力処理
-	void InputProcess();
+	void InputProcess(float _deltaTime);
 
 	//プレイヤーキャラクターと各操作装置の当たり判定
 	void CollisionWithOperationDevice(vector<shared_ptr<OperationDevice>>* _pOperationDevice);
@@ -56,6 +56,6 @@ private:
 	bool		m_bMoveable;		//プレイヤーが移動できるかフラグ
 	bool		m_pJumping;			//プレイヤーがジャンプしているかのフラグ
 	XMFLOAT2	m_relativePos;		//プレイヤーの座標と潜水艦の座標の差
-	int			m__playerIndex;		//プレイヤーの番号
+	int			m_playerIndex;		//プレイヤーの番号
 };
 
