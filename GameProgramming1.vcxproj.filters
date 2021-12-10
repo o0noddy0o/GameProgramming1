@@ -159,6 +159,15 @@
     <ClCompile Include="kadai0\Enemy.cpp">
       <Filter>ソース ファイル\Object\Stage</Filter>
     </ClCompile>
+    <ClCompile Include="kadai0\EnemyBullet.cpp">
+      <Filter>ソース ファイル\Object\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="kadai0\Map.cpp">
+      <Filter>ソース ファイル\Object\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="kadai0\UI.cpp">
+      <Filter>ソース ファイル\Object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Common\CApplication.h">
@@ -292,6 +301,12 @@
     </ClInclude>
     <ClInclude Include="kadai0\Fish.h">
       <Filter>ヘッダー ファイル\Object\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="kadai0\EnemyBullet.h">
+      <Filter>ヘッダー ファイル\Object\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="kadai0\UI.h">
+      <Filter>ヘッダー ファイル\Object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

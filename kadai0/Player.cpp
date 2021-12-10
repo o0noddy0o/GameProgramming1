@@ -99,12 +99,12 @@ void Player::InputProcess()
 		//¶‚ÉˆÚ“®
 		if (GetInput()->isKeyPressed(DIK_LEFTARROW))
 		{
-			m_relativePos.x -= 25.f;
+			m_relativePos.x -= 10.f;
 		}
 		//‰E‚ÉˆÚ“®2
 		else if (GetInput()->isKeyPressed(DIK_RIGHTARROW))
 		{
-			m_relativePos.x += 25.f;
+			m_relativePos.x += 10.f;
 		}
 	}
 	

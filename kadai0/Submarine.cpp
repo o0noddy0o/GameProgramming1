@@ -4,7 +4,8 @@
 // 作成者　　　　：20CU0314 ゴコケン
 // 更新内容　　　：2021/11/17 作成（ゴ）
 //				   2021/11/28 移動メソッドを修正（ズン）
-//							  プレイヤー数を分ける（ズン）		   
+//							  プレイヤー数を分ける（ズン）		
+//			　　　2021/12/10　敵移動のため、潜水艦座標取得メソッドを追加（林）  
 //━━━━━━━━━━━━━━━━━━━━━━━
 #include "Submarine.h"
 #include "GameResource.h"
@@ -24,6 +25,11 @@ Submarine::Submarine(GameInfo* _pGameInfo)
 {
 	m_pImg = CreateSprite(Tex_Submarine, 512.f, 512.f);
 	m_pImg->setPos(m_pos);
+
+	m_pFloor = CreateSprite(Tex_Yuka, 400.f, 10.f);
+	m_pFloor->setPos(m_pos.x, m_pos.y - YUKA_POSITION);
+
+
 
 	// プレイヤーオブジェクトの作成
 	m_pPlayer[0] = shared_ptr<Player>(new Player(m_pGameInfo, { 0.f, 0.f }, m_pos, 1));
@@ -67,6 +73,7 @@ Submarine::Submarine(GameInfo* _pGameInfo)
 Submarine::~Submarine()
 {
 	DisposeSprite(m_pImg);
+	DisposeSprite(m_pFloor);
 }
 
 //━━━━━━━━━━━━━━━━━━━━━━━
@@ -111,6 +118,7 @@ void Submarine::RenderProcess()
 	m_pComponent[4]->renderSprite();
 	m_pComponent[5]->renderSprite();
 	RenderSprite(m_pImg);
+	RenderSprite(m_pFloor);
 	for (int i = 0; i < NUM_OF_COMPONENT; ++i)
 	{
 		// ジェットエンジンとバリアは潜水艦の下の描画する
@@ -121,9 +129,7 @@ void Submarine::RenderProcess()
 		m_pComponent[i]->renderSprite();
 	}
 	
-	//プレイヤーの画像を描画
-	m_pPlayer[0]->RenderChara();
-	//m_pPlayer[1]->RenderChara();
+	
 
 	//操作装置の画像を描画
 	for (int i = 0; i < NUM_OF_OPERATION_DEVICE; ++i)
@@ -138,6 +144,10 @@ void Submarine::RenderProcess()
 			(*m_pBullet[i])[j]->renderSprite();
 		}
 	}
+
+	//プレイヤーの画像を描画
+	m_pPlayer[0]->RenderChara();
+	//m_pPlayer[1]->RenderChara();
 }
 
 //━━━━━━━━━━━━━━━━━━━━━━━
@@ -183,6 +193,7 @@ void Submarine::MoveProcess(float _deltaTime)
 
 	// 潜水艦の位置を設置する
 	m_pImg->setPos(m_pos);
+	m_pFloor->setPos(m_pos.x, m_pos.y - YUKA_POSITION);
 
 	// すべて部品を移動させる
 	for (int i = 0; i < NUM_OF_COMPONENT; ++i)
@@ -225,4 +236,13 @@ void Submarine::MoveCamera()
 	cameraPos.y += distanceBetweenCameraAndSubmarine.y * PERCENNTAGE_OF_CAMERA_MOVE_TO_SUBMARINNE;
 
 	m_pGameInfo->pCamera->get()->setPos(cameraPos);
+}
+
+//━━━━━━━━━━━━━━━━━━━━━━━
+// 潜水艦の座標の取得
+//━━━━━━━━━━━━━━━━━━━━━━━
+XMFLOAT2 Submarine::GetPos()const
+{
+	XMFLOAT4 SubPos = m_pImg->getPos();
+	return XMFLOAT2(SubPos.x, SubPos.y);
 }

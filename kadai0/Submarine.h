@@ -48,8 +48,13 @@ public:
 
 	void MoveCamera();
 
+	// ö…ŠÍÀ•W‚Ìæ“¾
+	XMFLOAT2 GetPos()const;
+
 private:
 	CPicture*					m_pImg;
+	CPicture*					m_pFloor;
+
 	XMFLOAT2					m_pos;
 	shared_ptr<Player>			m_pPlayer[2];
 	shared_ptr<OperationDevice> m_pOperationDevice[NUM_OF_OPERATION_DEVICE];

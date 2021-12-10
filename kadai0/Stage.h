@@ -10,6 +10,8 @@
 #include "Submarine.h"
 #include "SceneryObject.h"
 
+class EnemyBullet;
+
 class Stage :public CObjectBase
 {
 	typedef CObjectBase Super;
@@ -17,7 +19,7 @@ public:
 	Stage(GameInfo* _pGameInfo);
 	~Stage();
 	// 毎フレームの処理
-	void Tick(float _deltaTime);
+	void Tick();
 
 	// 全てのRenderメソッドを呼び出す
 	void RenderProcess();
@@ -32,13 +34,13 @@ public:
 	vector < shared_ptr < SceneryObject > > m_pSceneryObject;
 
 	// 敵のオブジェクトの配列
-	//vector < shared_ptr < Enemy > > m_pEnemy;
+	vector < shared_ptr < Enemy > > m_pEnemy;
 
 	// アイテムのオブジェクトの配列
 	//vector < shared_ptr < Item > > m_pItem;
 
 	// 敵の弾の配列のアドレスの配列
-	//vector < vector < shared_ptr < Bullet > >* > m_pEnemyBullet;
+	vector < vector < shared_ptr < EnemyBullet > >* > m_pEnemyBullet;
 
 	// 前1フレームの時間(deltaTime計算用)
 	clock_t m_lastFrameTime;
