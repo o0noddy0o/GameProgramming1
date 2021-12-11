@@ -45,7 +45,7 @@ Stage::Stage(GameInfo* _pGameInfo)
 
 	for (int i = 0; i < (int)m_pEnemy.size(); ++i)
 	{
-		m_pEnemyBullet.push_back((vector<shared_ptr<EnemyBullet>>*)(m_pEnemy[i])->GetBullet());
+		m_pEnemyBullet.push_back((shared_ptr<vector<shared_ptr<EnemyBullet>>>)(m_pEnemy[i])->GetBullet());
 	}
 
 	m_lastFrameTime = clock();
@@ -97,6 +97,8 @@ void Stage::Tick()
 		m_lastFrameTime = thisFrameTime;
 	}
 
+	m_pSubmarine->CollisionProcess(&m_pEnemy, &m_pEnemyBullet, NULL, NULL);
+
 	m_pSubmarine->Tick(m_deltaTime);
 	{
 		XMFLOAT2 SubmarinePos(m_pSubmarine->GetPos());
@@ -108,10 +110,12 @@ void Stage::Tick()
 	}
 	for (int i = 0; i < (int)m_pEnemyBullet.size(); ++i)
 	{
-		for (int j = 0; j < (int)m_pEnemyBullet[i]->size(); ++j)
+		for (int j = 0; j < (int)m_pEnemyBullet[i].get()->size(); ++j)
 		{
 			(*m_pEnemyBullet[i])[j].get()->MoveProcess(m_deltaTime);
 		}
 	}
 	m_pSubmarine->MoveProcess(m_deltaTime);
+
+	
 }

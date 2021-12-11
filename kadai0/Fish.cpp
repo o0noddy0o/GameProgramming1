@@ -27,6 +27,7 @@ Fish::Fish(GameInfo* _pGameInfo, XMFLOAT2 _pos, float _angle)
 	m_pImg->setAngle(0.f, 180.f, _angle);
 	m_pImg->setPos(_pos);
 	m_pBoundingBox = new RectangleBoundingBox(_pos, XMFLOAT2(ENEMY_1_SIZE_X, ENEMY_1_SIZE_Y));
+	m_pEnemyBullet = (shared_ptr<vector<shared_ptr<EnemyBullet>>>)new vector<shared_ptr<EnemyBullet>>;
 }
 
 //„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
@@ -64,32 +65,32 @@ void Fish::AttackProcess()
 		}
 
 		// g‚¦‚é’e‚ğ’T‚·
-		if (m_pEnemyBullet.size() >= 1)
+		if (m_pEnemyBullet->size() >= 1)
 		{
-			for (unsigned int i = 0; i < m_pEnemyBullet.size(); ++i)
+			for (unsigned int i = 0; i < m_pEnemyBullet->size(); ++i)
 			{
-				if (m_pEnemyBullet[i]->GetActive())
+				if ((*m_pEnemyBullet)[i]->GetActive())
 				{
 					// ‚È‚©‚Á‚½‚çV‚µ‚¢‚Ì‚ğì‚é
-					if (i >= m_pEnemyBullet.size() - 1)
+					if (i >= m_pEnemyBullet->size() - 1)
 					{
-						m_pEnemyBullet.push_back(shared_ptr<EnemyBullet>(new EnemyBullet(m_pGameInfo, XMFLOAT2(pos.x, pos.y), m_angle)));
+						m_pEnemyBullet->push_back(shared_ptr<EnemyBullet>(new EnemyBullet(m_pGameInfo, XMFLOAT2(pos.x, pos.y), m_angle)));
 						break;
 					}
 				}
 				else
 				{
 					// ‚ ‚Á‚½‚ç‚»‚ê‚ğg‚¤
-					m_pEnemyBullet[i]->SetActive(true);
-					m_pEnemyBullet[i]->SetPos(XMFLOAT2(pos.x, pos.y));
-					m_pEnemyBullet[i]->SetMoveDirection(m_angle);
+					(*m_pEnemyBullet)[i]->SetActive(true);
+					(*m_pEnemyBullet)[i]->SetPos(XMFLOAT2(pos.x, pos.y));
+					(*m_pEnemyBullet)[i]->SetMoveDirection(m_angle);
 					break;
 				}
 			}
 		}
 		else
 		{
-			m_pEnemyBullet.push_back(shared_ptr<EnemyBullet>(new EnemyBullet(m_pGameInfo, XMFLOAT2(pos.x, pos.y), m_angle)));
+			m_pEnemyBullet->push_back(shared_ptr<EnemyBullet>(new EnemyBullet(m_pGameInfo, XMFLOAT2(pos.x, pos.y), m_angle)));
 		}
 	}
 }
@@ -128,7 +129,7 @@ void Fish::MoveProcess(XMFLOAT2 _SubmarinePos, float _deltaTime)
 	XMFLOAT4 EnemyMove = { EnemyMoveDir.x * ENEMY_1_MOVE_SPEED * _deltaTime, EnemyMoveDir.y * ENEMY_1_MOVE_SPEED * _deltaTime, 0.f, 0.f };
 	m_pImg->offsetPos(EnemyMove);
 	{
-		// “G‚ÌŒü‚±‚¤‚Ìİ’è
+		// “G‚ÌŒü‚«‚Ìİ’è
 		int angle = Abs((int)m_angle % 360);
 		if (angle < 90 || angle > 270)
 		{
@@ -139,6 +140,7 @@ void Fish::MoveProcess(XMFLOAT2 _SubmarinePos, float _deltaTime)
 			m_pImg->setAngle(180.f, 180.f, m_angle);
 		}}
 	m_pImg->setAngleZ(m_angle);
+	m_pBoundingBox->SetPos({ m_pImg->getPos().x, m_pImg->getPos().y });
 }
 
 //„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
@@ -146,5 +148,5 @@ void Fish::MoveProcess(XMFLOAT2 _SubmarinePos, float _deltaTime)
 //„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
 BoundingBox* Fish::GetBoundingBox()const
 {
-	return (BoundingBox*)m_pBoundingBox;
+	return m_pBoundingBox;
 }

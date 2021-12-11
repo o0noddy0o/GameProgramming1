@@ -32,12 +32,12 @@ public:
 	virtual void MoveProcess(XMFLOAT2 _SubmarinePos, float _deltaTime) = 0;
 
 	// 弾の配列のアドレスを取得する
-	virtual vector < shared_ptr < EnemyBullet > >* GetBullet();
+	virtual shared_ptr<vector<shared_ptr<EnemyBullet>>> GetBullet();
 
 protected:
 	// 敵の画像
 	CPicture* m_pImg;
 
 	// 弾の配列
-	vector < shared_ptr < EnemyBullet > >m_pEnemyBullet;
+	shared_ptr<vector<shared_ptr<EnemyBullet>>> m_pEnemyBullet;
 };

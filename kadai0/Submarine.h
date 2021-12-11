@@ -21,6 +21,9 @@ class Component;
 class MapDevice;
 class UI;
 class JetEngine;
+class EnemyBullet;
+class BoundingBox;
+class CircleBoundingBox;
 
 class Submarine : public CObjectBase
 {
@@ -37,10 +40,10 @@ public:
 
 	// 当たり判定
 	void CollisionProcess(
-		vector < shared_ptr < Enemy> >*				_pEnemy,
-		vector < shared_ptr < SceneryObject > >*	_pSceneryObject,
-		vector < shared_ptr < Bullet > >**			_pBullet,
-		vector < shared_ptr < Item > >*				_pItem);
+		vector<shared_ptr<Enemy>>*								_pEnemy,
+		vector<shared_ptr<vector<shared_ptr<EnemyBullet>>>>*	_pEnemyBullet,
+		vector<shared_ptr<SceneryObject>>*						_pSceneryObject,
+		vector<shared_ptr<Item>>*								_pItem);
 		
 	// 潜水艦全体の移動
 	void MoveProcess(float _deltaTime);
@@ -57,7 +60,11 @@ public:
 	// ダメージを受けた後の処理
 	void GetDamaged(float _damage);
 
+	BoundingBox* GetBoundingBox()const;
+
 private:
+	int killedEnemyCnt;
+
 	CPicture*					m_pImg;
 	CPicture*					m_pFloor;
 	CPicture*					m_pWall[4];
@@ -75,6 +82,7 @@ private:
 
 	JetEngine*					m_pJetEngine;
 
+	shared_ptr<CircleBoundingBox>	m_pCircleBoundiingBox;
 
 #if ShowDeltaTimeAndFPS
 	shared_ptr<CText> pDeltaTimeText;
