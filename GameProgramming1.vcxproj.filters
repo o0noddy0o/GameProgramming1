@@ -284,6 +284,12 @@
     <ClInclude Include="kadai0\OperationDevice.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+      <ClInclude Include="kadai0\BoundingBox.h">
+      <Filter>ヘッダー ファイル\Object\Bounding Box</Filter>
+    </ClInclude>
+    <ClInclude Include="kadai0\OperationDevice.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
     <ClInclude Include="kadai0\BoundingBox.h">
       <Filter>ヘッダー ファイル\Object\Bounding Box</Filter>
     </ClInclude>

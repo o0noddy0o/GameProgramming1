@@ -67,6 +67,9 @@ private:
 
 	CPicture*					m_pImg;
 	CPicture*					m_pFloor;
+	CPicture*					m_pWall[4];
+
+	bool						g_isFloor[2];
 
 	float						m_hp;
 	XMFLOAT2					m_pos;
