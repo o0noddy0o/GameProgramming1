@@ -281,15 +281,12 @@
     <ClInclude Include="kadai0\PolygonBoundingBox.h">
       <Filter>ヘッダー ファイル\Object\Bounding Box</Filter>
     </ClInclude>
-<<<<<<< HEAD
-<<<<<<< HEAD
     <ClInclude Include="kadai0\OperationDevice.h">
       <Filter>ヘッダー ファイル</Filter>
-=======
-    <ClInclude Include="kadai0\BoundingBox.h">
+    </ClInclude>
+      <ClInclude Include="kadai0\BoundingBox.h">
       <Filter>ヘッダー ファイル\Object\Bounding Box</Filter>
->>>>>>> ccf026227fc4c31e1ca49a38ea4680055abd26c1
-=======
+    </ClInclude>
     <ClInclude Include="kadai0\OperationDevice.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -316,7 +313,6 @@
     </ClInclude>
     <ClInclude Include="kadai0\UI.h">
       <Filter>ヘッダー ファイル\Object</Filter>
->>>>>>> dde39196aa6a9358bb62d946449b08ef36b1d75b
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

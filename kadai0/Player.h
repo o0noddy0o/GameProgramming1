@@ -33,6 +33,9 @@ public:
 	//プレイーの座標を更新
 	void SetPos(XMFLOAT2 _newPos);
 
+	//プレイヤーのジャンプ
+	void Jump(float _deltaTime);
+
 	//
 	CPicture* GetImg() const;
 
@@ -49,12 +52,15 @@ private:
 	//プレイヤーの移動
 	void Move(float _deltaTime, bool _right);
 
-	//プレイヤーのジャンプ
-	void Jump(float _deltaTime);
+	
 
 	CPicture*	m_pImg;				//プレイヤーキャラクターの画像
 	bool		m_bMoveable;		//プレイヤーが移動できるかフラグ
 	bool		m_pJumping;			//プレイヤーがジャンプしているかのフラグ
+
+	float		g_jumpPower;
+	float		g_jumpMove;
+
 	XMFLOAT2	m_relativePos;		//プレイヤーの座標と潜水艦の座標の差
 	int			m_playerIndex;		//プレイヤーの番号
 };
