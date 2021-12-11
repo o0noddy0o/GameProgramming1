@@ -38,9 +38,9 @@ void Enemy::renderSprite()
 //„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
 // ’e‚ÌŽæ“¾
 //„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
-vector<shared_ptr<EnemyBullet>>* Enemy::GetBullet()
+shared_ptr<vector<shared_ptr<EnemyBullet>>> Enemy::GetBullet()
 {
-	return &m_pEnemyBullet;
+	return m_pEnemyBullet;
 }
 
 
