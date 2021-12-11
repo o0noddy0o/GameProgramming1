@@ -9,6 +9,7 @@
 #include <memory>
 #include "Define.h"
 #include "CObjectBase.h"
+#include "CText.h"
 
 class Enemy;
 class SceneryObject;
@@ -19,6 +20,10 @@ class OperationDevice;
 class Component;
 class MapDevice;
 class UI;
+class JetEngine;
+class EnemyBullet;
+class BoundingBox;
+class CircleBoundingBox;
 
 class Submarine : public CObjectBase
 {
@@ -35,10 +40,10 @@ public:
 
 	// 当たり判定
 	void CollisionProcess(
-		vector < shared_ptr < Enemy> >*				_pEnemy,
-		vector < shared_ptr < SceneryObject > >*	_pSceneryObject,
-		vector < shared_ptr < Bullet > >**			_pBullet,
-		vector < shared_ptr < Item > >*				_pItem);
+		vector<shared_ptr<Enemy>>*								_pEnemy,
+		vector<shared_ptr<vector<shared_ptr<EnemyBullet>>>>*	_pEnemyBullet,
+		vector<shared_ptr<SceneryObject>>*						_pSceneryObject,
+		vector<shared_ptr<Item>>*								_pItem);
 		
 	// 潜水艦全体の移動
 	void MoveProcess(float _deltaTime);
@@ -46,15 +51,40 @@ public:
 	// アイテムを取得した後の処理
 	void GetItem(int _itemType);
 
+	// カメラの移動の処理
 	void MoveCamera();
 
+	// 潜水艦座標の取得
+	XMFLOAT2 GetPos()const;
+
+	// ダメージを受けた後の処理
+	void GetDamaged(float _damage);
+
+	BoundingBox* GetBoundingBox()const;
+
 private:
+	int killedEnemyCnt;
+
 	CPicture*					m_pImg;
+	CPicture*					m_pFloor;
+	CPicture*					m_pWall[4];
+
+	bool						g_isFloor[2];
+
+	float						m_hp;
 	XMFLOAT2					m_pos;
 	shared_ptr<Player>			m_pPlayer[2];
 	shared_ptr<OperationDevice> m_pOperationDevice[NUM_OF_OPERATION_DEVICE];
 	shared_ptr<Component>		m_pComponent[NUM_OF_COMPONENT];
 	//shared_ptr<MapDevice>		m_pMapDevice;
 	vector<shared_ptr<Bullet>>* m_pBullet[4];
-	//shared_ptr<UI>				m_pUI;
+	shared_ptr<UI>				m_pUI;
+
+	JetEngine*					m_pJetEngine;
+
+	shared_ptr<CircleBoundingBox>	m_pCircleBoundiingBox;
+
+#if ShowDeltaTimeAndFPS
+	shared_ptr<CText> pDeltaTimeText;
+#endif
 };

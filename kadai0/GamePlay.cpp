@@ -1,14 +1,13 @@
 ﻿#include "Define.h"
+#include "Stage.h"
 #include "CActionGameApp.h"
-#include "kadai0/GameResource.h"
 #include "CText.h"
-#include "Submarine.h"
 
 // ゲームフロー用変数
 ePhase GamePhase = (ePhase)eBegin;
 eGameStatus goNextStatusFromPlaying = (eGameStatus)eNone;
 
-shared_ptr<Submarine> pSubmarine = nullptr;
+shared_ptr<Stage> pStage = nullptr;
 
 // カメラの初期座標を保存用変数
 XMFLOAT3 cameraPos;
@@ -22,14 +21,10 @@ void CActionGameApp::procPlayBegin()
 	pText->setPos(-96.f, 200.f);
 	pText->SetText("INGAME");
 
-	if (!pSubmarine)pSubmarine = shared_ptr<Submarine>(new Submarine(getGameInfo()));
+	pStage = shared_ptr<Stage>(new Stage(getGameInfo()));
 
 	cameraPos = m_pCamera->getPos();
 }
-
-//PhanXuanDung
-
-//ズン
 
 //━━━━━━━━━━━━━━━━━━━━━━━
 // インゲーム画面のメイン処理
@@ -39,8 +34,9 @@ void CActionGameApp::procPlayMain()
 	renderSprite(pBackground);
 	pText->RenderText();
 
-	pSubmarine->RenderProcess();
-	pSubmarine->Tick(1.f);
+	pStage->Tick();
+	pStage->CollisionProcess();
+	pStage->RenderProcess();
 
 	// Xキーを押したら、インゲーム画面からゲームクリア画面へ移す
 	if (getInput()->isPressedOnce(DIK_X))
@@ -64,6 +60,8 @@ void CActionGameApp::procPlayEnd()
 
 	// カメラの座標をリセットする
 	m_pCamera->setPos(cameraPos);
+	
+	pStage = nullptr;
 }
 
 //━━━━━━━━━━━━━━━━━━━━━━━

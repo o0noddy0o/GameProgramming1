@@ -10,6 +10,8 @@
 
 class Enemy;
 class SceneryObject;
+class BoundingBox;
+class CircleBoundingBox;
 
 class Bullet : public CObjectBase
 {
@@ -19,6 +21,7 @@ public:
 	~Bullet();
 
 	CPicture* GetImg()const;										// 弾の画像を取得
+	BoundingBox* GetBoundingBox()const;
 	void renderSprite();											// 弾の画像を描画
 	void SetPos(XMFLOAT2 _newPos);									// 弾の画像の位置をセットする
 	bool GetActive()const;											// 弾の画像画像が表示可能か
@@ -31,4 +34,5 @@ public:
 private:
 	CPicture* m_pImg;			// 弾の画像
 	XMFLOAT2 m_moveDirection;	// 弾の移動方向（ベクトル）
+	CircleBoundingBox* m_pBoundingBox;
 };
