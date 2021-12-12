@@ -11,6 +11,7 @@
 #pragma once
 #include "Define.h"
 #include "CObjectBase.h"
+#include "Submarine.h"
 
 class OperationDevice;
 
@@ -22,7 +23,7 @@ public:
 	~Player();
 
 	//毎フレームにやる処理
-	void Tick(float _deltaTime);
+	void Tick(float _deltaTime, vector<Submarine::Wall>* _pWall, vector<Submarine::Floor>* _pFloor);
 
 	//画像を描画
 	void RenderChara();
@@ -33,8 +34,14 @@ public:
 	//プレイーの座標を更新
 	void SetPos(XMFLOAT2 _newPos);
 
+	XMFLOAT2 GetPos()const;
+
+	void SetRelativePos(XMFLOAT2 _relativePos);
+
+	XMFLOAT2 GetRelativePos()const;
+
 	//プレイヤーのジャンプ
-	void Jump(float _deltaTime);
+	void Jump();
 
 	//
 	CPicture* GetImg() const;
@@ -44,22 +51,28 @@ public:
 
 private:
 	//プレイヤーの入力処理
-	void InputProcess(float _deltaTime);
+	void InputProcess();
 
 	//プレイヤーキャラクターと各操作装置の当たり判定
 	void CollisionWithOperationDevice(vector<shared_ptr<OperationDevice>>* _pOperationDevice);
 
+	void CollisionWithWallAndFloor(vector < Submarine::Wall>* _pWall, vector<Submarine::Floor>* _pFloor);
+
 	//プレイヤーの移動
-	void Move(float _deltaTime, bool _right);
+	void Move(float _deltaTime);
 
 	
 
 	CPicture*	m_pImg;				//プレイヤーキャラクターの画像
 	bool		m_bMoveable;		//プレイヤーが移動できるかフラグ
-	bool		m_pJumping;			//プレイヤーがジャンプしているかのフラグ
+	bool		m_bJumping;			//プレイヤーがジャンプしているかのフラグ
 
-	float		g_jumpPower;
-	float		g_jumpMove;
+	float		m_jumpPower;
+	float		m_jumpTime;
+
+	bool		m_bIsOnFloor;		// プレイヤーが接地しているかのフラグ
+	bool		m_bMovingRight;
+	bool		m_bMovingLeft;
 
 	XMFLOAT2	m_relativePos;		//プレイヤーの座標と潜水艦の座標の差
 	int			m_playerIndex;		//プレイヤーの番号

@@ -28,6 +28,21 @@ class CircleBoundingBox;
 class Submarine : public CObjectBase
 {
 	typedef CObjectBase Super;
+
+public:
+	struct Wall
+	{
+		CPicture* ob;
+		XMFLOAT2  relativePos;
+		Wall(CPicture* _ob = NULL, XMFLOAT2 _relativePos = {0.f, 0.f}) : ob(_ob), relativePos(_relativePos) {}
+	};
+	struct Floor
+	{
+		CPicture* ob;
+		XMFLOAT2  relativePos;
+		Floor(CPicture* _ob = NULL, XMFLOAT2 _relativePos = { 0.f, 0.f }) : ob(_ob), relativePos(_relativePos) {}
+	};
+
 public:
 	Submarine(GameInfo* _pGameInfo);
 	~Submarine();
@@ -66,10 +81,8 @@ private:
 	int killedEnemyCnt;
 
 	CPicture*					m_pImg;
-	CPicture*					m_pFloor;
-	CPicture*					m_pWall[4];
-
-	bool						g_isFloor[2];
+	vector<Floor>				m_floor;
+	vector<Wall>				m_wall;
 
 	float						m_hp;
 	XMFLOAT2					m_pos;
@@ -82,7 +95,7 @@ private:
 
 	JetEngine*					m_pJetEngine;
 
-	shared_ptr<CircleBoundingBox>	m_pCircleBoundiingBox;
+	shared_ptr<CircleBoundingBox>	m_pCircleBoundingBox;
 
 #if ShowDeltaTimeAndFPS
 	shared_ptr<CText> pDeltaTimeText;
