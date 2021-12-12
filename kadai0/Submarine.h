@@ -1,9 +1,9 @@
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
-// ƒtƒ@ƒCƒ‹–¼@@FSubmarine.h
-// ŠT—v@@@@@Fö…ŠÍ‚ÌƒNƒ‰ƒX
-// ì¬ŽÒ@@@@F20CU0314 ƒSƒRƒPƒ“
-// XV“à—e@@@F2021/11/17 ì¬
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
+// ãƒ•ã‚¡ã‚¤ãƒ«åã€€ã€€ï¼šSubmarine.h
+// æ¦‚è¦ã€€ã€€ã€€ã€€ã€€ï¼šæ½œæ°´è‰¦ã®ã‚¯ãƒ©ã‚¹
+// ä½œæˆè€…ã€€ã€€ã€€ã€€ï¼š20CU0314 ã‚´ã‚³ã‚±ãƒ³
+// æ›´æ–°å†…å®¹ã€€ã€€ã€€ï¼š2021/11/17 ä½œæˆ
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
 #pragma once
 #include <vector>
 #include <memory>
@@ -47,32 +47,32 @@ public:
 	Submarine(GameInfo* _pGameInfo);
 	~Submarine();
 
-	// –ˆƒtƒŒ[ƒ€‚É‚â‚éˆ—
+	// æ¯Žãƒ•ãƒ¬ãƒ¼ãƒ ã«ã‚„ã‚‹å‡¦ç†
 	void Tick(float _deltaTime);
 
-	// ‰æ‘œ‚ð•`‰æ‚·‚é
+	// ç”»åƒã‚’æç”»ã™ã‚‹
 	void RenderProcess();
 
-	// “–‚½‚è”»’è
+	// å½“ãŸã‚Šåˆ¤å®š
 	void CollisionProcess(
 		vector<shared_ptr<Enemy>>*								_pEnemy,
 		vector<shared_ptr<vector<shared_ptr<EnemyBullet>>>>*	_pEnemyBullet,
 		vector<shared_ptr<SceneryObject>>*						_pSceneryObject,
 		vector<shared_ptr<Item>>*								_pItem);
 		
-	// ö…ŠÍ‘S‘Ì‚ÌˆÚ“®
+	// æ½œæ°´è‰¦å…¨ä½“ã®ç§»å‹•
 	void MoveProcess(float _deltaTime);
 
-	// ƒAƒCƒeƒ€‚ðŽæ“¾‚µ‚½Œã‚Ìˆ—
+	// ã‚¢ã‚¤ãƒ†ãƒ ã‚’å–å¾—ã—ãŸå¾Œã®å‡¦ç†
 	void GetItem(int _itemType);
 
-	// ƒJƒƒ‰‚ÌˆÚ“®‚Ìˆ—
+	// ã‚«ãƒ¡ãƒ©ã®ç§»å‹•ã®å‡¦ç†
 	void MoveCamera();
 
-	// ö…ŠÍÀ•W‚ÌŽæ“¾
+	// æ½œæ°´è‰¦åº§æ¨™ã®å–å¾—
 	XMFLOAT2 GetPos()const;
 
-	// ƒ_ƒ[ƒW‚ðŽó‚¯‚½Œã‚Ìˆ—
+	// ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’å—ã‘ãŸå¾Œã®å‡¦ç†
 	void GetDamaged(float _damage);
 
 	BoundingBox* GetBoundingBox()const;
