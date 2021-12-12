@@ -1,49 +1,49 @@
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
-// ƒtƒ@ƒCƒ‹–¼@@FCObjectBase.cpp
-// ŠT—v@@@@@F‚·‚×‚Ä‰æ–Ê‚Éo‚·ƒIƒuƒWƒFƒNƒg‚ÌeƒNƒ‰ƒX
-// ì¬ŽÒ@@@@F20CU0314 ƒSƒRƒPƒ“
-// XV“à—e@@@Fì¬
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
+// ãƒ•ã‚¡ã‚¤ãƒ«åã€€ã€€ï¼šCObjectBase.cpp
+// æ¦‚è¦ã€€ã€€ã€€ã€€ã€€ï¼šã™ã¹ã¦ç”»é¢ã«å‡ºã™ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®è¦ªã‚¯ãƒ©ã‚¹
+// ä½œæˆè€…ã€€ã€€ã€€ã€€ï¼š20CU0314 ã‚´ã‚³ã‚±ãƒ³
+// æ›´æ–°å†…å®¹ã€€ã€€ã€€ï¼šä½œæˆ
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
 #include "CObjectBase.h"
 #include "CPicture.h"
 #include "MediaResource.h"
 #include "CCamera.h"
 
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
-// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
-// ˆø”‚PFƒQ[ƒ€‚Ìî•ñ
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
+// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+// å¼•æ•°ï¼‘ï¼šã‚²ãƒ¼ãƒ ã®æƒ…å ±
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
 CObjectBase::CObjectBase(GameInfo* _pGameInfo) 
 	: m_pGameInfo(_pGameInfo)
 {
 }
 
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
-// ƒfƒXƒgƒ‰ƒNƒ^
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
+// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
 CObjectBase::~CObjectBase()
 {
 }
 
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
-// ‰æ‘œ‚ðì¬‚·‚éƒƒ\ƒbƒh
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
+// ç”»åƒã‚’ä½œæˆã™ã‚‹ãƒ¡ã‚½ãƒƒãƒ‰
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
 CPicture* CObjectBase::CreateSprite(LPCWSTR path_, float width_, float height_, std::vector <QuadrangleTexel> _texelsUV)
 {
 	XMFLOAT2 spriteSize = { width_, height_ };
 	CPicture* object = NULL;
 
-	// Šî–{“I‚Èì¬
+	// åŸºæœ¬çš„ãªä½œæˆ
 	object = CPicture::create(*(m_pGameInfo->pDevice), *(m_pGameInfo->pDeviceContext), (m_pGameInfo->pViewPort), HLSL_AlphaHLSL, path_,
-		{ 0.0f, 0.0f, 0.0f, 0.0f },	//!< ƒXƒvƒ‰ƒCƒg‚ÌˆÊ’u
-		spriteSize,					//!< ƒXƒvƒ‰ƒCƒg‚ÌƒTƒCƒY
-		_texelsUV);				//!< Žw’è‚·‚éUVÀ•W‚Ì”z—ñ
+		{ 0.0f, 0.0f, 0.0f, 0.0f },	//!< ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã®ä½ç½®
+		spriteSize,					//!< ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã®ã‚µã‚¤ã‚º
+		_texelsUV);				//!< æŒ‡å®šã™ã‚‹UVåº§æ¨™ã®é…åˆ—
 	return object;
 }
 
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
-// ‰æ‘œ‚ð”jŠü‚·‚éƒƒ\ƒbƒh
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
+// ç”»åƒã‚’ç ´æ£„ã™ã‚‹ãƒ¡ã‚½ãƒƒãƒ‰
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
 void CObjectBase::DisposeSprite(CPicture* object)
 {
 	if (object != NULL)
@@ -52,13 +52,13 @@ void CObjectBase::DisposeSprite(CPicture* object)
 	}
 }
 
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
-// ‰æ‘œ‚ð•`‰æ‚·‚éƒƒ\ƒbƒh
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
+// ç”»åƒã‚’æç”»ã™ã‚‹ãƒ¡ã‚½ãƒƒãƒ‰
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
 void CObjectBase::RenderSprite(CPicture* object, XMFLOAT4 _col)
 {
-	XMFLOAT4X4	matView = (*m_pGameInfo->pCamera)->getViewMatrix();		 //!< ƒrƒ…[ƒgƒ‰ƒ“ƒXƒtƒH[ƒ€iŽ‹“_À•W•ÏŠ·j
-	XMFLOAT4X4	matProj = (*m_pGameInfo->pCamera)->getProjectionMatrix();	 //!< ƒvƒƒWƒFƒNƒVƒ‡ƒ“ƒgƒ‰ƒ“ƒXƒtƒH[ƒ€iŽË‰e•ÏŠ·j
+	XMFLOAT4X4	matView = (*m_pGameInfo->pCamera)->getViewMatrix();		 //!< ãƒ“ãƒ¥ãƒ¼ãƒˆãƒ©ãƒ³ã‚¹ãƒ•ã‚©ãƒ¼ãƒ ï¼ˆè¦–ç‚¹åº§æ¨™å¤‰æ›ï¼‰
+	XMFLOAT4X4	matProj = (*m_pGameInfo->pCamera)->getProjectionMatrix();	 //!< ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ã‚·ãƒ§ãƒ³ãƒˆãƒ©ãƒ³ã‚¹ãƒ•ã‚©ãƒ¼ãƒ ï¼ˆå°„å½±å¤‰æ›ï¼‰
 	if (object != NULL)
 	{
 		object->render(matView, matProj, 0Ui64, _col);
@@ -71,18 +71,18 @@ CFont* CObjectBase::createFont(LPCWSTR path_, int digits_, float width_, float h
 	CFont* objects = NULL;
 
 	objects = CFont::create(*(m_pGameInfo->pDevice), *(m_pGameInfo->pDeviceContext), (m_pGameInfo->pViewPort), HLSL_PlaneHLSL, path_,
-		{ 0.0f, 0.0f, 0.0f, 0.0f },	// ƒXƒvƒ‰ƒCƒg‚ÌˆÊ’u
-		spriteSize,					// ƒXƒvƒ‰ƒCƒg‚ÌƒTƒCƒY
-		_texelsUV,					// Žw’è‚·‚éUVÀ•W‚Ì”z—ñ
-		digits_);					// Œ…”
+		{ 0.0f, 0.0f, 0.0f, 0.0f },	// ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã®ä½ç½®
+		spriteSize,					// ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã®ã‚µã‚¤ã‚º
+		_texelsUV,					// æŒ‡å®šã™ã‚‹UVåº§æ¨™ã®é…åˆ—
+		digits_);					// æ¡æ•°
 
 	return objects;
 }
 
 void CObjectBase::renderFont(CFont* object, int num_, XMFLOAT4 _col)
 {
-	XMFLOAT4X4	matView = (*m_pGameInfo->pCamera)->getViewMatrix();		 //!< ƒrƒ…[ƒgƒ‰ƒ“ƒXƒtƒH[ƒ€iŽ‹“_À•W•ÏŠ·j
-	XMFLOAT4X4	matProj = (*m_pGameInfo->pCamera)->getProjectionMatrix();	 //!< ƒvƒƒWƒFƒNƒVƒ‡ƒ“ƒgƒ‰ƒ“ƒXƒtƒH[ƒ€iŽË‰e•ÏŠ·j
+	XMFLOAT4X4	matView = (*m_pGameInfo->pCamera)->getViewMatrix();		 //!< ãƒ“ãƒ¥ãƒ¼ãƒˆãƒ©ãƒ³ã‚¹ãƒ•ã‚©ãƒ¼ãƒ ï¼ˆè¦–ç‚¹åº§æ¨™å¤‰æ›ï¼‰
+	XMFLOAT4X4	matProj = (*m_pGameInfo->pCamera)->getProjectionMatrix();	 //!< ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ã‚·ãƒ§ãƒ³ãƒˆãƒ©ãƒ³ã‚¹ãƒ•ã‚©ãƒ¼ãƒ ï¼ˆå°„å½±å¤‰æ›ï¼‰
 	if (object != NULL)
 	{
 		object->render(matView, matProj, num_, 0Ui64, _col);
@@ -97,9 +97,9 @@ void CObjectBase::disposeFont(CFont* object)
 	}
 }
 
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
-// “ü—Í‚ðŽæ“¾‚·‚éƒƒ\ƒbƒh
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
+// å…¥åŠ›ã‚’å–å¾—ã™ã‚‹ãƒ¡ã‚½ãƒƒãƒ‰
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
 std::shared_ptr<CDirectInput> CObjectBase::GetInput()
 {
 	return *(m_pGameInfo->pDirectInput);
