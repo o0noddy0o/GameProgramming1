@@ -19,7 +19,7 @@ void CActionGameApp::procPlayBegin()
 {
 	renderSprite(pBackground);
 	pText->setPos(-96.f, 200.f);
-	pText->SetText("INGAME");
+	pText->SetText("STAGE-1");
 
 	pStage = shared_ptr<Stage>(new Stage(getGameInfo()));
 

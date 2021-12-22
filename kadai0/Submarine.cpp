@@ -29,7 +29,7 @@ Submarine::Submarine(GameInfo* _pGameInfo)
 	: Super(_pGameInfo)
 	, m_pos(0.f, 0.f)
 	, m_hp(SUBMARINE_MAX_HP)
-	, m_pBullet{nullptr}
+	, m_pBullet{ nullptr }
 	, killedEnemyCnt(0)
 {
 	m_pGameInfo->pCamera->get()->setPos(m_pos.x, m_pos.y, m_pGameInfo->pCamera->get()->getPos().z);
@@ -47,17 +47,17 @@ Submarine::Submarine(GameInfo* _pGameInfo)
 	}
 
 	// 壁の画像を作成
-	m_wall.push_back( Wall(CreateSprite(Tex_rightup, WALL_1_SIZE_X, WALL_1_SIZE_Y), XMFLOAT2(WALL_1_X, WALL_1_Y)));
-	m_wall.push_back( Wall(CreateSprite(Tex_leftup, WALL_2_SIZE_X, WALL_2_SIZE_Y), XMFLOAT2(WALL_2_X, WALL_2_Y)));
-	m_wall.push_back( Wall(CreateSprite(Tex_leftdown, WALL_3_SIZE_X, WALL_3_SIZE_Y), XMFLOAT2(WALL_3_X, WALL_3_Y)));
-	m_wall.push_back( Wall(CreateSprite(Tex_rightdown, WALL_4_SIZE_X, WALL_4_SIZE_Y), XMFLOAT2(WALL_4_X, WALL_4_Y)));
-	
+	m_wall.push_back(Wall(CreateSprite(Tex_rightup, WALL_1_SIZE_X, WALL_1_SIZE_Y), XMFLOAT2(WALL_1_X, WALL_1_Y)));
+	m_wall.push_back(Wall(CreateSprite(Tex_leftup, WALL_2_SIZE_X, WALL_2_SIZE_Y), XMFLOAT2(WALL_2_X, WALL_2_Y)));
+	m_wall.push_back(Wall(CreateSprite(Tex_leftdown, WALL_3_SIZE_X, WALL_3_SIZE_Y), XMFLOAT2(WALL_3_X, WALL_3_Y)));
+	m_wall.push_back(Wall(CreateSprite(Tex_rightdown, WALL_4_SIZE_X, WALL_4_SIZE_Y), XMFLOAT2(WALL_4_X, WALL_4_Y)));
+
 	// 壁の位置を設置する
 	for (int i = 0; i < (int)m_wall.size(); ++i)
 	{
 		m_wall[i].ob->setPos(m_pos.x + m_wall[i].relativePos.x, m_pos.y + m_wall[i].relativePos.y);
 	}
-    
+
 	// プレイヤーオブジェクトの作成
 	m_pPlayer[0] = shared_ptr<Player>(new Player(m_pGameInfo, { 0.f, 0.f }, m_pos, 1));
 	m_pPlayer[1] = shared_ptr<Player>(new Player(m_pGameInfo, { 0.f, 0.f }, m_pos, 2));
@@ -77,10 +77,10 @@ Submarine::Submarine(GameInfo* _pGameInfo)
 	}
 
 	vector<XMFLOAT2> pos = {
-		{ 202.f, -2.f },
-		{ 0.f, -206.f },
-		{ -196.f, -4.f },
-		{ 15.f, 190.f },
+		{ 160.f, 0.f },
+		{ 0.f, -160.f },
+		{ -160.f, 0.f },
+		{ 0.f, 160.f },
 		{ -64.f, 0.f },
 		{ 98.f, 64.f },
 	};
@@ -91,7 +91,7 @@ Submarine::Submarine(GameInfo* _pGameInfo)
 		m_pOperationDevice[i] = shared_ptr<OperationDevice>(new OperationDevice(m_pGameInfo, XMFLOAT2(m_pos.x + pos[i].x, m_pos.y + pos[i].y), pos[i], i));
 		m_pOperationDevice[i]->SetComponent(m_pComponent[i]);
 	}
-	
+
 	m_pUI = (shared_ptr<UI>)new UI(m_pGameInfo);
 	m_pUI->SetNumOfKilledEnemy(0);
 
@@ -111,7 +111,7 @@ Submarine::~Submarine()
 	{
 		DisposeSprite(m_floor[i].ob);
 	}
-  
+
 	for (int i = 0; i < (int)m_wall.size(); ++i)
 	{
 		DisposeSprite(m_wall[i].ob);
@@ -170,9 +170,9 @@ void Submarine::Tick(float _deltaTime)
 	//ジャンプ
 	for (int i = 0; i < 2; ++i)
 	{
-		
+
 	}
-  
+
 	m_pUI->UpdateMap(GetPos());
 }
 
@@ -186,7 +186,7 @@ void Submarine::RenderProcess()
 	m_pComponent[4]->renderSprite();
 	m_pComponent[5]->renderSprite();
 	RenderSprite(m_pImg);
-	
+
 	for (int i = 0; i < NUM_OF_COMPONENT; ++i)
 	{
 		// ジェットエンジンとバリアは潜水艦の下の描画する
@@ -210,11 +210,11 @@ void Submarine::RenderProcess()
 			(*m_pBullet[i])[j]->renderSprite();
 		}
 	}
-  
+
 	//プレイヤーの画像を描画
 	m_pPlayer[0]->RenderChara();
 	m_pPlayer[1]->RenderChara();
-  
+
 	// 床
 	for (int i = 0; i < (int)m_floor.size(); ++i)
 	{
@@ -236,10 +236,10 @@ void Submarine::RenderProcess()
 // 当たり判定
 //━━━━━━━━━━━━━━━━━━━━━━━
 void Submarine::CollisionProcess(
-	vector < shared_ptr < Enemy> >*							_pEnemy,
-	vector<shared_ptr<vector<shared_ptr<EnemyBullet>>>>*	_pEnemyBullet,
-	vector < shared_ptr < SceneryObject > >*				_pSceneryObject,
-	vector < shared_ptr < Item > >*							_pItem)
+	vector < shared_ptr < Enemy> >* _pEnemy,
+	vector<shared_ptr<vector<shared_ptr<EnemyBullet>>>>* _pEnemyBullet,
+	vector < shared_ptr < SceneryObject > >* _pSceneryObject,
+	vector < shared_ptr < Item > >* _pItem)
 {
 	// NULLチェック
 	if (_pEnemy)
@@ -252,7 +252,7 @@ void Submarine::CollisionProcess(
 			// 敵と潜水艦の当たり判定
 			if (boundingBox->Collision(m_pCircleBoundingBox.get()))
 			{
-				 GetDamaged(DAMAGE_WHEN_ENEMY_HIT_SUBMARINE);
+				GetDamaged(DAMAGE_WHEN_ENEMY_HIT_SUBMARINE);
 			}
 
 			// 潜水艦の弾と敵の当たり判定
@@ -280,7 +280,7 @@ void Submarine::CollisionProcess(
 							m_pUI->SetNumOfKilledEnemy(killedEnemyCnt);
 							m_pBullet[j]->erase(i2);
 							bEndloop = true;
-							
+
 							break;
 						}
 					}
@@ -360,6 +360,35 @@ void Submarine::MoveProcess(float _deltaTime)
 	m_pos.x += offsetPos.x * SUBMARINE_MOVE_SPEED * _deltaTime;
 	m_pos.y += offsetPos.y * SUBMARINE_MOVE_SPEED * _deltaTime;
 
+	static XMFLOAT2 max = {
+		WINDOW_WIDTH / 2.f + WINDOW_WIDTH * (SCREEN_MULTIPLE_X - 1.f) - SUBMARINE_SIZE_X / 2.f,
+		WINDOW_HEIGHT / 2.f - SUBMARINE_SIZE_Y / 2.f
+	};
+
+	static XMFLOAT2 min = {
+		-WINDOW_WIDTH / 2.f + SUBMARINE_SIZE_X / 2.f,
+		-WINDOW_HEIGHT / 2.f - WINDOW_HEIGHT * (SCREEN_MULTIPLE_Y - 1.f) + SUBMARINE_SIZE_Y / 2.f
+	};
+
+	//潜水艦の移動制御
+	if (m_pos.x < min.x)
+	{
+		m_pos.x = min.x;
+	}
+	else if (m_pos.x > max.x)
+	{
+		m_pos.x = max.x;
+	}
+	if (m_pos.y > max.y)
+	{
+		m_pos.y = max.y;
+	}
+	if (m_pos.y < min.y)
+	{
+		m_pos.y = min.y;
+	}
+
+
 	m_pCircleBoundingBox->SetPos(m_pos);
 
 	// 潜水艦の位置を設置する
@@ -375,7 +404,7 @@ void Submarine::MoveProcess(float _deltaTime)
 	{
 		m_wall[i].ob->setPos(m_pos.x + m_wall[i].relativePos.x, m_pos.y + m_wall[i].relativePos.y);
 	}
-  
+
 	// すべて部品を移動させる
 	for (int i = 0; i < NUM_OF_COMPONENT; ++i)
 	{
@@ -389,10 +418,13 @@ void Submarine::MoveProcess(float _deltaTime)
 	//操作装置を移動させる
 	for (int i = 0; i < NUM_OF_OPERATION_DEVICE; ++i)
 	{
+
 		m_pOperationDevice[i]->SetPos(m_pos);
 	}
 
 	m_pJetEngine->SetIsMoveingToFalse();
+
+
 }
 
 //━━━━━━━━━━━━━━━━━━━━━━━
@@ -413,15 +445,32 @@ void Submarine::MoveCamera()
 	XMFLOAT3 cameraPos = m_pGameInfo->pCamera->get()->getPos();
 
 #if ShowDeltaTimeAndFPS
-	if(pDeltaTimeText)pDeltaTimeText->setPos(cameraPos.x + DeltaTimeText_Pos_X, cameraPos.y + DeltaTimeText_Pos_Y);
+	if (pDeltaTimeText)pDeltaTimeText->setPos(cameraPos.x + DeltaTimeText_Pos_X, cameraPos.y + DeltaTimeText_Pos_Y);
 #endif
 
 	// カメラと潜水艦の間の距離を計算
-	XMFLOAT2 distanceBetweenCameraAndSubmarine = 
+	XMFLOAT2 distanceBetweenCameraAndSubmarine =
 	{ m_pos.x - cameraPos.x, m_pos.y - cameraPos.y };
 
 	cameraPos.x += distanceBetweenCameraAndSubmarine.x * PERCENNTAGE_OF_CAMERA_MOVE_TO_SUBMARINNE;
 	cameraPos.y += distanceBetweenCameraAndSubmarine.y * PERCENNTAGE_OF_CAMERA_MOVE_TO_SUBMARINNE;
+
+	static XMFLOAT2 max = {
+		WINDOW_WIDTH * (SCREEN_MULTIPLE_X - 1.f),
+		0.f
+	};
+
+	static XMFLOAT2 min = {
+		0.f,
+		 -WINDOW_HEIGHT * (SCREEN_MULTIPLE_Y - 1.f)
+	};
+
+	//カメラの制御
+	if (cameraPos.x < min.x)cameraPos.x = min.x;
+	else if (cameraPos.x > max.x)cameraPos.x = max.x;
+
+	if (cameraPos.y > max.y)cameraPos.y = max.y;
+	else if (cameraPos.y < min.y)cameraPos.y = min.y;
 
 	m_pGameInfo->pCamera->get()->setPos(cameraPos);
 

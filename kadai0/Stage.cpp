@@ -27,11 +27,19 @@ Stage::Stage(GameInfo* _pGameInfo)
 {
 	srand((unsigned)time(NULL));
 
+	//ö…ŠÍ‚ğì¬
 	m_pSubmarine = (shared_ptr<Submarine>)new Submarine(_pGameInfo);
+
+	//áŠQ•¨‚ğì¬
+	m_pSceneryObject.push_back((shared_ptr<SceneryObject>)new SceneryObject(m_pGameInfo, XMFLOAT2(0.f, -2500.f), (float)0.f));
+	m_pSceneryObject.push_back((shared_ptr<SceneryObject>)new SceneryObject(m_pGameInfo, XMFLOAT2(2500.f, 500.f), (float)0.f));
+
+	
 	//
 	int map[Map_Y_SIZE][Map_X_SIZE] = Stage01;
 	//m_map = map;
 	
+	//“G‚ğì¬
 	m_pEnemy.push_back((shared_ptr<Enemy>)new Fish(m_pGameInfo, XMFLOAT2(600.f,  850.f), (float)rand()));
 	m_pEnemy.push_back((shared_ptr<Enemy>)new Fish(m_pGameInfo, XMFLOAT2(810.f,   10.f), (float)rand()));
 	m_pEnemy.push_back((shared_ptr<Enemy>)new Fish(m_pGameInfo, XMFLOAT2(-800.f, 200.f), (float)rand()));
@@ -64,6 +72,11 @@ Stage::~Stage()
 void Stage::RenderProcess()
 {
 	m_pSubmarine->RenderProcess();
+
+	for (int i = 0; i < (int)m_pSceneryObject.size(); ++i)
+	{
+		m_pSceneryObject[i]->renderSprite();
+	}
 
 	for (int i = 0; i < (int)m_pEnemyBullet.size(); ++i)
 	{
