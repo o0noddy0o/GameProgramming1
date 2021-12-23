@@ -99,7 +99,8 @@ void Stage::RenderProcess()
 		m_pSceneryObject[i]->renderSprite();
 	}
 
-	for (int i = 0; i < (int)m_pEnemyBullet.size(); ++i)
+#if HaveEnemy
+	for (int i = 0; i < (int)m_pEnemyBullet->size(); ++i)
 	{
 		(*m_pEnemyBullet)[i].get()->renderSprite();
 	}
