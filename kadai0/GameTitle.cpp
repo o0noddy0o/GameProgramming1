@@ -51,7 +51,8 @@ void CActionGameApp::procTitle()
 //━━━━━━━━━━━━━━━━━━━━━━━
 void CActionGameApp::procTitleBegin()
 {
-	if (!pBackground) pBackground = createSprite(Tex_Ingame);
+	if (!pBackground) pBackground = createSprite(Tex_Ingame, 1920.f * SCREEN_MULTIPLE_X, 1080.f * SCREEN_MULTIPLE_Y);
+	pBackground->setPos(1920.f, -1620.f);
 	renderSprite(pBackground);
 	pText->setPos(-80.f, 200.f);
 	pText->SetText("TITLE");
