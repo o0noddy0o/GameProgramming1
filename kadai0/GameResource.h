@@ -44,6 +44,7 @@
 // 敵用
 #define Tex_Rock					L"Media/Sprite/ActionGame_Sprite/Ingame.jpg"
 #define Tex_Enemy					L"Media/Sprite/ActionGame_Sprite/Fish.png"
+#define Tex_Enemy2					L"Media/Sprite/ActionGame_Sprite/Fish2.png"
 #define Tex_EnemyBullet				L"Media/Sprite/ActionGame_Sprite/EnemyBullet.png"
 
 // UI
