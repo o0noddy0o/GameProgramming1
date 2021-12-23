@@ -24,10 +24,11 @@ XMFLOAT3 cameraPos;
 void CActionGameApp::procPlayBegin()
 {
 	renderSprite(pBackground);
-	pText->setPos(-900.f, 350.f);
-	pText->SetText("INGAME");
+	pText->setPos(-96.f, 200.f);
+	pText->SetText("STAGE-1");
 
 #if ShowGamePadInput
+  pText->setPos(-900.f, 350.f);
 	pText2 = shared_ptr<CText>(new CText(getGameInfo(), Tex_Text, kTexelText, XMFLOAT2(28.f, 28.f), XMFLOAT2(-900, 0.f), XMFLOAT2(5.f, 14.f)));
 #endif
 

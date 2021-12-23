@@ -1,11 +1,11 @@
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
-// ƒtƒ@ƒCƒ‹–¼@@FStage.cpp
-// ŠT—v@@@@@FƒXƒe[ƒW‚Éo‚é‘¼‚Ì•¨‚ÌƒNƒ‰ƒX
-// ì¬Ò@@@@F20CU0340 —Ñ¯
-// XV“à—e@@@F2021/12/01 ì¬
-//			@@@2021/12/08@“G‚Ì’e‚ğ”­Ë‹@”\‚ğ’Ç‰Á
-//			@@@2021/12/10@“G‚ÌˆÚ“®ˆ—‚ğ’Ç‰Á
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
+// ãƒ•ã‚¡ã‚¤ãƒ«åã€€ã€€ï¼šStage.cpp
+// æ¦‚è¦ã€€ã€€ã€€ã€€ã€€ï¼šã‚¹ãƒ†ãƒ¼ã‚¸ã«å‡ºã‚‹ä»–ã®ç‰©ã®ã‚¯ãƒ©ã‚¹
+// ä½œæˆè€…ã€€ã€€ã€€ã€€ï¼š20CU0340 æ—æ˜Ÿ
+// æ›´æ–°å†…å®¹ã€€ã€€ã€€ï¼š2021/12/01 ä½œæˆ
+//			ã€€ã€€ã€€2021/12/08ã€€æ•µã®å¼¾ã‚’ç™ºå°„æ©Ÿèƒ½ã‚’è¿½åŠ 
+//			ã€€ã€€ã€€2021/12/10ã€€æ•µã®ç§»å‹•å‡¦ç†ã‚’è¿½åŠ 
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
 
 #include "Stage.h"
 #include "GameResource.h"
@@ -18,23 +18,41 @@
 #include "Fish2.h"
 #include <time.h>
 
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
-// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
-// ˆø”‚PFƒQ[ƒ€‚Ìî•ñ
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
+// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+// å¼•æ•°ï¼‘ï¼šã‚²ãƒ¼ãƒ ã®æƒ…å ±
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
 Stage::Stage(GameInfo* _pGameInfo)
 	: Super(_pGameInfo)
 	, m_pSubmarine(NULL)
 {
 	srand((unsigned)time(NULL));
 
+	//æ½œæ°´è‰¦ã‚’ä½œæˆ
 	m_pSubmarine = (shared_ptr<Submarine>)new Submarine(_pGameInfo);
+
+	//éšœå®³ç‰©ã‚’ä½œæˆ
+	m_pSceneryObject.push_back((shared_ptr<SceneryObject>)new SceneryObject(m_pGameInfo, XMFLOAT2(0.f, -2500.f), (float)0.f));
+	m_pSceneryObject.push_back((shared_ptr<SceneryObject>)new SceneryObject(m_pGameInfo, XMFLOAT2(2500.f, 500.f), (float)0.f));
+
+	
 	//
 	int map[Map_Y_SIZE][Map_X_SIZE] = Stage01;
 	//m_map = map;
 	
 #if HaveEnemy
 	Enemy::ResetEnemyBullet();
+	//æ•µã‚’ä½œæˆ
+	m_pEnemy.push_back((shared_ptr<Enemy>)new Fish(m_pGameInfo, XMFLOAT2(600.f,  850.f), (float)rand()));
+	m_pEnemy.push_back((shared_ptr<Enemy>)new Fish(m_pGameInfo, XMFLOAT2(810.f,   10.f), (float)rand()));
+	m_pEnemy.push_back((shared_ptr<Enemy>)new Fish(m_pGameInfo, XMFLOAT2(-800.f, 200.f), (float)rand()));
+	m_pEnemy.push_back((shared_ptr<Enemy>)new Fish(m_pGameInfo, XMFLOAT2(720.f, -900.f), (float)rand()));
+	m_pEnemy.push_back((shared_ptr<Enemy>)new Fish(m_pGameInfo, XMFLOAT2(-720.f,  90.f), (float)rand()));
+	m_pEnemy.push_back((shared_ptr<Enemy>)new Fish(m_pGameInfo, XMFLOAT2(580.f,  450.f), (float)rand()));
+	m_pEnemy.push_back((shared_ptr<Enemy>)new Fish(m_pGameInfo, XMFLOAT2(360.f,  180.f), (float)rand()));
+	m_pEnemy.push_back((shared_ptr<Enemy>)new Fish(m_pGameInfo, XMFLOAT2(410.f,  680.f), (float)rand()));
+	m_pEnemy.push_back((shared_ptr<Enemy>)new Fish(m_pGameInfo, XMFLOAT2(-860.f, 210.f), (float)rand()));
+	m_pEnemy.push_back((shared_ptr<Enemy>)new Fish(m_pGameInfo, XMFLOAT2(380.f,   70.f), (float)rand()));
 
 	m_pEnemy.push_back((shared_ptr<Enemy>)new Fish(m_pGameInfo, XMFLOAT2((rand() % int(WINDOW_WIDTH * 2.f) + 960.f) * ((rand() % 2 == 0) ? (1) : (-1)), (rand() % int(WINDOW_HEIGHT * 2.f) + 540.f) * ((rand() % 2 == 0) ? (1) : (-1))), (float)rand()));
 	m_pEnemy.push_back((shared_ptr<Enemy>)new Fish(m_pGameInfo, XMFLOAT2((rand() % int(WINDOW_WIDTH * 2.f) + 960.f) * ((rand() % 2 == 0) ? (1) : (-1)), (rand() % int(WINDOW_HEIGHT * 2.f) + 540.f) * ((rand() % 2 == 0) ? (1) : (-1))), (float)rand()));
@@ -63,21 +81,25 @@ Stage::Stage(GameInfo* _pGameInfo)
 	m_lastFrameTime = clock();
 }
 
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
-// ƒfƒXƒgƒ‰ƒNƒ^
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
+// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
 Stage::~Stage()
 {
 }
 
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
-// “G‚Ì‰æ‘œ‚Ì•`‰æˆ—
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
+// æ•µã®ç”»åƒã®æç”»å‡¦ç†
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
 void Stage::RenderProcess()
 {
 	m_pSubmarine->RenderProcess();
-#if HaveEnemy
-	for (int i = 0; i < (int)m_pEnemyBullet->size(); ++i)
+	for (int i = 0; i < (int)m_pSceneryObject.size(); ++i)
+	{
+		m_pSceneryObject[i]->renderSprite();
+	}
+
+	for (int i = 0; i < (int)m_pEnemyBullet.size(); ++i)
 	{
 		(*m_pEnemyBullet)[i].get()->renderSprite();
 	}
@@ -89,16 +111,16 @@ void Stage::RenderProcess()
 #endif
 }
 
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
-// “–‚½‚è”»’è
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
+// å½“ãŸã‚Šåˆ¤å®š
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
 void Stage::CollisionProcess()
 {
 }
 
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
-// –ˆƒtƒŒ[ƒ€‚É‚â‚éˆ—
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
+// æ¯ãƒ•ãƒ¬ãƒ¼ãƒ ã«ã‚„ã‚‹å‡¦ç†
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
 void Stage::Tick()
 {
 	{

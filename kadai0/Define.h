@@ -4,11 +4,15 @@
 // 潜水艦
 //━━━━━━━━━━━━━━━━━━━━━━━
 #define SUBMARINE_MAX_HP			(200.f)
-#define SUBMARINE_MOVE_SPEED		(600.f)
+#define SUBMARINE_MOVE_SPEED		(400.f)
 #define SUBMARINE_SIZE_X			(384.f)
 #define SUBMARINE_SIZE_Y			(384.f)
 #define NUM_OF_OPERATION_DEVICE		(5)
 #define NUM_OF_COMPONENT			(6)
+
+
+#define SCREEN_MULTIPLE_X			(3.f)
+#define SCREEN_MULTIPLE_Y			(4.f)
 
 #define GRAVITATION					(5.f)
 
@@ -36,7 +40,7 @@
 //━━━━━━━━━━━━━━━━━━━━━━━
 // タレット
 //━━━━━━━━━━━━━━━━━━━━━━━
-#define TURRET_DISTANCE				(300.f)
+#define TURRET_DISTANCE				(250.f)
 #define TURRET_SIZE_X				(40.f)
 #define TURRET_SIZE_Y				(30.f)
 #define TURRET_ROTATION_SPEED		(200.f)
@@ -107,8 +111,8 @@
 //━━━━━━━━━━━━━━━━━━━━━━━
 #define Map_X_SIZE				(19)
 #define Map_Y_SIZE				(24)
-#define Block_X_SIZE			(60.f)
-#define Block_Y_SIZE			(60.f)
+#define Block_X_SIZE			(3200.f)
+#define Block_Y_SIZE			(1500.f)
 
 //━━━━━━━━━━━━━━━━━━━━━━━
 // UI

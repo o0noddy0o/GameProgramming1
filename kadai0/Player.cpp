@@ -36,12 +36,12 @@ Player::Player(GameInfo* _pGameInfo, XMFLOAT2 _pos, XMFLOAT2 _relativePos, int _
 {
 	switch (_index)
 	{
-	//プレイヤー１の画像を作成
+		//プレイヤー１の画像を作成
 	case 1:
 		m_pImg = CreateSprite(Tex_Player1, PLAYER_SIZE_Y, PLAYER_SIZE_Y);
 		m_pImg->setPos(_pos);
 		break;
-	//プレイヤー１の画像を作成
+		//プレイヤー１の画像を作成
 	case 2:
 		m_pImg = CreateSprite(Tex_Player2, PLAYER_SIZE_Y, PLAYER_SIZE_Y);
 		m_pImg->setPos(_pos);
@@ -215,7 +215,6 @@ void Player::InputProcess()
 #endif
 		break;
 	}
-	
 }
 
 //━━━━━━━━━━━━━━━━━━━━━━━
@@ -234,19 +233,20 @@ void Player::CollisionWithWallAndFloor(vector<Submarine::Wall>* _pWall, vector<S
 	m_bIsOnFloor = false;
 	for (int i = 0; i < (int)_pWall->size(); ++i)
 	{
-		/*XMFLOAT2 m_posX;
-		m_posX.x = m_pos.x / 2.f;*/
-
+		//ジャンプしている時
 		if (m_bJumping)
 		{
+			//プレイヤーが壁の下に当たったら
 			if ((*_pWall)[i].ob->collisionBottom(m_pImg) != false)
 			{
 				m_relativePos.y = (*_pWall)[i].relativePos.y - (*_pWall)[i].ob->getSize().y / 2.f - (PLAYER_SIZE_Y / 2.f);
 				m_bJumping = false;
 				m_jumpPower = 0.f;
 			}
+			//壁の下の以外に当たったら
 			else
 			{
+				//右に当たった
 				if (m_bMovingRight)
 				{
 					if ((*_pWall)[i].ob->collisionLeft(m_pImg) != false)
@@ -255,6 +255,7 @@ void Player::CollisionWithWallAndFloor(vector<Submarine::Wall>* _pWall, vector<S
 						m_bMovingRight = false;
 					}
 				}
+				//左に当たったら
 				else if (m_bMovingLeft)
 				{
 					if ((*_pWall)[i].ob->collisionRight(m_pImg) != false)
@@ -265,8 +266,10 @@ void Player::CollisionWithWallAndFloor(vector<Submarine::Wall>* _pWall, vector<S
 				}
 			}
 		}
+		//ジャンプしていない時
 		else
 		{
+			//上
 			if ((*_pWall)[i].ob->collisionTop(m_pImg) != false)
 			{
 				m_relativePos.y = (*_pWall)[i].relativePos.y + (*_pWall)[i].ob->getSize().y / 2.f + (PLAYER_SIZE_Y / 2.f);
@@ -275,6 +278,7 @@ void Player::CollisionWithWallAndFloor(vector<Submarine::Wall>* _pWall, vector<S
 			}
 			else
 			{
+				//右
 				if (m_bMovingRight)
 				{
 					if ((*_pWall)[i].ob->collisionLeft(m_pImg) != false)
@@ -283,6 +287,7 @@ void Player::CollisionWithWallAndFloor(vector<Submarine::Wall>* _pWall, vector<S
 						m_bMovingRight = false;
 					}
 				}
+				//左
 				else if (m_bMovingLeft)
 				{
 					if ((*_pWall)[i].ob->collisionRight(m_pImg) != false)
@@ -293,30 +298,15 @@ void Player::CollisionWithWallAndFloor(vector<Submarine::Wall>* _pWall, vector<S
 				}
 			}
 		}
-
-		/*else if (m_pImg->collision(m_posX) != false)
-		{
-			XMFLOAT2 pos;
-			pos.x = m_pImg->getPos().x - m_posX.x;
-			pos.y = m_pImg->getPos().y;
-
-			m_pPlayer[j]->SetPos(pos);
-		}*/
-		/*else if (m_pImg->collision(m_posX) != false)
-		{
-			XMFLOAT2 pos;
-			pos.x = m_pImg->getPos().x - m_posX.x;
-			pos.y = m_pImg->getPos().y;
-			m_pPlayer[j]->SetPos(pos);
-		}*/
 	}
+
+	//床の当たり判定
 	for (int i = 0; i < (int)_pFloor->size(); ++i)
 	{
-		/*XMFLOAT2 m_posX;
-		m_posX.x = m_pos.x / 2.f;*/
-
+		//ジャンプしている時
 		if (m_bJumping)
 		{
+			//上に
 			if ((*_pFloor)[i].ob->collisionBottom(m_pImg) != false)
 			{
 				m_relativePos.y = (*_pFloor)[i].relativePos.y - (*_pFloor)[i].ob->getSize().y / 2.f - (PLAYER_SIZE_Y / 2.f);
@@ -325,6 +315,7 @@ void Player::CollisionWithWallAndFloor(vector<Submarine::Wall>* _pWall, vector<S
 			}
 			else
 			{
+				//右に
 				if (m_bMovingRight)
 				{
 					if ((*_pFloor)[i].ob->collisionLeft(m_pImg) != false)
@@ -333,6 +324,7 @@ void Player::CollisionWithWallAndFloor(vector<Submarine::Wall>* _pWall, vector<S
 						m_bMovingRight = false;
 					}
 				}
+				//左に
 				else if (m_bMovingLeft)
 				{
 					if ((*_pFloor)[i].ob->collisionRight(m_pImg) != false)
@@ -343,8 +335,10 @@ void Player::CollisionWithWallAndFloor(vector<Submarine::Wall>* _pWall, vector<S
 				}
 			}
 		}
+		//ジャンプしていない時
 		else
 		{
+			//下に
 			if ((*_pFloor)[i].ob->collisionTop(m_pImg) != false)
 			{
 				m_relativePos.y = (*_pFloor)[i].relativePos.y + (*_pFloor)[i].ob->getSize().y / 2.f + (PLAYER_SIZE_Y / 2.f);
@@ -353,6 +347,7 @@ void Player::CollisionWithWallAndFloor(vector<Submarine::Wall>* _pWall, vector<S
 			}
 			else
 			{
+				//右に
 				if (m_bMovingRight)
 				{
 					if ((*_pFloor)[i].ob->collisionLeft(m_pImg) != false)
@@ -361,6 +356,7 @@ void Player::CollisionWithWallAndFloor(vector<Submarine::Wall>* _pWall, vector<S
 						m_bMovingRight = false;
 					}
 				}
+				//左に
 				else if (m_bMovingLeft)
 				{
 					if ((*_pFloor)[i].ob->collisionRight(m_pImg) != false)
@@ -371,23 +367,6 @@ void Player::CollisionWithWallAndFloor(vector<Submarine::Wall>* _pWall, vector<S
 				}
 			}
 		}
-
-		
-		/*else if (m_pImg->collision(m_posX) != false)
-		{
-			XMFLOAT2 pos;
-			pos.x = m_pImg->getPos().x - m_posX.x;
-			pos.y = m_pImg->getPos().y;
-
-			m_pPlayer[j]->SetPos(pos);
-		}*/
-		/*else if (m_pImg->collision(m_posX) != false)
-		{
-			XMFLOAT2 pos;
-			pos.x = m_pImg->getPos().x - m_posX.x;
-			pos.y = m_pImg->getPos().y;
-			m_pPlayer[j]->SetPos(pos);
-		}*/
 	}
 }
 
@@ -396,8 +375,10 @@ void Player::CollisionWithWallAndFloor(vector<Submarine::Wall>* _pWall, vector<S
 //━━━━━━━━━━━━━━━━━━━━━━━
 void Player::Move(float _deltaTime)
 {
+	//プレイヤーが潜水艦外に移動しないように
 	static XMFLOAT2 BorderOfSubmarine = { (SUBMARINE_SIZE_X - PLAYER_SIZE_X) / 2.f, (SUBMARINE_SIZE_Y - PLAYER_SIZE_Y) / 2.f };
-	
+
+	//右側
 	if (m_bMovingRight)
 	{
 		m_relativePos.x += PLAYER_MOVE_SPEED * _deltaTime * m_movePower;
@@ -406,10 +387,11 @@ void Player::Move(float _deltaTime)
 		{
 			m_relativePos.x = BorderOfSubmarine.x;
 		}
-		
+
 		m_bMovingRight = false;
 	}
-	else if(m_bMovingLeft)
+	//左側
+	else if (m_bMovingLeft)
 	{
 		m_relativePos.x -= PLAYER_MOVE_SPEED * _deltaTime * m_movePower;
 
@@ -425,7 +407,7 @@ void Player::Move(float _deltaTime)
 		m_jumpTime += _deltaTime * PLAYER_JUMP_SPEED;
 		float moveY = (-GRAVITATION / 2.f) * m_jumpTime * m_jumpTime + m_jumpPower * m_jumpTime;
 
-		if (moveY < 0.f) 
+		if (moveY < 0.f)
 		{
 			m_bJumping = false;
 			if (moveY < -PLAYER_FALLING_SPEED_LIMIT)

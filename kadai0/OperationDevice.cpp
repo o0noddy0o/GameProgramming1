@@ -42,10 +42,10 @@ OperationDevice::OperationDevice(GameInfo* _pGameInfo, XMFLOAT2 _pos, XMFLOAT2 _
 		m_pImg = CreateSprite(Tex_Operation_Device_5, 64.f, 64.f);
 		m_pImg->setPos(_pos);
 		break;
-	/*case 5:
-		m_pImg = CreateSprite(Tex_Operation_Device_4, 64.f, 64.f);
-		m_pImg->setPos(_pos);
-		break;*/
+		/*case 5:
+			m_pImg = CreateSprite(Tex_Operation_Device_4, 64.f, 64.f);
+			m_pImg->setPos(_pos);
+			break;*/
 	}
 }
 
@@ -62,7 +62,7 @@ OperationDevice::~OperationDevice()
 //„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
 void OperationDevice::Tick(float _deltaTime)
 {
-	
+
 }
 
 //„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
@@ -121,7 +121,7 @@ void OperationDevice::collisionWithPlayer(Player* _player, float _deltaTime)
 			m_bPlayer2IsUsing = !m_bPlayer2IsUsing;
 		}
 		break;
-	}	
+	}
 }
 
 //„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
@@ -138,4 +138,9 @@ void OperationDevice::SetComponent(shared_ptr<Component> _component)
 void OperationDevice::SetPos(XMFLOAT2 _newPos)
 {
 	m_pImg->setPos(_newPos.x + m_relativePos.x, _newPos.y + m_relativePos.y);
+}
+
+void OperationDevice::SetPos(float x, float y)
+{
+	m_pImg->setPos(x + m_relativePos.x, y + m_relativePos.y);
 }
