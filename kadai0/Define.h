@@ -181,8 +181,8 @@
 // デバッグ・確認用
 //━━━━━━━━━━━━━━━━━━━━━━━
 #define DEBUG					(false)
-#define HaveEnemy				(false)
-#define ShowGamePadInput		(true)
+#define HaveEnemy				(true)
+#define ShowGamePadInput		(false)
 
 #define DebugMessage			(false)
 #if DebugMessage
