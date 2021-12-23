@@ -2,7 +2,7 @@
 // ファイル名　　：Submarine.cpp
 // 概要　　　　　：潜水艦のクラス
 // 作成者　　　　：20CU0314 ゴコケン
-// 更新内容　　　：2021/11/17 作成（ゴ）
+// 更新内容　　　：2021/11/17 作成（呉）
 //				   2021/11/28 移動メソッドを修正（ズン）
 //							  プレイヤー数を分ける（ズン）		
 //			　　　2021/12/10　敵移動のため、潜水艦座標取得メソッドを追加（林）  
@@ -137,7 +137,7 @@ void Submarine::Tick(float _deltaTime)
 
 	MoveProcess(_deltaTime);
 
-	MoveCamera();
+	MoveCamera(_deltaTime);
 
 #if ShowDeltaTimeAndFPS
 	{
@@ -166,12 +166,6 @@ void Submarine::Tick(float _deltaTime)
 
 	m_pPlayer[0]->Tick(_deltaTime, &m_wall, &m_floor);
 	m_pPlayer[1]->Tick(_deltaTime, &m_wall, &m_floor);
-
-	//ジャンプ
-	for (int i = 0; i < 2; ++i)
-	{
-		
-	}
   
 	m_pUI->UpdateMap(GetPos());
 }
@@ -237,7 +231,7 @@ void Submarine::RenderProcess()
 //━━━━━━━━━━━━━━━━━━━━━━━
 void Submarine::CollisionProcess(
 	vector < shared_ptr < Enemy> >*							_pEnemy,
-	vector<shared_ptr<vector<shared_ptr<EnemyBullet>>>>*	_pEnemyBullet,
+	shared_ptr<vector<shared_ptr<EnemyBullet>>>				_pEnemyBullet,
 	vector < shared_ptr < SceneryObject > >*				_pSceneryObject,
 	vector < shared_ptr < Item > >*							_pItem)
 {
@@ -304,20 +298,20 @@ void Submarine::CollisionProcess(
 		// 敵の弾と潜水艦の当たり判定
 		for (int i = 0; i < _pEnemyBullet->size(); ++i)
 		{
-			for (auto i2 = (*_pEnemyBullet)[i]->begin(); i2 != (*_pEnemyBullet)[i]->end();)
+			for (auto i2 = _pEnemyBullet->begin(); i2 != _pEnemyBullet->end();)
 			{
 				if (i2->get()->GetBoundingBox()->Collision(m_pCircleBoundingBox.get()))
 				{
 					GetDamaged(DAMAGE_WHEN_ENEMY_BULLET_HIT_SUBMARINE);
-					if (i2 == (*_pEnemyBullet)[i]->begin())
+					if (i2 == _pEnemyBullet->begin())
 					{
-						(*_pEnemyBullet)[i]->erase(i2);
-						i2 = (*_pEnemyBullet)[i]->begin();
+						_pEnemyBullet->erase(i2);
+						i2 = _pEnemyBullet->begin();
 					}
 					else
 					{
 						--i2;
-						(*_pEnemyBullet)[i]->erase(i2 + 1);
+						_pEnemyBullet->erase(i2 + 1);
 						++i2;
 					}
 					continue;
@@ -357,8 +351,8 @@ void Submarine::MoveProcess(float _deltaTime)
 
 	// 潜水艦の新しい座標を計算
 	XMFLOAT2 offsetPos = AngleToDirectionVector(moveDirection);
-	m_pos.x += offsetPos.x * SUBMARINE_MOVE_SPEED * _deltaTime;
-	m_pos.y += offsetPos.y * SUBMARINE_MOVE_SPEED * _deltaTime;
+	m_pos.x += offsetPos.x * SUBMARINE_MOVE_SPEED / 30.f/* * _deltaTime*/;
+	m_pos.y += offsetPos.y * SUBMARINE_MOVE_SPEED / 30.f/* * _deltaTime*/;
 
 	m_pCircleBoundingBox->SetPos(m_pos);
 
@@ -405,7 +399,7 @@ void Submarine::GetItem(int _itemType)
 //━━━━━━━━━━━━━━━━━━━━━━━
 // カメラの移動処理
 //━━━━━━━━━━━━━━━━━━━━━━━
-void Submarine::MoveCamera()
+void Submarine::MoveCamera(float _deltaTime)
 {
 	m_pUI->SetPos();
 
@@ -451,4 +445,9 @@ void Submarine::GetDamaged(float _damage)
 BoundingBox* Submarine::GetBoundingBox()const
 {
 	return m_pCircleBoundingBox.get();
+}
+
+int Submarine::GetKilledEnemyCnt()const
+{
+	return killedEnemyCnt;
 }

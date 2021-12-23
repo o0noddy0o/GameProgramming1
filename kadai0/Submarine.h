@@ -56,7 +56,7 @@ public:
 	// 当たり判定
 	void CollisionProcess(
 		vector<shared_ptr<Enemy>>*								_pEnemy,
-		vector<shared_ptr<vector<shared_ptr<EnemyBullet>>>>*	_pEnemyBullet,
+		shared_ptr<vector<shared_ptr<EnemyBullet>>>				_pEnemyBullet,
 		vector<shared_ptr<SceneryObject>>*						_pSceneryObject,
 		vector<shared_ptr<Item>>*								_pItem);
 		
@@ -67,7 +67,7 @@ public:
 	void GetItem(int _itemType);
 
 	// カメラの移動の処理
-	void MoveCamera();
+	void MoveCamera(float _deltaTime);
 
 	// 潜水艦座標の取得
 	XMFLOAT2 GetPos()const;
@@ -76,6 +76,8 @@ public:
 	void GetDamaged(float _damage);
 
 	BoundingBox* GetBoundingBox()const;
+
+	int GetKilledEnemyCnt()const;
 
 private:
 	int killedEnemyCnt;

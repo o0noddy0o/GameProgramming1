@@ -14,8 +14,10 @@
 // コンストラクタ
 // 引数１：ゲームの情報
 //━━━━━━━━━━━━━━━━━━━━━━━
-Enemy::Enemy(GameInfo* _pGameInfo)
-	:CObjectBase(_pGameInfo)
+Enemy::Enemy(GameInfo* _pGameInfo, float _damage)
+	: CObjectBase(_pGameInfo)
+	, m_pImg(NULL)
+	, m_damage(_damage)
 {
 }
 
@@ -26,6 +28,8 @@ Enemy::~Enemy()
 {
 	DisposeSprite(m_pImg);
 }
+
+shared_ptr<vector<shared_ptr<EnemyBullet>>> Enemy::m_pEnemyBullet;
 
 //━━━━━━━━━━━━━━━━━━━━━━━
 // 敵の画像を描画
@@ -43,6 +47,12 @@ shared_ptr<vector<shared_ptr<EnemyBullet>>> Enemy::GetBullet()
 	return m_pEnemyBullet;
 }
 
+float Enemy::GetDamage()const
+{
+	return m_damage;
+}
 
-
-
+void Enemy::ResetEnemyBullet()
+{
+	m_pEnemyBullet = (shared_ptr<vector<shared_ptr<EnemyBullet>>>)new vector<shared_ptr<EnemyBullet>>;
+}

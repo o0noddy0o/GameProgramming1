@@ -2,7 +2,8 @@
 // ファイル名　　：Barrier.cpp
 // 概要　　　　　：バリアのクラス
 // 作成者　　　　：20CU0314 ゴコケン
-// 更新内容　　　：2021/11/21 作成
+// 更新内容　　　：2021/11/21 作成（呉）
+// 　　　　　　　：2021/12/23 InputProcessメソッドの編集（ゲームパッドの実装）（呉）
 //━━━━━━━━━━━━━━━━━━━━━━━
 #include "Barrier.h"
 #include "GameResource.h"
@@ -33,42 +34,64 @@ Barrier::~Barrier()
 
 //━━━━━━━━━━━━━━━━━━━━━━━
 // プレイヤーの入力処理
+// 引数１：プレイヤーの番号
+// 引数２：前のフレームの処理時間
 //━━━━━━━━━━━━━━━━━━━━━━━
 void Barrier::InputProcess(int _playerIndex, float _deltaTime)
 {
+	// ゲームパッドの入力を取得
+	float gamepadX = GetInput()->GetAnalogStickX(_playerIndex - 1);
+	if (Abs(gamepadX) > 0.05f)
+	{
+		m_angle -= BARRIER_ROTATION_SPEED * _deltaTime * gamepadX;
+		m_pImg->setAngleZ(m_angle);
+		m_bIsBarrierOn = false;
+	}
+
 	switch (_playerIndex)
 	{
 	case 1:
+		// 左
 		if (GetInput()->isKeyPressed(DIK_LEFTARROW))
 		{
 			m_angle += BARRIER_ROTATION_SPEED * _deltaTime;
 			m_pImg->addAngleZ(m_angle);
 			m_bIsBarrierOn = false;
 		}
+
+		// 右
 		else if (GetInput()->isKeyPressed(DIK_RIGHTARROW))
 		{
 			m_angle -= BARRIER_ROTATION_SPEED * _deltaTime;
 			m_pImg->addAngleZ(m_angle);
 			m_bIsBarrierOn = false;
 		}
+
+		// 移動してなかったら、バリアをオンにする
 		else
 		{
 			m_bIsBarrierOn = true;
 		}
 		break;
+
 	case 2:
+		// 左
 		if (GetInput()->isKeyPressed(DIK_A))
 		{
 			m_angle += BARRIER_ROTATION_SPEED * _deltaTime;
 			m_pImg->addAngleZ(m_angle);
 			m_bIsBarrierOn = false;
 		}
+
+		// 右
 		else if (GetInput()->isKeyPressed(DIK_D))
 		{
 			m_angle -= BARRIER_ROTATION_SPEED * _deltaTime;
 			m_pImg->addAngleZ(m_angle);
 			m_bIsBarrierOn = false;
 		}
+
+		// 移動してなかったら、バリアをオンにする
 		else
 		{
 			m_bIsBarrierOn = true;
