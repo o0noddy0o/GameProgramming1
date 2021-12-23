@@ -1,5 +1,5 @@
 //━━━━━━━━━━━━━━━━━━━━━━━
-// ファイル名　　：Fish.h
+// ファイル名　　：Fish2.h
 // 概要　　　　　：敵クラス
 // 作成者　　　　：20CU0340 林星
 // 更新内容　　　：2021/12/03 作成
@@ -7,32 +7,31 @@
 //			　　　2021/12/10　敵の移動処理を追加
 //━━━━━━━━━━━━━━━━━━━━━━━
 #include "Define.h"
-#include "Fish.h"
+#include "Fish2.h"
 #include "EnemyBullet.h"
 #include "GameResource.h"
 #include "RectangleBoundingBox.h"
-#include <time.h>
 
 // ━━━━━━━━━━━━━━━━━━━━━━━
 // コンストラクタ
 // 引数１：ゲームの情報
 // 引数２：敵の初期座標
 //━━━━━━━━━━━━━━━━━━━━━━━
-Fish::Fish(GameInfo* _pGameInfo, XMFLOAT2 _pos, float _angle)
+Fish2::Fish2(GameInfo* _pGameInfo, XMFLOAT2 _pos, float _angle)
 	: Enemy(_pGameInfo)
 	, m_coolDownCnt(0)
 	, m_angle(_angle)
 {
-	m_pImg = CreateSprite(Tex_Enemy, ENEMY_1_SIZE_X, ENEMY_1_SIZE_Y);
+	m_pImg = CreateSprite(Tex_Enemy2, ENEMY_2_SIZE_X, ENEMY_2_SIZE_Y);
 	m_pImg->setAngle(0.f, 180.f, _angle);
 	m_pImg->setPos(_pos);
-	m_pBoundingBox = new RectangleBoundingBox(_pos, XMFLOAT2(ENEMY_1_SIZE_X, ENEMY_1_SIZE_Y));
+	m_pBoundingBox = new RectangleBoundingBox(_pos, XMFLOAT2(ENEMY_2_SIZE_X, ENEMY_2_SIZE_Y));
 }
 
 //━━━━━━━━━━━━━━━━━━━━━━━
 // デストラクタ
 //━━━━━━━━━━━━━━━━━━━━━━━
-Fish::~Fish()
+Fish2::~Fish2()
 {
 	delete m_pBoundingBox;
 }
@@ -40,64 +39,14 @@ Fish::~Fish()
 //━━━━━━━━━━━━━━━━━━━━━━━
 // 攻撃の処理
 //━━━━━━━━━━━━━━━━━━━━━━━
-void Fish::AttackProcess()
+void Fish2::AttackProcess()
 {
-	static int coolDown = rand() % 60;
-
-	// 弾を打つ速度の制御
-	if (m_coolDownCnt < coolDown)
-	{
-		++m_coolDownCnt;
-	}
-	else
-	{
-		coolDown = rand() % 60;
-		// カウンターをリセットする
-		m_coolDownCnt = 0;
-
-		// 弾の座標を計算
-		XMFLOAT4 pos = m_pImg->getPos();
-		{
-			XMFLOAT2 pos2 = AngleToDirectionVector(m_angle);
-			pos.x += pos2.x * (ENEMY_1_SIZE_X / 2.f) + pos2.x * 10.f;
-			pos.y += pos2.y * (ENEMY_1_SIZE_X / 2.f) + pos2.y * 10.f;
-		}
-
-		// 使える弾を探す
-		if (m_pEnemyBullet->size() >= 1)
-		{
-			for (unsigned int i = 0; i < m_pEnemyBullet->size(); ++i)
-			{
-				if ((*m_pEnemyBullet)[i]->GetActive())
-				{
-					// なかったら新しいのを作る
-					if (i >= m_pEnemyBullet->size() - 1)
-					{
-						m_pEnemyBullet->push_back(shared_ptr<EnemyBullet>(new EnemyBullet(m_pGameInfo, XMFLOAT2(pos.x, pos.y), m_angle)));
-						break;
-					}
-				}
-				else
-				{
-					// あったらそれを使う
-					(*m_pEnemyBullet)[i]->SetActive(true);
-					(*m_pEnemyBullet)[i]->SetPos(XMFLOAT2(pos.x, pos.y));
-					(*m_pEnemyBullet)[i]->SetMoveDirection(m_angle);
-					break;
-				}
-			}
-		}
-		else
-		{
-			m_pEnemyBullet->push_back(shared_ptr<EnemyBullet>(new EnemyBullet(m_pGameInfo, XMFLOAT2(pos.x, pos.y), m_angle)));
-		}
-	}
 }
 
 //━━━━━━━━━━━━━━━━━━━━━━━
 // 移動処理
 //━━━━━━━━━━━━━━━━━━━━━━━
-void Fish::MoveProcess(XMFLOAT2 _SubmarinePos, float _deltaTime)
+void Fish2::MoveProcess(XMFLOAT2 _SubmarinePos, float _deltaTime)
 {
 	// 敵の座標を取得
 	XMFLOAT4 _EnemyPos = m_pImg->getPos();
@@ -125,7 +74,7 @@ void Fish::MoveProcess(XMFLOAT2 _SubmarinePos, float _deltaTime)
 
 	// 敵の移動方向の設定
 	EnemyMoveDir = AngleToDirectionVector(m_angle);
-	XMFLOAT4 EnemyMove = { EnemyMoveDir.x * ENEMY_1_MOVE_SPEED * _deltaTime, EnemyMoveDir.y * ENEMY_1_MOVE_SPEED * _deltaTime, 0.f, 0.f };
+	XMFLOAT4 EnemyMove = { EnemyMoveDir.x * ENEMY_2_MOVE_SPEED * _deltaTime, EnemyMoveDir.y * ENEMY_2_MOVE_SPEED * _deltaTime, 0.f, 0.f };
 	m_pImg->offsetPos(EnemyMove);
 	{
 		// 敵の向きの設定
@@ -145,7 +94,7 @@ void Fish::MoveProcess(XMFLOAT2 _SubmarinePos, float _deltaTime)
 //━━━━━━━━━━━━━━━━━━━━━━━
 // バウンディングボックスの取得
 //━━━━━━━━━━━━━━━━━━━━━━━
-BoundingBox* Fish::GetBoundingBox()const
+BoundingBox* Fish2::GetBoundingBox()const
 {
 	return m_pBoundingBox;
 }

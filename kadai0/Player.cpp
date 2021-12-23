@@ -8,7 +8,7 @@
 //				   2021/11/28 移動メソッドを修正（ズン）
 //							  プレイヤー数を分ける（ズン）
 //				   2021/12/03 移動メソッドを修正（ズン）
-//	
+// 　　　　　　　：2021/12/23 InputProcessメソッドの編集（ゲームパッドの実装）（呉）
 //━━━━━━━━━━━━━━━━━━━━━━━
 #include "Player.h"
 #include "Define.h"
@@ -126,73 +126,95 @@ XMFLOAT2 Player::GetRelativePos()const
 //━━━━━━━━━━━━━━━━━━━━━━━
 void Player::InputProcess()
 {
-	switch (getPlayerIdx())
+	if (!m_bMoveable)return;
+
+	// ゲームパッドの入力を取得
+	float gamepadX = GetInput()->GetAnalogStickX(m_playerIndex - 1);
+	// 右
+	if (gamepadX > 0.05f)
+	{
+		m_bMovingRight = true;
+		m_bMovingLeft = false;
+		m_movePower = gamepadX;
+	}
+	// 左
+	else if (gamepadX < -0.05f)
+	{
+		m_bMovingLeft = true;
+		m_bMovingRight = false;
+		m_movePower = -gamepadX;
+	}
+	if (GetInput()->IsGamePadButtonPressed(GAMEPAD_KEY_Action, m_playerIndex - 1))
+	{
+		Jump();
+	}
+	switch (m_playerIndex)
 	{
 	case 1:
-		if (m_bMoveable)
+		// 左に移動
+		if (GetInput()->isKeyPressed(DIK_LEFTARROW))
 		{
-			// 左に移動
-			if (GetInput()->isKeyPressed(DIK_LEFTARROW))
-			{
-				m_bMovingLeft = true;
-			}
-			// 右に移動
-			else if (GetInput()->isKeyPressed(DIK_RIGHTARROW))
-			{
-				m_bMovingRight = true;
-			}
-			if (GetInput()->isKeyPressed(DIK_NUMPAD0))
-			{
-				Jump();
-			}
-#if DEBUG
-			// 上に移動
-			if (GetInput()->isKeyPressed(DIK_UPARROW))
-			{
-				m_relativePos.y += 20.f;
-			}
-			// 下に移動
-			else if (GetInput()->isKeyPressed(DIK_DOWNARROW))
-			{
-				m_relativePos.y -= 20.f;
-			}
-#endif
+			m_bMovingLeft = true;
+			m_bMovingRight = false;
+			m_movePower = 1.f;
 		}
+		// 右に移動
+		else if (GetInput()->isKeyPressed(DIK_RIGHTARROW))
+		{
+			m_bMovingRight = true;
+			m_bMovingLeft = false;
+			m_movePower = 1.f;
+		}
+		if (GetInput()->isKeyPressed(DIK_NUMPAD0))
+		{
+			Jump();
+		}
+#if DEBUG
+		// 上に移動
+		if (GetInput()->isKeyPressed(DIK_UPARROW))
+		{
+			m_relativePos.y += 20.f;
+		}
+		// 下に移動
+		else if (GetInput()->isKeyPressed(DIK_DOWNARROW))
+		{
+			m_relativePos.y -= 20.f;
+		}
+#endif
 		break;
 	case 2:
-		if (m_bMoveable)
+		//左に移動
+		if (GetInput()->isKeyPressed(DIK_A))
 		{
-			//左に移動
-			if (GetInput()->isKeyPressed(DIK_A))
-			{
-				m_bMovingLeft = true;
-			}
-			//右に移動
-			else if (GetInput()->isKeyPressed(DIK_D))
-			{
-				m_bMovingRight = true;
-			}
-			if (GetInput()->isKeyPressed(DIK_SPACE))
-			{
-				Jump();
-			}
-#if DEBUG
-			// 上に移動
-			if (GetInput()->isKeyPressed(DIK_W))
-			{
-				m_relativePos.y += 20.f;
-			}
-			// 下に移動
-			else if (GetInput()->isKeyPressed(DIK_S))
-			{
-				m_relativePos.y -= 20.f;
-			}
-#endif
+			m_bMovingLeft = true;
+			m_bMovingRight = false;
+			m_movePower = 1.f;
 		}
+		//右に移動
+		else if (GetInput()->isKeyPressed(DIK_D))
+		{
+			m_bMovingRight = true;
+			m_bMovingLeft = false;
+			m_movePower = 1.f;
+		}
+		if (GetInput()->isKeyPressed(DIK_SPACE))
+		{
+			Jump();
+		}
+#if DEBUG
+		// 上に移動
+		if (GetInput()->isKeyPressed(DIK_W))
+		{
+			m_relativePos.y += 20.f;
+		}
+		// 下に移動
+		else if (GetInput()->isKeyPressed(DIK_S))
+		{
+			m_relativePos.y -= 20.f;
+		}
+#endif
 		break;
 	}
-
-
 }
 
 //━━━━━━━━━━━━━━━━━━━━━━━
@@ -359,7 +381,7 @@ void Player::Move(float _deltaTime)
 	//右側
 	if (m_bMovingRight)
 	{
-		m_relativePos.x += PLAYER_MOVE_SPEED * _deltaTime;
+		m_relativePos.x += PLAYER_MOVE_SPEED * _deltaTime * m_movePower;
 
 		if (m_relativePos.x > BorderOfSubmarine.x)
 		{
@@ -371,7 +393,7 @@ void Player::Move(float _deltaTime)
 	//左側
 	else if (m_bMovingLeft)
 	{
-		m_relativePos.x -= PLAYER_MOVE_SPEED * _deltaTime;
+		m_relativePos.x -= PLAYER_MOVE_SPEED * _deltaTime * m_movePower;
 
 		if (m_relativePos.x < -BorderOfSubmarine.x)
 		{

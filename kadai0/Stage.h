@@ -27,6 +27,9 @@ public:
 	// 全て当たり判定をまとめたメソッド(潜水艦のを呼び出す)
 	void CollisionProcess();
 
+	int GetKilledEnemyCnt()const;
+
+private:
 	// 潜水艦オブジェクト
 	shared_ptr < Submarine > m_pSubmarine;
 
@@ -40,7 +43,7 @@ public:
 	//vector < shared_ptr < Item > > m_pItem;
 
 	// 敵の弾の配列のアドレスの配列
-	vector<shared_ptr<vector<shared_ptr<EnemyBullet>>>> m_pEnemyBullet;
+	shared_ptr<vector<shared_ptr<EnemyBullet>>> m_pEnemyBullet;
 
 	// 前1フレームの時間(deltaTime計算用)
 	clock_t m_lastFrameTime;

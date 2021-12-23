@@ -73,6 +73,7 @@ private:
 	bool		m_bIsOnFloor;		// プレイヤーが接地しているかのフラグ
 	bool		m_bMovingRight;
 	bool		m_bMovingLeft;
+	float		m_movePower;
 
 	XMFLOAT2	m_relativePos;		//プレイヤーの座標と潜水艦の座標の差
 	int			m_playerIndex;		//プレイヤーの番号

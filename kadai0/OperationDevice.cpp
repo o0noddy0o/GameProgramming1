@@ -3,7 +3,8 @@
 // 概要　　　　　：操作装置のクラス
 // 作成者　　　　：20CU0332 フアンスアンズン
 // 更新内容　　　：2021/11/29 作成（ズン）
-//				  2021/12/01 描画メソッドを定義（ズン）
+// 　　　　　　　：2021/12/01 描画メソッドを定義（ズン）
+// 　　　　　　　：2021/12/23 InputProcessメソッドの編集（ゲームパッドの実装）（呉）
 //━━━━━━━━━━━━━━━━━━━━━━━
 #include "OperationDevice.h"
 #include "GameResource.h"
@@ -83,7 +84,7 @@ void OperationDevice::collisionWithPlayer(Player* _player, float _deltaTime)
 		if (m_bPlayer2IsUsing)return;
 		if ((bool)m_pImg->collision(_player->GetImg()) == true)
 		{
-			if (GetInput()->isPressedOnce(DIK_NUMPAD3))
+			if (GetInput()->isPressedOnce(DIK_NUMPAD3) || GetInput()->IsGamePadButtonPressedOnce(GAMEPAD_KEY_UseOperationDevice, _player->getPlayerIdx() - 1))
 			{
 				m_bPlayer1IsUsing = !m_bPlayer1IsUsing;
 				_player->SetMoveAble(!m_bPlayer1IsUsing);
@@ -93,13 +94,18 @@ void OperationDevice::collisionWithPlayer(Player* _player, float _deltaTime)
 				m_pComponent->InputProcess(1, _deltaTime);
 			}
 		}
+		else if (m_bPlayer1IsUsing)
+		{
+			_player->SetMoveAble(true);
+			m_bPlayer1IsUsing = !m_bPlayer1IsUsing;
+		}
 		break;
 
 	case 2:
 		if (m_bPlayer1IsUsing)return;
 		if ((bool)m_pImg->collision(_player->GetImg()) == true)
 		{
-			if (GetInput()->isPressedOnce(DIK_M))
+			if (GetInput()->isPressedOnce(DIK_M) || GetInput()->IsGamePadButtonPressedOnce(GAMEPAD_KEY_UseOperationDevice, _player->getPlayerIdx() - 1))
 			{
 				m_bPlayer2IsUsing = !m_bPlayer2IsUsing;
 				_player->SetMoveAble(!m_bPlayer2IsUsing);
@@ -108,6 +114,11 @@ void OperationDevice::collisionWithPlayer(Player* _player, float _deltaTime)
 			{
 				m_pComponent->InputProcess(2, _deltaTime);
 			}
+		}
+		else if(m_bPlayer2IsUsing)
+		{
+			_player->SetMoveAble(true);
+			m_bPlayer2IsUsing = !m_bPlayer2IsUsing;
 		}
 		break;
 	}

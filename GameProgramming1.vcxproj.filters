@@ -168,6 +168,9 @@
     <ClCompile Include="kadai0\UI.cpp">
       <Filter>ソース ファイル\Object</Filter>
     </ClCompile>
+    <ClCompile Include="kadai0\Fish2.cpp">
+      <Filter>ソース ファイル\Object\Stage</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Common\CApplication.h">
@@ -313,6 +316,9 @@
     </ClInclude>
     <ClInclude Include="kadai0\UI.h">
       <Filter>ヘッダー ファイル\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="kadai0\Fish2.h">
+      <Filter>ヘッダー ファイル\Object\Stage</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

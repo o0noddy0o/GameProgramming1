@@ -31,7 +31,11 @@
 //━━━━━━━━━━━━━━━━━━━━━━━
 #define ENEMY_1_SIZE_X				(90.f)
 #define ENEMY_1_SIZE_Y				(32.8f)
-#define ENEMY_1_MOVE_SPEED			(50.f)
+#define ENEMY_1_MOVE_SPEED			(100.f)
+
+#define ENEMY_2_SIZE_X				(80.f)
+#define ENEMY_2_SIZE_Y				(40.f)
+#define ENEMY_2_MOVE_SPEED			(250.f)
 
 //━━━━━━━━━━━━━━━━━━━━━━━
 // タレット
@@ -41,7 +45,7 @@
 #define TURRET_SIZE_Y				(30.f)
 #define TURRET_ROTATION_SPEED		(200.f)
 #define TURRET_ROTATION_RANGE		(180.f)
-#define TURRET_COOL_DOWN			(0)
+#define TURRET_COOL_DOWN			(0.1f)
 
 //━━━━━━━━━━━━━━━━━━━━━━━
 // 床
@@ -126,7 +130,7 @@
 #define ENEMY_NUM_POS_X			(-66.f)
 #define ENEMY_NUM_POS_Y			(500.f)
 #define ENEMY_NUM_POS			(XMFLOAT2(ENEMY_NUM_POS_X, ENEMY_NUM_POS_Y))
-#define MAX_ENEMY_NUM			(50)
+#define MAX_ENEMY_NUM			(20)
 
 //━━━━━━━━━━━━━━━━━━━━━━━
 // ダメージ
@@ -144,6 +148,24 @@
 //━━━━━━━━━━━━━━━━━━━━━━━
 #define COLOR_RED		(XMFLOAT4(1.f, 0.f, 0.f, 1.f))
 #define COLOR_YELLOW	(XMFLOAT4(1.f, (241.f / 255.f), 0.f, 1.f))
+#define COLOR_GREEN		(XMFLOAT4(0.f, 1.f, 0.f, 1.f))
+
+//━━━━━━━━━━━━━━━━━━━━━━━
+// ゲームパッド入力用（学校のゲームパッド）
+//━━━━━━━━━━━━━━━━━━━━━━━
+#define GAMEPAD_A		(0)
+#define GAMEPAD_B		(1)
+#define GAMEPAD_X		(2)
+#define GAMEPAD_Y		(3)
+#define GAMEPAD_LB		(4)
+#define GAMEPAD_RB		(5)
+#define GAMEPAD_BACK	(6)
+#define GAMEPAD_START	(7)
+#define GAMEPAD_L3		(8)	// 左スティックを押し込む
+#define GAMEPAD_R3		(9)	// 右スティックを押し込む
+
+#define GAMEPAD_KEY_Action					(GAMEPAD_A)
+#define GAMEPAD_KEY_UseOperationDevice		(GAMEPAD_B)
 
 //━━━━━━━━━━━━━━━━━━━━━━━
 // 計算用
@@ -158,10 +180,11 @@
 //━━━━━━━━━━━━━━━━━━━━━━━
 // デバッグ・確認用
 //━━━━━━━━━━━━━━━━━━━━━━━
-#define DEBUG					(true)
-#define HaveEnemy				(true)
+#define DEBUG					(false)
+#define HaveEnemy				(false)
+#define ShowGamePadInput		(true)
 
-#define DebugMessage			(true)
+#define DebugMessage			(false)
 #if DebugMessage
 #define MsgBox(message)							MessageBox(NULL, message, NULL, MB_OK)
 #define MsgBox_T(message, title)				MessageBox(NULL, message, title, MB_OK)
@@ -170,7 +193,7 @@
 #define MsgBox_T(message, title)
 #endif
 
-#define ShowDeltaTimeAndFPS			(true)
+#define ShowDeltaTimeAndFPS			(false)
 #if ShowDeltaTimeAndFPS
 #define DeltaTimeText_Pos_X	(-940.f)
 #define DeltaTimeText_Pos_Y	(460.f)

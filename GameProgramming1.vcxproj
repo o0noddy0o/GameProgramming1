@@ -154,6 +154,7 @@
     <ClCompile Include="kadai0\Enemy.cpp" />
     <ClCompile Include="kadai0\EnemyBullet.cpp" />
     <ClCompile Include="kadai0\Fish.cpp" />
+    <ClCompile Include="kadai0\Fish2.cpp" />
     <ClCompile Include="kadai0\GameClear.cpp" />
     <ClCompile Include="kadai0\GameOver.cpp" />
     <ClCompile Include="kadai0\GamePlay.cpp" />
@@ -201,6 +202,7 @@
     <ClInclude Include="kadai0\Enemy.h" />
     <ClInclude Include="kadai0\EnemyBullet.h" />
     <ClInclude Include="kadai0\Fish.h" />
+    <ClInclude Include="kadai0\Fish2.h" />
     <ClInclude Include="kadai0\GameResource.h" />
     <ClInclude Include="kadai0\InOutputFile.h" />
     <ClInclude Include="kadai0\JetEngine.h" />

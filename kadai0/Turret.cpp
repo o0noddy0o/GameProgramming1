@@ -2,8 +2,9 @@
 // ファイル名　　：Turret.cpp
 // 概要　　　　　：タレットのクラス
 // 作成者　　　　：20CU0314 ゴコケン
-// 更新内容　　　：2021/11/17 作成
-// 　　　　　　　：2021/11/21 弾を打つのカウントダウンを追加
+// 更新内容　　　：2021/11/17 作成（呉）
+// 　　　　　　　：2021/11/21 弾を打つのカウントダウンを追加（呉）
+// 　　　　　　　：2021/12/23 InputProcessメソッドの編集（ゲームパッドの実装）（呉）
 //━━━━━━━━━━━━━━━━━━━━━━━
 #include "Turret.h"
 #include "Define.h"
@@ -22,27 +23,30 @@ Turret::Turret(GameInfo* _pGameInfo, int _turretFace, XMFLOAT2 _pos)
 {
 	m_pImg = CreateSprite(Tex_Turret, TURRET_SIZE_X, TURRET_SIZE_Y);
 
-	m_angle = (float)_turretFace * 90.f;
-	m_pImg->setAngleZ(m_angle);
-
-	m_rotationRange[0] = m_angle - TURRET_ROTATION_RANGE / 2.f;
-	m_rotationRange[1] = m_angle + TURRET_ROTATION_RANGE / 2.f;
-
 	switch(_turretFace % 4)
 	{
 	case 0:
 		m_relativePos.x += TURRET_DISTANCE;
+		m_angle = 0.f;
 		break;
 	case 1:
-		m_relativePos.y += TURRET_DISTANCE;
+		m_relativePos.y -= TURRET_DISTANCE;
+		m_angle = 270.f;
 		break;
 	case 2:
 		m_relativePos.x -= TURRET_DISTANCE;
+		m_angle = 180.f;
 		break;
 	case 3:
-		m_relativePos.y -= TURRET_DISTANCE;
+		m_relativePos.y += TURRET_DISTANCE;
+		m_angle = 90.f;
 		break;
 	}
+
+	m_pImg->setAngleZ(m_angle);
+
+	m_rotationRange[0] = m_angle - TURRET_ROTATION_RANGE / 2.f;
+	m_rotationRange[1] = m_angle + TURRET_ROTATION_RANGE / 2.f;
 
 	m_pImg->setPos(_pos.x + m_relativePos.x, _pos.y + m_relativePos.y);
 }
@@ -56,49 +60,78 @@ Turret::~Turret()
 
 //━━━━━━━━━━━━━━━━━━━━━━━
 // プレイヤーの入力処理
+// 引数１：プレイヤーの番号
+// 引数２：前のフレームの処理時間
 //━━━━━━━━━━━━━━━━━━━━━━━
 void Turret::InputProcess(int _playerIndex, float _deltaTime)
 {
-	switch (_playerIndex)
+	// タレットの回転
+	// ゲームパッドの入力を取得
+	float gamepadX = GetInput()->GetAnalogStickX(_playerIndex - 1);
+	if (Abs(gamepadX) > 0.05f)
 	{
-	case 1:
-		if (GetInput()->isKeyPressed(DIK_LEFTARROW))
+		m_angle -= TURRET_ROTATION_SPEED * _deltaTime * gamepadX;
+		if (m_angle > m_rotationRange[1])
 		{
-			if ((m_angle += TURRET_ROTATION_SPEED * _deltaTime) > m_rotationRange[1])
-			{
-				m_angle = m_rotationRange[1];
-			}
-			m_pImg->setAngleZ(m_angle);
+			m_angle = m_rotationRange[1];
 		}
-		else if (GetInput()->isKeyPressed(DIK_RIGHTARROW))
+		else if (m_angle < m_rotationRange[0])
 		{
-			if ((m_angle -= TURRET_ROTATION_SPEED * _deltaTime) < m_rotationRange[0])
-			{
-				m_angle = m_rotationRange[0];
-			}
-			m_pImg->setAngleZ(m_angle);
+			m_angle = m_rotationRange[0];
 		}
-		break;
-	case 2:
-		if (GetInput()->isKeyPressed(DIK_A))
-		{
-			if ((m_angle += TURRET_ROTATION_SPEED * _deltaTime) > m_rotationRange[1])
-			{
-				m_angle = m_rotationRange[1];
-			}
-			m_pImg->setAngleZ(m_angle);
-		}
-		else if (GetInput()->isKeyPressed(DIK_D))
-		{
-			if ((m_angle -= TURRET_ROTATION_SPEED * _deltaTime) < m_rotationRange[0])
-			{
-				m_angle = m_rotationRange[0];
-			}
-			m_pImg->setAngleZ(m_angle);
-		}
-		break;
+		m_pImg->setAngleZ(m_angle);
 	}
-	
+	// キーボード入力
+	else
+	{
+		switch (_playerIndex)
+		{
+		case 1:
+			// 左
+			if (GetInput()->isKeyPressed(DIK_LEFTARROW))
+			{
+				if ((m_angle += TURRET_ROTATION_SPEED * _deltaTime) > m_rotationRange[1])
+				{
+					// 範囲の制御
+					m_angle = m_rotationRange[1];
+				}
+				m_pImg->setAngleZ(m_angle);
+			}
+			// 右
+			else if (GetInput()->isKeyPressed(DIK_RIGHTARROW))
+			{
+				if ((m_angle -= TURRET_ROTATION_SPEED * _deltaTime) < m_rotationRange[0])
+				{
+					// 範囲の制御
+					m_angle = m_rotationRange[0];
+				}
+				m_pImg->setAngleZ(m_angle);
+			}
+			break;
+		case 2:
+			// 左
+			if (GetInput()->isKeyPressed(DIK_A))
+			{
+				if ((m_angle += TURRET_ROTATION_SPEED * _deltaTime) > m_rotationRange[1])
+				{
+					// 範囲の制御
+					m_angle = m_rotationRange[1];
+				}
+				m_pImg->setAngleZ(m_angle);
+			}
+			// 右
+			else if (GetInput()->isKeyPressed(DIK_D))
+			{
+				if ((m_angle -= TURRET_ROTATION_SPEED * _deltaTime) < m_rotationRange[0])
+				{
+					// 範囲の制御
+					m_angle = m_rotationRange[0];
+				}
+				m_pImg->setAngleZ(m_angle);
+			}
+			break;
+		}
+	}
 
 	// 弾を打つ速度の制御
 	if (m_coolDownCnt < TURRET_COOL_DOWN)
@@ -108,7 +141,8 @@ void Turret::InputProcess(int _playerIndex, float _deltaTime)
 	else
 	{
 		if ((GetInput()->isKeyPressed(DIK_NUMPAD0) && _playerIndex == 1) ||
-			(GetInput()->isKeyPressed(DIK_SPACE) && _playerIndex == 2))
+			(GetInput()->isKeyPressed(DIK_SPACE) && _playerIndex == 2) ||
+			 GetInput()->IsGamePadButtonPressed(GAMEPAD_KEY_Action, _playerIndex - 1))
 		{
 			// カウンターをリセットする
 			m_coolDownCnt = 0;
