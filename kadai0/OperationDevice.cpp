@@ -42,10 +42,10 @@ OperationDevice::OperationDevice(GameInfo* _pGameInfo, XMFLOAT2 _pos, XMFLOAT2 _
 		m_pImg = CreateSprite(Tex_Operation_Device_5, 64.f, 64.f);
 		m_pImg->setPos(_pos);
 		break;
-		/*case 5:
-			m_pImg = CreateSprite(Tex_Operation_Device_4, 64.f, 64.f);
-			m_pImg->setPos(_pos);
-			break;*/
+	case 5:
+		m_pImg = CreateSprite(Tex_Operation_Device_4, 64.f, 64.f);
+		m_pImg->setPos(_pos);
+		break;
 	}
 }
 
