@@ -2,8 +2,8 @@
  * ここで画像ファイルへのパスを宣言する
  */
 
- // フロー
- //#define Tex_Ingame					L"Media/Sprite/ActionGame_Sprite/Ingame.jpg"
+// フロー
+//#define Tex_Ingame					L"Media/Sprite/ActionGame_Sprite/Ingame.jpg"
 #define Tex_Ingame					L"Media/Sprite/ActionGame_Sprite/CA1.png"
 
 // オブジェクトの画像

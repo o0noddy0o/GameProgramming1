@@ -66,7 +66,11 @@ void CActionGameApp::procClearMain()
 
 	if (getInput()->isPressedOnce(DIK_X) ||
 		getInput()->isPressedOnce(DIK_SPACE) ||
-		getInput()->isPressedOnce(DIK_RETURN))
+		getInput()->isPressedOnce(DIK_RETURN) ||
+		getInput()->IsGamePadButtonPressedOnce(GAMEPAD_A, 0) ||
+		getInput()->IsGamePadButtonPressedOnce(GAMEPAD_B, 0) ||
+		getInput()->IsGamePadButtonPressedOnce(GAMEPAD_A, 1) ||
+		getInput()->IsGamePadButtonPressedOnce(GAMEPAD_B, 1))
 	{
 		GameClearPhase = eEnd;
 		goNextStatusFromGameClear = eGameOver;

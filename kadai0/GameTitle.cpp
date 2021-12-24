@@ -70,12 +70,16 @@ void CActionGameApp::procTitleMain()
 	// キーを押したら、タイトル画面から次の画面へ移す
 	if (getInput()->isPressedOnce(DIK_X) ||
 		getInput()->isPressedOnce(DIK_SPACE) ||
-		getInput()->isPressedOnce(DIK_RETURN))
+		getInput()->isPressedOnce(DIK_RETURN) ||
+		getInput()->IsGamePadButtonPressedOnce(GAMEPAD_A, 0) ||
+		getInput()->IsGamePadButtonPressedOnce(GAMEPAD_B, 0) ||
+		getInput()->IsGamePadButtonPressedOnce(GAMEPAD_A, 1) ||
+		getInput()->IsGamePadButtonPressedOnce(GAMEPAD_B, 1))
 	{
 		TitlePhase = eEnd;
 		goNextStatusFromTitle = ePlaying;
 	}
-
+	MsgBox(L"haha");
 }
 
 //━━━━━━━━━━━━━━━━━━━━━━━
