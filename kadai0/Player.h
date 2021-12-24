@@ -1,16 +1,17 @@
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
-// ƒtƒ@ƒCƒ‹–¼@@FPlayer.h
-// ŠT—v@@@@@FƒvƒŒƒCƒ„[‚ÌƒNƒ‰ƒX
-// ì¬ŽÒ@@@@F20CU0332 ƒtƒAƒ“ƒXƒAƒ“ƒYƒ“
-// XV“à—e@@@F2021/11/24 ì¬iƒYƒ“j
-//				   2021/11/25 Šî–{‚Ìƒƒ\ƒbƒh‚ð’Ç‰ÁiƒYƒ“j
-//				   2021/11/26 Šî–{‚Ìƒƒ\ƒbƒh‚ðC³iƒYƒ“j
-//				   2021/11/28 ˆÚ“®ƒƒ\ƒbƒh‚ðC³iƒYƒ“j
-//							  ƒvƒŒƒCƒ„[”‚ð•ª‚¯‚éiƒYƒ“j
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
+// ãƒ•ã‚¡ã‚¤ãƒ«åã€€ã€€ï¼šPlayer.h
+// æ¦‚è¦ã€€ã€€ã€€ã€€ã€€ï¼šãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ã‚¯ãƒ©ã‚¹
+// ä½œæˆè€…ã€€ã€€ã€€ã€€ï¼š20CU0332 ãƒ•ã‚¢ãƒ³ã‚¹ã‚¢ãƒ³ã‚ºãƒ³
+// æ›´æ–°å†…å®¹ã€€ã€€ã€€ï¼š2021/11/24 ä½œæˆï¼ˆã‚ºãƒ³ï¼‰
+//				   2021/11/25 åŸºæœ¬ã®ãƒ¡ã‚½ãƒƒãƒ‰ã‚’è¿½åŠ ï¼ˆã‚ºãƒ³ï¼‰
+//				   2021/11/26 åŸºæœ¬ã®ãƒ¡ã‚½ãƒƒãƒ‰ã‚’ä¿®æ­£ï¼ˆã‚ºãƒ³ï¼‰
+//				   2021/11/28 ç§»å‹•ãƒ¡ã‚½ãƒƒãƒ‰ã‚’ä¿®æ­£ï¼ˆã‚ºãƒ³ï¼‰
+//							  ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼æ•°ã‚’åˆ†ã‘ã‚‹ï¼ˆã‚ºãƒ³ï¼‰
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
 #pragma once
 #include "Define.h"
 #include "CObjectBase.h"
+#include "Submarine.h"
 
 class OperationDevice;
 
@@ -21,20 +22,26 @@ public:
 	Player(GameInfo* _pGameInfo, XMFLOAT2 _pos = { 0.f, 0.f }, XMFLOAT2 _relativePos = { 0.f, 0.f }, int _index = 0);
 	~Player();
 
-	//–ˆƒtƒŒ[ƒ€‚É‚â‚éˆ—
-	void Tick(float _deltaTime);
+	//æ¯Žãƒ•ãƒ¬ãƒ¼ãƒ ã«ã‚„ã‚‹å‡¦ç†
+	void Tick(float _deltaTime, vector<Submarine::Wall>* _pWall, vector<Submarine::Floor>* _pFloor);
 
-	//‰æ‘œ‚ð•`‰æ
+	//ç”»åƒã‚’æç”»
 	void RenderChara();
 
-	//m_bMoveable‚Ì’†g‚ð•Ï‚¦‚é
+	//m_bMoveableã®ä¸­èº«ã‚’å¤‰ãˆã‚‹
 	void SetMoveAble(bool _b);
 
-	//ƒvƒŒƒC[‚ÌÀ•W‚ðXV
+	//ãƒ—ãƒ¬ã‚¤ãƒ¼ã®åº§æ¨™ã‚’æ›´æ–°
 	void SetPos(XMFLOAT2 _newPos);
 
-	//ƒvƒŒƒCƒ„[‚ÌƒWƒƒƒ“ƒv
-	void Jump(float _deltaTime);
+	XMFLOAT2 GetPos()const;
+
+	void SetRelativePos(XMFLOAT2 _relativePos);
+
+	XMFLOAT2 GetRelativePos()const;
+
+	//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ã‚¸ãƒ£ãƒ³ãƒ—
+	void Jump();
 
 	//
 	CPicture* GetImg() const;
@@ -43,25 +50,32 @@ public:
 	int getPlayerIdx() const;
 
 private:
-	//ƒvƒŒƒCƒ„[‚Ì“ü—Íˆ—
-	void InputProcess(float _deltaTime);
+	//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®å…¥åŠ›å‡¦ç†
+	void InputProcess();
 
-	//ƒvƒŒƒCƒ„[ƒLƒƒƒ‰ƒNƒ^[‚ÆŠe‘€ì‘•’u‚Ì“–‚½‚è”»’è
+	//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã¨å„æ“ä½œè£…ç½®ã®å½“ãŸã‚Šåˆ¤å®š
 	void CollisionWithOperationDevice(vector<shared_ptr<OperationDevice>>* _pOperationDevice);
 
-	//ƒvƒŒƒCƒ„[‚ÌˆÚ“®
-	void Move(float _deltaTime, bool _right);
+	void CollisionWithWallAndFloor(vector < Submarine::Wall>* _pWall, vector<Submarine::Floor>* _pFloor);
+
+	//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ç§»å‹•
+	void Move(float _deltaTime);
 
 	
 
-	CPicture*	m_pImg;				//ƒvƒŒƒCƒ„[ƒLƒƒƒ‰ƒNƒ^[‚Ì‰æ‘œ
-	bool		m_bMoveable;		//ƒvƒŒƒCƒ„[‚ªˆÚ“®‚Å‚«‚é‚©ƒtƒ‰ƒO
-	bool		m_pJumping;			//ƒvƒŒƒCƒ„[‚ªƒWƒƒƒ“ƒv‚µ‚Ä‚¢‚é‚©‚Ìƒtƒ‰ƒO
+	CPicture*	m_pImg;				//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã®ç”»åƒ
+	bool		m_bMoveable;		//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒç§»å‹•ã§ãã‚‹ã‹ãƒ•ãƒ©ã‚°
+	bool		m_bJumping;			//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒã‚¸ãƒ£ãƒ³ãƒ—ã—ã¦ã„ã‚‹ã‹ã®ãƒ•ãƒ©ã‚°
 
-	float		g_jumpPower;
-	float		g_jumpMove;
+	float		m_jumpPower;
+	float		m_jumpTime;
 
-	XMFLOAT2	m_relativePos;		//ƒvƒŒƒCƒ„[‚ÌÀ•W‚Æö…ŠÍ‚ÌÀ•W‚Ì·
-	int			m_playerIndex;		//ƒvƒŒƒCƒ„[‚Ì”Ô†
+	bool		m_bIsOnFloor;		// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒæŽ¥åœ°ã—ã¦ã„ã‚‹ã‹ã®ãƒ•ãƒ©ã‚°
+	bool		m_bMovingRight;
+	bool		m_bMovingLeft;
+	float		m_movePower;
+
+	XMFLOAT2	m_relativePos;		//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®åº§æ¨™ã¨æ½œæ°´è‰¦ã®åº§æ¨™ã®å·®
+	int			m_playerIndex;		//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ç•ªå·
 };
 

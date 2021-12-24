@@ -33,6 +33,7 @@ public:
 
 	//‰æ‘œ‚ÌˆÊ’u‚ğİ’u
 	void SetPos(XMFLOAT2 _newPos);
+	void SetPos(float x, float y);
 
 private:
 	//‘€ì‘•’u‚Ì‰æ‘œ

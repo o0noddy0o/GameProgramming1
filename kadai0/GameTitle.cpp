@@ -51,7 +51,8 @@ void CActionGameApp::procTitle()
 //━━━━━━━━━━━━━━━━━━━━━━━
 void CActionGameApp::procTitleBegin()
 {
-	if (!pBackground) pBackground = createSprite(Tex_Ingame);
+	if (!pBackground) pBackground = createSprite(Tex_Ingame, 1920.f * SCREEN_MULTIPLE_X, 1080.f * SCREEN_MULTIPLE_Y);
+	pBackground->setPos(1920.f, -1620.f);
 	renderSprite(pBackground);
 	pText->setPos(-80.f, 200.f);
 	pText->SetText("TITLE");
@@ -69,12 +70,16 @@ void CActionGameApp::procTitleMain()
 	// キーを押したら、タイトル画面から次の画面へ移す
 	if (getInput()->isPressedOnce(DIK_X) ||
 		getInput()->isPressedOnce(DIK_SPACE) ||
-		getInput()->isPressedOnce(DIK_RETURN))
+		getInput()->isPressedOnce(DIK_RETURN) ||
+		getInput()->IsGamePadButtonPressedOnce(GAMEPAD_A, 0) ||
+		getInput()->IsGamePadButtonPressedOnce(GAMEPAD_B, 0) ||
+		getInput()->IsGamePadButtonPressedOnce(GAMEPAD_A, 1) ||
+		getInput()->IsGamePadButtonPressedOnce(GAMEPAD_B, 1))
 	{
 		TitlePhase = eEnd;
 		goNextStatusFromTitle = ePlaying;
 	}
-
+	MsgBox(L"haha");
 }
 
 //━━━━━━━━━━━━━━━━━━━━━━━
