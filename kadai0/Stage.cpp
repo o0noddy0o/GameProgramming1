@@ -155,3 +155,8 @@ int Stage::GetKilledEnemyCnt()const
 {
 	return m_pSubmarine->GetKilledEnemyCnt();
 }
+
+float Stage::GetSubmarineHp()const
+{
+	return m_pSubmarine->GetHp();
+}

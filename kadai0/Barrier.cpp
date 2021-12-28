@@ -115,15 +115,16 @@ void Barrier::renderSprite()
 //━━━━━━━━━━━━━━━━━━━━━━━
 // 弾の当たり判定（敵との）
 //━━━━━━━━━━━━━━━━━━━━━━━
-bool Barrier::Collision(vector<shared_ptr<Enemy>>* _target)
-{
-	return false;
-}
+//bool Barrier::Collision(vector<shared_ptr<Enemy>>* _target)
+//{
+//
+//	return false;
+//}
 
-//━━━━━━━━━━━━━━━━━━━━━━━
-// 弾の当たり判定（障害物との）
-//━━━━━━━━━━━━━━━━━━━━━━━
-bool Barrier::Collision(vector<shared_ptr<SceneryObject>>* _target)
-{
-	return false;
-}
+////━━━━━━━━━━━━━━━━━━━━━━━
+//// 弾の当たり判定（障害物との）
+////━━━━━━━━━━━━━━━━━━━━━━━
+//bool Barrier::Collision(vector<shared_ptr<SceneryObject>>* _target)
+//{
+//	return false;
+//}

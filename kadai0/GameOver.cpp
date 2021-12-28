@@ -2,6 +2,7 @@
 #include "kadai0/GameResource.h"
 #include "CText.h"
 #include "Define.h"
+//　こんにちは
 
 // ゲームフロー用変数
 ePhase GameOverPhase = eBegin;

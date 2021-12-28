@@ -62,8 +62,14 @@ void CActionGameApp::procPlayMain()
 		GamePhase = eEnd;
 		goNextStatusFromPlaying = eGameClear;
 	}
-	else if (getInput()->isPressedOnce(DIK_Z))
+	else if (
+		pStage->GetSubmarineHp() <= 0.f
+#if DEBUG
+		|| getInput()->isPressedOnce(DIK_Z)
+#endif
+		)
 	{
+
 		GamePhase = eEnd;
 		goNextStatusFromPlaying = eGameOver;
 	}

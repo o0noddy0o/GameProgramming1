@@ -18,8 +18,8 @@ public:
 	~Barrier();
 	void InputProcess(int _playerIndex, float _deltaTime);
 	void renderSprite();
-	bool Collision(vector<shared_ptr<Enemy>>* _target);				// ’e‚Ì“–‚½‚è”»’èi“G‚Æ‚Ìj
-	bool Collision(vector<shared_ptr<SceneryObject>>* _target);		// ’e‚Ì“–‚½‚è”»’èiáŠQ•¨‚Æ‚Ìj
+	/*bool Collision(vector<shared_ptr<Enemy>>* _target);*/				// ’e‚Ì“–‚½‚è”»’èi“G‚Æ‚Ìj
+	/*bool Collision(vector<shared_ptr<SceneryObject>>* _target);*/		// ’e‚Ì“–‚½‚è”»’èiáŠQ•¨‚Æ‚Ìj
 
 private:
 	bool m_bIsBarrierOn;
