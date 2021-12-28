@@ -67,8 +67,8 @@ Submarine::Submarine(GameInfo* _pGameInfo)
 	m_pComponent[1] = shared_ptr<Component>(new Turret(m_pGameInfo, 1, m_pos));
 	m_pComponent[2] = shared_ptr<Component>(new Turret(m_pGameInfo, 2, m_pos));
 	m_pComponent[3] = shared_ptr<Component>(new Turret(m_pGameInfo, 3, m_pos));
-	m_pComponent[4] = shared_ptr<Component>(new JetEngine(m_pGameInfo, m_pos));
-	m_pComponent[5] = shared_ptr<Component>(new Barrier(m_pGameInfo, 0.f, m_pos));
+	m_pComponent[4] = shared_ptr<Component>(new JetEngine(m_pGameInfo));
+	m_pComponent[5] = shared_ptr<Component>(new Barrier(m_pGameInfo));
 
 	// 弾の配列のアドレス保存しておく
 	for (int i = 0; i < 4; ++i)
@@ -82,7 +82,7 @@ Submarine::Submarine(GameInfo* _pGameInfo)
 		{ -160.f, 0.f },
 		{ 0.f, 160.f },
 		{ -64.f, 0.f },
-		{ 98.f, 0.f },
+		{ 98.f, 64.f },
 	};
 
 	// 操作装置オブジェクトの作成
@@ -469,6 +469,12 @@ void Submarine::MoveCamera(float _deltaTime)
 	m_pGameInfo->pCamera->get()->setPos(cameraPos);
 
 }
+
+float Submarine::GetHp()const
+{
+	return m_hp;
+}
+
 
 //━━━━━━━━━━━━━━━━━━━━━━━
 // 潜水艦の座標の取得
