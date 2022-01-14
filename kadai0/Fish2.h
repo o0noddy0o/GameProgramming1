@@ -19,7 +19,7 @@ public:
 	~Fish2();
 
 	// UŒ‚‚Ìˆ—
-	virtual void AttackProcess();
+	virtual void AttackProcess(XMFLOAT2 _SubmarinePos = XMFLOAT2(0.f, 0.f));
 		
 	// ˆÚ“®ˆ—
 	virtual void MoveProcess(XMFLOAT2 _SubmarinePos, float _deltaTime);

@@ -8,6 +8,7 @@
 #include "Barrier.h"
 #include "GameResource.h"
 #include "Define.h"
+#include "CircleBoundingBox.h"
 
 //━━━━━━━━━━━━━━━━━━━━━━━
 // コンストラクタ
@@ -17,12 +18,13 @@
 //━━━━━━━━━━━━━━━━━━━━━━━
 Barrier::Barrier(GameInfo* _pGameInfo, float _angle, XMFLOAT2 _pos)
 	: Super(_pGameInfo)
-	, m_angle(_angle)
+	, m_angle(_angle + 90.f)
 	, m_bIsBarrierOn(true)
 {
 	m_pImg = CreateSprite(Tex_Barrier, BARRIER_SIZE_X, BARRIER_SIZE_Y, kTexelBarrier);
 	m_pImg->setPos(_pos);
 	m_pImg->setAngleZ(_angle);
+	m_pBoundingBox = new CircleBoundingBox(_pos, BARRIER_SIZE_X / 2.f);
 }
 
 //━━━━━━━━━━━━━━━━━━━━━━━
@@ -30,6 +32,12 @@ Barrier::Barrier(GameInfo* _pGameInfo, float _angle, XMFLOAT2 _pos)
 //━━━━━━━━━━━━━━━━━━━━━━━
 Barrier::~Barrier()
 {
+	if (m_pBoundingBox)delete m_pBoundingBox;
+}
+
+bool Barrier::IsBarrierOn()const
+{
+	return m_bIsBarrierOn;
 }
 
 //━━━━━━━━━━━━━━━━━━━━━━━
@@ -44,8 +52,8 @@ void Barrier::InputProcess(int _playerIndex, float _deltaTime)
 	if (Abs(gamepadX) > 0.05f)
 	{
 		m_angle -= BARRIER_ROTATION_SPEED * _deltaTime * gamepadX;
-		m_pImg->setAngleZ(m_angle);
-		m_bIsBarrierOn = false;
+		m_pImg->setAngleZ(m_angle - 90.f);
+		//m_bIsBarrierOn = false;
 	}
 
 	switch (_playerIndex)
@@ -55,16 +63,16 @@ void Barrier::InputProcess(int _playerIndex, float _deltaTime)
 		if (GetInput()->isKeyPressed(DIK_LEFTARROW))
 		{
 			m_angle += BARRIER_ROTATION_SPEED * _deltaTime;
-			m_pImg->addAngleZ(m_angle);
-			m_bIsBarrierOn = false;
+			m_pImg->setAngleZ(m_angle - 90.f);
+			//m_bIsBarrierOn = false;
 		}
 
 		// 右
 		else if (GetInput()->isKeyPressed(DIK_RIGHTARROW))
 		{
 			m_angle -= BARRIER_ROTATION_SPEED * _deltaTime;
-			m_pImg->addAngleZ(m_angle);
-			m_bIsBarrierOn = false;
+			m_pImg->setAngleZ(m_angle - 90.f);
+			//m_bIsBarrierOn = false;
 		}
 
 		// 移動してなかったら、バリアをオンにする
@@ -79,16 +87,16 @@ void Barrier::InputProcess(int _playerIndex, float _deltaTime)
 		if (GetInput()->isKeyPressed(DIK_A))
 		{
 			m_angle += BARRIER_ROTATION_SPEED * _deltaTime;
-			m_pImg->addAngleZ(m_angle);
-			m_bIsBarrierOn = false;
+			m_pImg->setAngleZ(m_angle - 90.f);
+			//m_bIsBarrierOn = false;
 		}
 
 		// 右
 		else if (GetInput()->isKeyPressed(DIK_D))
 		{
 			m_angle -= BARRIER_ROTATION_SPEED * _deltaTime;
-			m_pImg->addAngleZ(m_angle);
-			m_bIsBarrierOn = false;
+			m_pImg->setAngleZ(m_angle - 90.f);
+			//m_bIsBarrierOn = false;
 		}
 
 		// 移動してなかったら、バリアをオンにする
@@ -112,18 +120,18 @@ void Barrier::renderSprite()
 	}
 }
 
-//━━━━━━━━━━━━━━━━━━━━━━━
-// 弾の当たり判定（敵との）
-//━━━━━━━━━━━━━━━━━━━━━━━
-bool Barrier::Collision(vector<shared_ptr<Enemy>>* _target)
+float Barrier::GetBarrierAngle()const
 {
-	return false;
+	return m_angle;
 }
 
-//━━━━━━━━━━━━━━━━━━━━━━━
-// 弾の当たり判定（障害物との）
-//━━━━━━━━━━━━━━━━━━━━━━━
-bool Barrier::Collision(vector<shared_ptr<SceneryObject>>* _target)
+BoundingBox* Barrier::GetBoundingBox()const
 {
-	return false;
+	return m_pBoundingBox;
+}
+
+void Barrier::SetPos(XMFLOAT2 _pos)
+{
+	m_pImg->setPos(_pos.x + m_relativePos.x, _pos.y + m_relativePos.y);
+	m_pBoundingBox->SetPos(XMFLOAT2(_pos.x + m_relativePos.x, _pos.y + m_relativePos.y));
 }

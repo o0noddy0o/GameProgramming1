@@ -12,7 +12,7 @@
 #define Tex_Turret					L"Media/Sprite/ActionGame_Sprite/Turret.png"
 #define Tex_JetEngine				L"Media/Sprite/ActionGame_Sprite/JetEngine.png"
 #define Tex_Bullet					L"Media/Sprite/ActionGame_Sprite/Bullet.png"
-#define Tex_Barrier					L"Media/Sprite/ActionGame_Sprite/TestImage2.png"
+#define Tex_Barrier					L"Media/Sprite/ActionGame_Sprite/Barrier.png"
 
 // 潜水艦の中
 #define Tex_Yuka					L"Media/Sprite/ActionGame_Sprite/Yuka.png"
@@ -46,7 +46,19 @@
 #define Tex_Enemy					L"Media/Sprite/ActionGame_Sprite/Fish.png"
 #define Tex_Enemy2					L"Media/Sprite/ActionGame_Sprite/Enemy2.png"
 #define Tex_EnemyBullet				L"Media/Sprite/ActionGame_Sprite/EnemyBullet.png"
+#define Tex_ElectricEel				L"Media/Sprite/ActionGame_Sprite/ElectricEel.png" // (仮)
+#define Tex_ThunderBullet			L"Media/Sprite/ActionGame_Sprite/ThunderBullet.png" // (仮)
+#define Tex_MissileLauncherHead		L"Media/Sprite/ActionGame_Sprite/TestImage1.png" // (仮)
+#define Tex_MissileLauncherPedestal	L"Media/Sprite/ActionGame_Sprite/TestImage1.png" // (仮)
+#define Tex_Missile					L"Media/Sprite/ActionGame_Sprite/TestImage2.png" // (仮)
 
 // UI
 #define Tex_HPBar					L"Media/Sprite/ActionGame_Sprite/HpBar.png"
 #define Tex_HPBarFream				L"Media/Sprite/ActionGame_Sprite/HpBarFream.png"
+
+// ステージ用
+#define Tex_Rock1				L"Media/Sprite/ActionGame_Sprite/rock1.png"
+#define Tex_Rock2				L"Media/Sprite/ActionGame_Sprite/rock2.png"
+#define Tex_Rock3				L"Media/Sprite/ActionGame_Sprite/rock3.png"
+#define Tex_Rock4				L"Media/Sprite/ActionGame_Sprite/rock4.png"
+#define Tex_Rock5				L"Media/Sprite/ActionGame_Sprite/rock5.png"

@@ -49,6 +49,24 @@
     <Filter Include="ソース ファイル\Object\Stage">
       <UniqueIdentifier>{edf7e8fa-77c7-4de5-b212-0e761772e948}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Object\Bullet">
+      <UniqueIdentifier>{b232d053-8168-4034-96de-dd1c96bc3e5b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Object\Enemy">
+      <UniqueIdentifier>{8755f2fe-f776-4499-854b-83ad95a7bf9f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Object\SceneryObject">
+      <UniqueIdentifier>{afe89693-b893-4187-937c-4e55e4ce1f58}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Object\Bullet">
+      <UniqueIdentifier>{6efd51f9-bbbd-446c-ab87-eeef5644adb9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Object\Enemy">
+      <UniqueIdentifier>{26c2d0e7-7a80-4f22-b4d8-452dc26d8f82}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Object\SceneryObject">
+      <UniqueIdentifier>{1a6dca39-c4b3-45dc-a579-23198415f0cf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Common\CApplication.cpp">
@@ -126,12 +144,6 @@
     <ClCompile Include="kadai0\JetEngine.cpp">
       <Filter>ソース ファイル\Object\Component</Filter>
     </ClCompile>
-    <ClCompile Include="kadai0\Player.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="kadai0\Bullet.cpp">
-      <Filter>ソース ファイル\Object\Component</Filter>
-    </ClCompile>
     <ClCompile Include="kadai0\Barrier.cpp">
       <Filter>ソース ファイル\Object\Component</Filter>
     </ClCompile>
@@ -144,22 +156,7 @@
     <ClCompile Include="kadai0\PolygonBoundingBox.cpp">
       <Filter>ソース ファイル\Object\Bounding box</Filter>
     </ClCompile>
-    <ClCompile Include="kadai0\OperationDevice.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="kadai0\Fish.cpp">
-      <Filter>ソース ファイル\Object\Stage</Filter>
-    </ClCompile>
-    <ClCompile Include="kadai0\SceneryObject.cpp">
-      <Filter>ソース ファイル\Object\Stage</Filter>
-    </ClCompile>
     <ClCompile Include="kadai0\Stage.cpp">
-      <Filter>ソース ファイル\Object\Stage</Filter>
-    </ClCompile>
-    <ClCompile Include="kadai0\Enemy.cpp">
-      <Filter>ソース ファイル\Object\Stage</Filter>
-    </ClCompile>
-    <ClCompile Include="kadai0\EnemyBullet.cpp">
       <Filter>ソース ファイル\Object\Stage</Filter>
     </ClCompile>
     <ClCompile Include="kadai0\Map.cpp">
@@ -168,8 +165,44 @@
     <ClCompile Include="kadai0\UI.cpp">
       <Filter>ソース ファイル\Object</Filter>
     </ClCompile>
+    <ClCompile Include="kadai0\Bullet.cpp">
+      <Filter>ソース ファイル\Object\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="kadai0\ThunderBullet.cpp">
+      <Filter>ソース ファイル\Object\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="kadai0\EnemyBullet.cpp">
+      <Filter>ソース ファイル\Object\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="kadai0\Enemy.cpp">
+      <Filter>ソース ファイル\Object\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="kadai0\ElectricEel.cpp">
+      <Filter>ソース ファイル\Object\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="kadai0\Fish.cpp">
+      <Filter>ソース ファイル\Object\Enemy</Filter>
+    </ClCompile>
     <ClCompile Include="kadai0\Fish2.cpp">
-      <Filter>ソース ファイル\Object\Stage</Filter>
+      <Filter>ソース ファイル\Object\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="kadai0\SceneryObject.cpp">
+      <Filter>ソース ファイル\Object\SceneryObject</Filter>
+    </ClCompile>
+    <ClCompile Include="kadai0\Rock.cpp">
+      <Filter>ソース ファイル\Object\SceneryObject</Filter>
+    </ClCompile>
+    <ClCompile Include="kadai0\Player.cpp">
+      <Filter>ソース ファイル\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="kadai0\OperationDevice.cpp">
+      <Filter>ソース ファイル\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="kadai0\MissileLauncher.cpp">
+      <Filter>ソース ファイル\Object\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="kadai0\Missile.cpp">
+      <Filter>ソース ファイル\Object\Bullet</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -266,12 +299,6 @@
     <ClInclude Include="kadai0\JetEngine.h">
       <Filter>ヘッダー ファイル\Object\Component</Filter>
     </ClInclude>
-    <ClInclude Include="kadai0\Player.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="kadai0\Bullet.h">
-      <Filter>ヘッダー ファイル\Object\Component</Filter>
-    </ClInclude>
     <ClInclude Include="kadai0\Barrier.h">
       <Filter>ヘッダー ファイル\Object\Component</Filter>
     </ClInclude>
@@ -283,9 +310,6 @@
     </ClInclude>
     <ClInclude Include="kadai0\PolygonBoundingBox.h">
       <Filter>ヘッダー ファイル\Object\Bounding Box</Filter>
-    </ClInclude>
-    <ClInclude Include="kadai0\OperationDevice.h">
-      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="kadai0\BoundingBox.h">
       <Filter>ヘッダー ファイル\Object\Bounding Box</Filter>
@@ -299,26 +323,50 @@
     <ClInclude Include="kadai0\Map.h">
       <Filter>ヘッダー ファイル\Object\Stage</Filter>
     </ClInclude>
-    <ClInclude Include="kadai0\SceneryObject.h">
-      <Filter>ヘッダー ファイル\Object\Stage</Filter>
-    </ClInclude>
     <ClInclude Include="kadai0\Stage.h">
-      <Filter>ヘッダー ファイル\Object\Stage</Filter>
-    </ClInclude>
-    <ClInclude Include="kadai0\Enemy.h">
-      <Filter>ヘッダー ファイル\Object\Stage</Filter>
-    </ClInclude>
-    <ClInclude Include="kadai0\Fish.h">
-      <Filter>ヘッダー ファイル\Object\Stage</Filter>
-    </ClInclude>
-    <ClInclude Include="kadai0\EnemyBullet.h">
       <Filter>ヘッダー ファイル\Object\Stage</Filter>
     </ClInclude>
     <ClInclude Include="kadai0\UI.h">
       <Filter>ヘッダー ファイル\Object</Filter>
     </ClInclude>
+    <ClInclude Include="kadai0\Bullet.h">
+      <Filter>ヘッダー ファイル\Object\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="kadai0\EnemyBullet.h">
+      <Filter>ヘッダー ファイル\Object\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="kadai0\ThunderBullet.h">
+      <Filter>ヘッダー ファイル\Object\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="kadai0\Enemy.h">
+      <Filter>ヘッダー ファイル\Object\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="kadai0\ElectricEel.h">
+      <Filter>ヘッダー ファイル\Object\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="kadai0\Fish.h">
+      <Filter>ヘッダー ファイル\Object\Enemy</Filter>
+    </ClInclude>
     <ClInclude Include="kadai0\Fish2.h">
-      <Filter>ヘッダー ファイル\Object\Stage</Filter>
+      <Filter>ヘッダー ファイル\Object\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="kadai0\SceneryObject.h">
+      <Filter>ヘッダー ファイル\Object\SceneryObject</Filter>
+    </ClInclude>
+    <ClInclude Include="kadai0\Rock.h">
+      <Filter>ヘッダー ファイル\Object\SceneryObject</Filter>
+    </ClInclude>
+    <ClInclude Include="kadai0\Player.h">
+      <Filter>ヘッダー ファイル\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="kadai0\OperationDevice.h">
+      <Filter>ヘッダー ファイル\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="kadai0\MissileLauncher.h">
+      <Filter>ヘッダー ファイル\Object\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="kadai0\Missile.h">
+      <Filter>ヘッダー ファイル\Object\Bullet</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

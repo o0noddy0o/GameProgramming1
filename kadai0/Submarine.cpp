@@ -20,6 +20,7 @@
 #include "CircleBoundingBox.h"
 #include "Enemy.h"
 #include "EnemyBullet.h"
+#include "Rock.h"
 
 //━━━━━━━━━━━━━━━━━━━━━━━
 // コンストラクタ
@@ -235,6 +236,12 @@ void Submarine::CollisionProcess(
 	vector < shared_ptr < SceneryObject > >*				_pSceneryObject,
 	vector < shared_ptr < Item > >*							_pItem)
 {
+	XMFLOAT2 moveDirection = AngleToDirectionVector(m_pJetEngine->GetMoveDirection());
+	Barrier* pBarrier = ((Barrier*)m_pComponent[5].get());
+	XMFLOAT2 barrierVector = AngleToDirectionVector(pBarrier->GetBarrierAngle());
+	static float cosAngle = cosf(DegreeToRadian(BARRIER_RANGE / 2.f));
+	static BoundingBox* pBarrierBoundingBox = pBarrier->GetBoundingBox();
+
 	// NULLチェック
 	if (_pEnemy)
 	{
@@ -244,10 +251,36 @@ void Submarine::CollisionProcess(
 			BoundingBox* boundingBox = i->get()->GetBoundingBox();
 
 			// 敵と潜水艦の当たり判定
-			if (boundingBox->Collision(m_pCircleBoundingBox.get()))
+			if (pBarrier->IsBarrierOn())
 			{
-				GetDamaged(DAMAGE_WHEN_ENEMY_HIT_SUBMARINE);
+				if (pBarrierBoundingBox->Collision(boundingBox))
+				{
+					XMFLOAT2 vectorToEnemy = i->get()->GetBoundingBox()->GetPos();
+					vectorToEnemy.x -= m_pos.x;
+					vectorToEnemy.y -= m_pos.y;
+
+					float d = FindDistanceByCoordinateDifference(vectorToEnemy);
+					vectorToEnemy.x /= d;
+					vectorToEnemy.y /= d;
+
+					// 内積
+					if (!barrierVector.x * vectorToEnemy.x + barrierVector.y * vectorToEnemy.y > cosAngle)
+					{
+						if (boundingBox->Collision(m_pCircleBoundingBox.get()))
+						{
+							GetDamaged(DAMAGE_WHEN_ENEMY_HIT_SUBMARINE);
+						}
+					}
+				}
 			}
+			else
+			{
+				if (boundingBox->Collision(m_pCircleBoundingBox.get()))
+				{
+					GetDamaged(DAMAGE_WHEN_ENEMY_HIT_SUBMARINE);
+				}
+			}
+			
 
 			// 潜水艦の弾と敵の当たり判定
 			bool bEndloop = false;
@@ -296,34 +329,194 @@ void Submarine::CollisionProcess(
 	if (_pEnemyBullet)
 	{
 		// 敵の弾と潜水艦の当たり判定
-		for (int i = 0; i < _pEnemyBullet->size(); ++i)
+		for (auto i = _pEnemyBullet->begin(); i != _pEnemyBullet->end();)
 		{
-			for (auto i2 = _pEnemyBullet->begin(); i2 != _pEnemyBullet->end();)
+			if (pBarrier->IsBarrierOn() && i->get()->GetBulletType() != 1)
 			{
-				if (i2->get()->GetBoundingBox()->Collision(m_pCircleBoundingBox.get()))
+				if (i->get()->GetBoundingBox()->Collision(pBarrierBoundingBox))
 				{
-					GetDamaged(DAMAGE_WHEN_ENEMY_BULLET_HIT_SUBMARINE);
-					if (i2 == _pEnemyBullet->begin())
+					XMFLOAT2 vectorToEnemyBullet = i->get()->GetBoundingBox()->GetPos();
+					vectorToEnemyBullet.x -= m_pos.x;
+					vectorToEnemyBullet.y -= m_pos.y;
+
+					float d = FindDistanceByCoordinateDifference(vectorToEnemyBullet);
+					vectorToEnemyBullet.x /= d;
+					vectorToEnemyBullet.y /= d;
+
+					// 内積
+					if (barrierVector.x * vectorToEnemyBullet.x + barrierVector.y * vectorToEnemyBullet.y > cosAngle)
 					{
-						_pEnemyBullet->erase(i2);
-						i2 = _pEnemyBullet->begin();
+						if (i == _pEnemyBullet->begin())
+						{
+							_pEnemyBullet->erase(i);
+							i = _pEnemyBullet->begin();
+						}
+						else
+						{
+							--i;
+							_pEnemyBullet->erase(i + 1);
+							++i;
+						}
+						continue;
+						
 					}
 					else
 					{
-						--i2;
-						_pEnemyBullet->erase(i2 + 1);
-						++i2;
+						if (i->get()->GetBoundingBox()->Collision(m_pCircleBoundingBox.get()))
+						{
+							GetDamaged(DAMAGE_WHEN_ENEMY_BULLET_HIT_SUBMARINE);
+							if (i == _pEnemyBullet->begin())
+							{
+								_pEnemyBullet->erase(i);
+								i = _pEnemyBullet->begin();
+							}
+							else
+							{
+								--i;
+								_pEnemyBullet->erase(i + 1);
+								++i;
+							}
+							continue;
+						}
 					}
-					continue;
 				}
-				++i2;
 			}
+			else if (i->get()->GetBoundingBox()->Collision(m_pCircleBoundingBox.get()))
+			{
+				GetDamaged(DAMAGE_WHEN_ENEMY_BULLET_HIT_SUBMARINE);
+				if (i == _pEnemyBullet->begin())
+				{
+					_pEnemyBullet->erase(i);
+					i = _pEnemyBullet->begin();
+				}
+				else
+				{
+					--i;
+					_pEnemyBullet->erase(i + 1);
+					++i;
+				}
+				continue;
+			}
+			++i;
 		}
 	}
 
 	// NULLチェック
 	if (_pSceneryObject)
 	{
+		for (int i = 0; i < (int)_pSceneryObject->size(); ++i)
+		{
+			// 障害物のバウンディングボックスを取得しておく
+			BoundingBox* boundingBox = (*_pSceneryObject)[i]->GetBoundingBox();
+
+			if (_pEnemyBullet)
+			{
+				// 敵の弾と障害物の当たり判定
+				for (auto j = _pEnemyBullet->begin(); j != _pEnemyBullet->end();)
+				{
+					if (j->get()->GetBoundingBox()->Collision(boundingBox))
+					{
+						if (j == _pEnemyBullet->begin())
+						{
+							_pEnemyBullet->erase(j);
+							j = _pEnemyBullet->begin();
+						}
+						else
+						{
+							--j;
+							_pEnemyBullet->erase(j + 1);
+							++j;
+						}
+						continue;
+					}
+					++j;
+				}
+			}
+			
+			for(int j = 0;j < 4;++j)
+			{
+				for (auto k = m_pBullet[j]->begin(); k != m_pBullet[j]->end();)
+				{
+					if (k->get()->GetBoundingBox()->Collision(boundingBox))
+					{
+						if (k == m_pBullet[j]->begin())
+						{
+							m_pBullet[j]->erase(k);
+							k = m_pBullet[j]->begin();
+						}
+						else
+						{
+							--k;
+							m_pBullet[j]->erase(k + 1);
+							++k;
+						}
+						continue;
+					}
+					++k;
+				}
+			}
+			if (pBarrier->IsBarrierOn())
+			{
+				if (pBarrierBoundingBox->Collision(boundingBox))
+				{
+					XMFLOAT2 vectorToSceneryObject = boundingBox->GetPos();
+					vectorToSceneryObject.x -= m_pos.x;
+					vectorToSceneryObject.y -= m_pos.y;
+
+					float d = FindDistanceByCoordinateDifference(vectorToSceneryObject);
+					vectorToSceneryObject.x /= d;
+					vectorToSceneryObject.y /= d;
+
+					// 内積
+					if (barrierVector.x * vectorToSceneryObject.x + barrierVector.y * vectorToSceneryObject.y > cosAngle)
+					{
+						if (m_pJetEngine->GetIsMoving())
+						{
+							XMFLOAT2 targetPos = boundingBox->GetPos();
+							if ((moveDirection.x > 0.f && targetPos.x > m_pos.x) ||
+								(moveDirection.x < 0.f && targetPos.x < m_pos.x) ||
+								(moveDirection.y > 0.f && targetPos.y > m_pos.y) ||
+								(moveDirection.y < 0.f && targetPos.y < m_pos.y))
+							{
+								m_pJetEngine->SetIsMoveingToFalse();
+							}
+						}
+					}
+					else
+					{
+						if (m_pCircleBoundingBox->Collision(boundingBox))
+						{
+							if (m_pJetEngine->GetIsMoving())
+							{
+								//GetDamaged(DAMAGE_WHEN_SUBMARINE_HIT_SCENERYOBJECT);
+								XMFLOAT2 targetPos = boundingBox->GetPos();
+								if ((moveDirection.x > 0.f && targetPos.x > m_pos.x) ||
+									(moveDirection.x < 0.f && targetPos.x < m_pos.x) ||
+									(moveDirection.y > 0.f && targetPos.y > m_pos.y) ||
+									(moveDirection.y < 0.f && targetPos.y < m_pos.y))
+								{
+									m_pJetEngine->SetIsMoveingToFalse();
+								}
+							}
+						}
+					}
+				}
+			}
+			else if (m_pCircleBoundingBox->Collision(boundingBox))
+			{
+				if (m_pJetEngine->GetIsMoving())
+				{
+					XMFLOAT2 targetPos = boundingBox->GetPos();
+					if ((moveDirection.x > 0.f && targetPos.x > m_pos.x) ||
+						(moveDirection.x < 0.f && targetPos.x < m_pos.x) ||
+						(moveDirection.y > 0.f && targetPos.y > m_pos.y) ||
+						(moveDirection.y < 0.f && targetPos.y < m_pos.y))
+					{
+						m_pJetEngine->SetIsMoveingToFalse();
+					}
+				}
+			}
+		}	
 	}
 
 	// NULLチェック

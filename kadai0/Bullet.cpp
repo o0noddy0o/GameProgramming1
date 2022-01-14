@@ -19,11 +19,14 @@ Bullet::Bullet(GameInfo* _pGameInfo, XMFLOAT2 _pos, float _angle)
 	: Super(_pGameInfo)
 	, m_pBoundingBox(NULL)
 {
-	m_pImg = CreateSprite(Tex_Bullet, BULLET_SIZE_X, BULLET_SIZE_Y);
-	m_pImg->setPos(_pos);
+	if (!m_pImg)
+	{
+		m_pImg = CreateSprite(Tex_Bullet, BULLET_SIZE_X, BULLET_SIZE_Y);
+		m_pImg->setPos(_pos);
+	}
 	m_moveDirection = XMFLOAT2(AngleToDirectionVector(_angle));
 
-	m_pBoundingBox = new CircleBoundingBox(_pos, BULLET_BOUNDING_BOX_RADIUS);
+	if(!m_pBoundingBox)m_pBoundingBox = new CircleBoundingBox(_pos, BULLET_BOUNDING_BOX_RADIUS);
 }
 
 //„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
