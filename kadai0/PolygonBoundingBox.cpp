@@ -292,7 +292,7 @@ void PolygonBoundingBox::RotateVertex(float _angle)
 
 	if (arraySize < 2)return;
 
-	float radian = DegreeToRadian(-_angle);
+	float radian = DegreeToRadian(_angle);
 
 	{
 		XMFLOAT2 newRelativePos;
@@ -418,19 +418,19 @@ void PolygonBoundingBox::RotateVertex(float _angle)
 //━━━━━━━━━━━━━━━━━━━━━━━
 // 他バウンディングボックスとの当たり判定
 //━━━━━━━━━━━━━━━━━━━━━━━
-bool PolygonBoundingBox::Collision(const BoundingBox* _target)const
+bool PolygonBoundingBox::Collision(const BoundingBox* _target, XMFLOAT2* _pDirectionVector)const
 {
 	if (_target->m_boundingBoxType == 1)
 	{
-		return Collision((CircleBoundingBox*)_target);
+		return Collision((CircleBoundingBox*)_target, _pDirectionVector);
 	}
 	else if (_target->m_boundingBoxType == 2)
 	{
-		return Collision((RectangleBoundingBox*)_target);
+		return Collision((RectangleBoundingBox*)_target, _pDirectionVector);
 	}
 	else if (_target->m_boundingBoxType == 3)
 	{
-		return Collision((PolygonBoundingBox*)_target);
+		return Collision((PolygonBoundingBox*)_target, _pDirectionVector);
 	}
 	return false;
 }
@@ -439,17 +439,17 @@ bool PolygonBoundingBox::Collision(const BoundingBox* _target)const
 // 画像との当たり判定
 // 引数１：対象の画像
 //━━━━━━━━━━━━━━━━━━━━━━━
-bool PolygonBoundingBox::Collision(CPicture* _target)const
+bool PolygonBoundingBox::Collision(CPicture* _target, XMFLOAT2* _pDirectionVector)const
 {
 	// 対象の座標とサイズを取得しておく
 	XMFLOAT2 targetSize = _target->getSize();
 	XMFLOAT4 targetPos = _target->getPos();
 
 	// 当たれない場所にいたら、直接falseをreturnする
-	if (m_pos.x + m_minPos.x > targetPos.x + targetSize.x / 2.f)return false;
+	/*if (m_pos.x + m_minPos.x > targetPos.x + targetSize.x / 2.f)return false;
 	if (m_pos.x + m_maxPos.x < targetPos.x - targetSize.x / 2.f)return false;
 	if (m_pos.y + m_minPos.y > targetPos.y + targetSize.y / 2.f)return false;
-	if (m_pos.y + m_maxPos.y < targetPos.y - targetSize.y / 2.f)return false;
+	if (m_pos.y + m_maxPos.y < targetPos.y - targetSize.y / 2.f)return false;*/
 
 	// 画像の四つ頂点を計算する
 	XMFLOAT2 vertex[4] = { XMFLOAT2(targetPos.x, targetPos.y) };
@@ -583,21 +583,17 @@ bool PolygonBoundingBox::Collision(CPicture* _target)const
 	return false;
 }
 
-//━━━━━━━━━━━━━━━━━━━━━━━
-// 丸いバウンディングボックスとの当たり判定
-// 引数１：対象の丸いバウンディングボックス
-//━━━━━━━━━━━━━━━━━━━━━━━
-bool PolygonBoundingBox::Collision(const CircleBoundingBox* _target)const
+bool PolygonBoundingBox::CollisionWithCircle(const CircleBoundingBox* _target)const
 {
 	// 対象の座標とサイズを取得しておく
 	float targetRadius = _target->GetRadius();
 	XMFLOAT2 targetPos = _target->GetPos();
 
 	// 当たれない場所にいたら、直接falseをreturnする
-	if (m_pos.x + m_minPos.x > targetPos.x + targetRadius)return false;
+	/*if (m_pos.x + m_minPos.x > targetPos.x + targetRadius)return false;
 	if (m_pos.x + m_maxPos.x < targetPos.x - targetRadius)return false;
 	if (m_pos.y + m_minPos.y > targetPos.y + targetRadius)return false;
-	if (m_pos.y + m_maxPos.y < targetPos.y - targetRadius)return false;
+	if (m_pos.y + m_maxPos.y < targetPos.y - targetRadius)return false;*/
 
 	// 頂点数を取得
 	int arraySize = (int)m_pVertexPos->size();
@@ -652,11 +648,10 @@ bool PolygonBoundingBox::Collision(const CircleBoundingBox* _target)const
 			pos2.y += m_pos.y;
 
 			XMFLOAT2 pos1ToPos2Vector = { pos2.x - pos.x, pos2.y - pos.y };
-			XMFLOAT2 pos2ToPos1Vector = { -pos1ToPos2Vector.x, -pos1ToPos2Vector.y };
 			XMFLOAT2 targetVector2 = { targetPos.x - pos2.x, targetPos.y - pos2.y };
 
 			float lengthOfline = sqrtf(pos1ToPos2Vector.x * pos1ToPos2Vector.x + pos1ToPos2Vector.y * pos1ToPos2Vector.y);
-			float d3 = sqrtf(targetPos.x * targetPos.x + targetPos.y * targetPos.y);
+			float d3 = sqrtf(targetVector2.x * targetVector2.x + targetVector2.y * targetVector2.y);
 
 			if (d > lengthOfline + targetRadius)
 			{
@@ -666,20 +661,45 @@ bool PolygonBoundingBox::Collision(const CircleBoundingBox* _target)const
 			{
 				return false;
 			}
-
 			if (d < targetRadius)
 			{
+				throw i;
+				return true;
+			}
+			if (d3 < targetRadius)
+			{
+				throw i + arraySize;
 				return true;
 			}
 
-			if (d3 < targetRadius)
+			XMFLOAT2 vector4 = (*m_pVector)[i];
+			XMFLOAT2 newVector;
+			newVector.x = vector4.x * cosf(DegreeToRadian(90.f)) - vector4.y * sinf(DegreeToRadian(90.f));
+			newVector.y = vector4.x * sinf(DegreeToRadian(90.f)) + vector4.y * cosf(DegreeToRadian(90.f));
+			
+			// 正規化
+			targetVector2.x /= d3;
+			targetVector2.y /= d3;
+
+			float z2 = newVector.x * vector.y - newVector.y * vector.x;
+			float z3 = newVector.x * targetVector2.y - newVector.y * targetVector2.x;
+
+			if ((z2 > 0.f && z3 > 0.f) ||
+				(z2 < 0.f && z3 < 0.f))
 			{
-				return true;
+				return false;
 			}
 			++cnt;
+			//━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+			// d			：i番目の頂点から円の中心までの距離
+			// d2			：円の中心に通る且つi番目の頂点とi+1番目の頂点の間の線を垂直する線の長さ
+			// d3			：i+1番目の頂点から円の中心までの距離
+			// lengthOfline	：i番目の頂点とi+1番目の頂点の間の線の長さ
+			//━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 		}
 		if (cnt >= arraySize)
 		{
+			throw -1;
 			return true;
 		}
 		else
@@ -688,7 +708,7 @@ bool PolygonBoundingBox::Collision(const CircleBoundingBox* _target)const
 		}
 	}
 	// 頂点数が２（線）
-	else if(arraySize == 2)
+	else if (arraySize == 2)
 	{
 		XMFLOAT2 pos = (*m_pVertexPos)[0];
 
@@ -724,7 +744,7 @@ bool PolygonBoundingBox::Collision(const CircleBoundingBox* _target)const
 		XMFLOAT2 targetVector2 = { targetPos.x - pos2.x, targetPos.y - pos2.y };
 
 		float lengthOfline = sqrtf(pos1ToPos2Vector.x * pos1ToPos2Vector.x + pos1ToPos2Vector.y * pos1ToPos2Vector.y);
-		float d3 = sqrtf(targetPos.x * targetPos.x + targetPos.y * targetPos.y);
+		float d3 = sqrtf(targetVector2.x * targetVector2.x + targetVector2.y * targetVector2.y);
 
 		if (d > lengthOfline + targetRadius)
 		{
@@ -749,20 +769,114 @@ bool PolygonBoundingBox::Collision(const CircleBoundingBox* _target)const
 }
 
 //━━━━━━━━━━━━━━━━━━━━━━━
-// 四角形バウンディングボックスとの当たり判定
-// 引数１：対象の四角形バウンディングボックス
+// 丸いバウンディングボックスとの当たり判定
+// 引数１：対象の丸いバウンディングボックス
 //━━━━━━━━━━━━━━━━━━━━━━━
-bool PolygonBoundingBox::Collision(const RectangleBoundingBox* _target)const
+bool PolygonBoundingBox::Collision(const CircleBoundingBox* _target, XMFLOAT2* _pDirectionVector)const
+{
+	try
+	{
+		if (!CollisionWithCircle(_target))return false;
+	}
+	catch (int index)
+	{
+		if (!_pDirectionVector)return true;
+
+		if (!((_pDirectionVector->y < 0.f && _target->GetPos().y < m_pos.y) ||
+			(_pDirectionVector->y > 0.f && _target->GetPos().y > m_pos.y)))
+			if (!((_pDirectionVector->x < 0.f && _target->GetPos().x < m_pos.x) ||
+				(_pDirectionVector->x > 0.f && _target->GetPos().x > m_pos.x)))return true;
+
+		if (index != -1)
+		{
+			int arraySize = (int)m_pVertexPos->size();
+			if (index < arraySize)
+			{
+				// ベクトルを取っておく
+				XMFLOAT2 vector = (*m_pVector)[index];
+
+				// ベクトルを回転し、保存しておく
+				XMFLOAT2 newVector;
+				newVector.x = vector.x * cosf(DegreeToRadian(-90.f)) - vector.y * sinf(DegreeToRadian(-90.f));
+				newVector.y = vector.x * sinf(DegreeToRadian(-90.f)) + vector.y * cosf(DegreeToRadian(-90.f));
+
+				// 元の方向ベクトルの大きさを保存しておく
+				float m = FindDistanceByCoordinateDifference(*_pDirectionVector);
+
+				// 元の方向ベクトルの単位ベクトル
+				XMFLOAT2 directionVector = *_pDirectionVector;
+				directionVector.x /= m;
+				directionVector.y /= m;
+
+				float cosAngle = -directionVector.x * newVector.x + -directionVector.y * newVector.y;
+
+				// 元の方向ベクトルがnewVector上の投影
+				XMFLOAT2 vector2 = newVector;
+				vector2.x *= cosAngle;
+				vector2.y *= cosAngle;
+
+				XMFLOAT2 newDirectionVector = directionVector;
+
+				newDirectionVector.x = newDirectionVector.x + vector2.x * 2.f * m;
+				newDirectionVector.y = newDirectionVector.y + vector2.y * 2.f * m;
+
+				*_pDirectionVector = newDirectionVector;
+			}
+			else
+			{
+				index -= arraySize;
+
+				// ベクトルを取っておく
+				XMFLOAT2 vector = (*m_pVector)[index];
+
+				// ベクトルを回転し、保存しておく
+				XMFLOAT2 newVector;
+				newVector.x = vector.x * cosf(DegreeToRadian(-90.f)) - vector.y * sinf(DegreeToRadian(-90.f));
+				newVector.y = vector.x * sinf(DegreeToRadian(-90.f)) + vector.y * cosf(DegreeToRadian(-90.f));
+
+				// 元の方向ベクトルの大きさを保存しておく
+				float m = FindDistanceByCoordinateDifference(*_pDirectionVector);
+
+				// 元の方向ベクトルの単位ベクトル
+				XMFLOAT2 directionVector = *_pDirectionVector;
+				directionVector.x /= m;
+				directionVector.y /= m;
+
+				float cosAngle = -directionVector.x * newVector.x + -directionVector.y * newVector.y;
+
+				// 元の方向ベクトルがnewVector上の投影
+				XMFLOAT2 vector2 = newVector;
+				vector2.x *= cosAngle;
+				vector2.y *= cosAngle;
+
+				XMFLOAT2 newDirectionVector = directionVector;
+
+				newDirectionVector.x = newDirectionVector.x + vector2.x * 2.f * m;
+				newDirectionVector.y = newDirectionVector.y + vector2.y * 2.f * m;
+
+				*_pDirectionVector = newDirectionVector;
+			}
+		}
+		else
+		{
+
+		}
+	}
+	return true;
+}
+
+
+bool PolygonBoundingBox::CollisionWithRectangle(const RectangleBoundingBox* _target, vector<int>& hitLine)const
 {
 	// 対象の座標とサイズを取得しておく
 	XMFLOAT2 targetSize = _target->GetSize();
 	XMFLOAT2 targetPos = _target->GetPos();
 
 	// 当たれない場所にいたら、直接falseをreturnする
-	if (m_pos.x + m_minPos.x > targetPos.x + targetSize.x / 2.f)return false;
+	/*if (m_pos.x + m_minPos.x > targetPos.x + targetSize.x / 2.f)return false;
 	if (m_pos.x + m_maxPos.x < targetPos.x - targetSize.x / 2.f)return false;
 	if (m_pos.y + m_minPos.y > targetPos.y + targetSize.y / 2.f)return false;
-	if (m_pos.y + m_maxPos.y < targetPos.y - targetSize.y / 2.f)return false;
+	if (m_pos.y + m_maxPos.y < targetPos.y - targetSize.y / 2.f)return false;*/
 
 	// ターゲットの四つ頂点を計算する
 	XMFLOAT2 vertex[4] = { targetPos, targetPos, targetPos, targetPos };
@@ -789,6 +903,8 @@ bool PolygonBoundingBox::Collision(const RectangleBoundingBox* _target)const
 				pos = (*m_pVertexPos)[i];
 				pos.x += m_pos.x;
 				pos.y += m_pos.y;
+
+				int cnt = 0;
 
 				for (int j = 0; j < 4; ++j)
 				{
@@ -898,10 +1014,84 @@ bool PolygonBoundingBox::Collision(const RectangleBoundingBox* _target)const
 }
 
 //━━━━━━━━━━━━━━━━━━━━━━━
+// 四角形バウンディングボックスとの当たり判定
+// 引数１：対象の四角形バウンディングボックス
+//━━━━━━━━━━━━━━━━━━━━━━━
+bool PolygonBoundingBox::Collision(const RectangleBoundingBox* _target, XMFLOAT2* _pDirectionVector)const
+{
+	vector<int> hitLine;
+
+	if (!CollisionWithRectangle(_target, hitLine))return false;
+
+	if (!_pDirectionVector)return true;
+
+	if (((_pDirectionVector->y < 0.f && _target->GetPos().y > m_pos.y) ||
+		(_pDirectionVector->y > 0.f && _target->GetPos().y < m_pos.y)))return true;
+
+	if (((_pDirectionVector->x < 0.f && _target->GetPos().x > m_pos.x) ||
+		(_pDirectionVector->x > 0.f && _target->GetPos().x < m_pos.x)))return true;
+
+	//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	//! 一時的に使うもの
+	//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	XMFLOAT2 d = _target->GetPos();
+	d.x -= m_pos.x;
+	d.y -= m_pos.y;
+	if (Abs(d.x) > Abs(d.y))
+	{
+		_pDirectionVector->x = -_pDirectionVector->x;
+	}
+	else
+	{
+		_pDirectionVector->y = -_pDirectionVector->y;
+	}
+	//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+	/*int hitLineNum = (int)hitLine.size();
+
+	if (hitLineNum % 2 == 1)
+	{
+		XMFLOAT2 vector = (*m_pVector)[hitLine[(hitLineNum - 1) / 2]];
+
+		XMFLOAT2 newVector;
+		newVector.x = vector.x * cosf(DegreeToRadian(90.f)) - vector.y * sinf(DegreeToRadian(90.f));
+		newVector.y = vector.x * sinf(DegreeToRadian(90.f)) + vector.y * cosf(DegreeToRadian(90.f));
+
+		// 元の方向ベクトルの大きさを保存しておく
+		float m = FindDistanceByCoordinateDifference(*_pDirectionVector);
+
+		// 元の方向ベクトルの単位ベクトル
+		XMFLOAT2 directionVector = *_pDirectionVector;
+		directionVector.x /= m;
+		directionVector.y /= m;
+
+		float cosAngle = -directionVector.x * newVector.x + -directionVector.y * newVector.y;
+
+		// 元の方向ベクトルがnewVector上の投影
+		XMFLOAT2 vector2 = newVector;
+		vector2.x *= cosAngle;
+		vector2.y *= cosAngle;
+
+		XMFLOAT2 newDirectionVector = directionVector;
+
+		newDirectionVector.x = newDirectionVector.x + vector2.x * 2.f * m;
+		newDirectionVector.y = newDirectionVector.y + vector2.y * 2.f * m;
+
+		*_pDirectionVector = newDirectionVector;
+	}
+	else if (hitLineNum != 0)
+	{
+
+	}*/
+
+	return true;
+}
+
+//━━━━━━━━━━━━━━━━━━━━━━━
 // 多角形バウンディングボックスとの当たり判定
 // 引数１：対象の多角形バウンディングボックス
 //━━━━━━━━━━━━━━━━━━━━━━━
-bool PolygonBoundingBox::Collision(const PolygonBoundingBox* _target)const
+bool PolygonBoundingBox::Collision(const PolygonBoundingBox* _target, XMFLOAT2* _pDirectionVector)const
 {
 	// 対象の座標とサイズを取得しておく
 	XMFLOAT2 targetMaxPos = _target->GetMaxPos();
@@ -909,10 +1099,10 @@ bool PolygonBoundingBox::Collision(const PolygonBoundingBox* _target)const
 	XMFLOAT2 targetPos = _target->GetPos();
 
 	// 当たれない場所にいたら、直接falseをreturnする
-	if (m_pos.x + m_minPos.x > targetPos.x + targetMaxPos.x)return false;
+	/*if (m_pos.x + m_minPos.x > targetPos.x + targetMaxPos.x)return false;
 	if (m_pos.x + m_maxPos.x < targetPos.x + targetMinPos.x)return false;
 	if (m_pos.y + m_minPos.y > targetPos.y + targetMaxPos.y)return false;
-	if (m_pos.y + m_maxPos.y < targetPos.y + targetMaxPos.y)return false;
+	if (m_pos.y + m_maxPos.y < targetPos.y + targetMaxPos.y)return false;*/
 
 	// ターゲットの頂点数を取得し、頂点座標を計算する
 	vector<XMFLOAT2> targetVertex = *(_target->GetVertexPos());

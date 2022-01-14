@@ -37,6 +37,18 @@
 #define ENEMY_2_SIZE_Y				(40.f)
 #define ENEMY_2_MOVE_SPEED			(250.f)
 
+#define ELECTRICEEL_SIZE_X			(311.f)
+#define ELECTRICEEL_SIZE_Y			(162.f)
+#define ELECTRICEEL_SIZE			(XMFLOAT2(ELECTRICEEL_SIZE_X, ELECTRICEEL_SIZE_Y))
+#define ELECTRICEEL_MOVE_SPEED		(120.f)
+#define ELECTRICEEL_TURRET_COOL_DOWN (30)
+
+#define MISSILELAUNCHER_HEAD_SIZE_X		(50.f)
+#define MISSILELAUNCHER_HEAD_SIZE_Y		(50.f)
+#define MISSILELAUNCHER_PEDESTAL_SIZE_X	(50.f)
+#define MISSILELAUNCHER_PEDESTAL_SIZE_Y	(30.f)
+#define MISSILELAUNCHER_HEAD_PEDESTAL_INTERVAL	(40.f)
+
 //━━━━━━━━━━━━━━━━━━━━━━━
 // タレット
 //━━━━━━━━━━━━━━━━━━━━━━━
@@ -83,11 +95,17 @@
 #define BULLET_MOVE_SPEED	(1000.f)
 #define BULLET_BOUNDING_BOX_RADIUS	(10.f)
 
+#define ELECTRICEEL_BULLET_SIZE_X				(10.f)
+#define ELECTRICEEL_BULLET_SIZE_Y				(20.f)
+#define ELECTRICEEL_BULLET_MOVE_SPEED			(1500.f)
+#define ELECTRICEEL_BULLET_BOUNDING_BOX_RADIUS	(10.f)
+
 //━━━━━━━━━━━━━━━━━━━━━━━
 // 敵の弾
 //━━━━━━━━━━━━━━━━━━━━━━━
 #define ENEMY_BULLET_SIZE_X		(15.f)
 #define ENEMY_BULLET_SIZE_Y		(15.f)
+#define ENEMY_BULLET_SIZE		(XMFLOAT2(ENEMY_BULLET_SIZE_X, ENEMY_BULLET_SIZE_Y))
 #define ENEMY_BULLET_MOVE_SPEED	(600.f)
 #define ENEMY_BULLET_BOUNDING_BOX_RADIUS	(10.f)
 
@@ -137,6 +155,7 @@
 //━━━━━━━━━━━━━━━━━━━━━━━
 #define DAMAGE_WHEN_ENEMY_HIT_SUBMARINE			(0.1f)
 #define DAMAGE_WHEN_ENEMY_BULLET_HIT_SUBMARINE	(0.1f)
+#define DAMAGE_WHEN_SUBMARINE_HIT_SCENERYOBJECT	(0.1f)
 
 //━━━━━━━━━━━━━━━━━━━━━━━
 // カメラ
@@ -171,16 +190,20 @@
 // 計算用
 //━━━━━━━━━━━━━━━━━━━━━━━
 #define PI										((float)(3.1415926535))
-#define Abs(x)									((x >= 0)?(x):(-x))
+#define Abs(x)									(((x) >= 0)?(x):(-x))
 #define RadianToDegree(x)						((x) * 180.f / PI)
 #define DegreeToRadian(x)						((x) * PI / 180.f)
 #define AngleToDirectionVector(_angle)			{ cosf(DegreeToRadian(_angle)) , sinf(DegreeToRadian(_angle)) }
 #define Degree(_angle)							((float)((_angle >= 0.f)?((int)(_angle) % 360):((360 + ((int)(_angle) % 360)))))
+#define FindDistanceByCoordinateDifference(_coordinateDifference)	\
+		(sqrtf((_coordinateDifference).x * (_coordinateDifference).x + (_coordinateDifference).y * (_coordinateDifference).y))
+#define NormalizeVector(_vector)				\
+		{ float mag = FindDistanceByCoordinateDifference(_vector); _vector.x /= mag; _vector.y /= mag; }
 
 //━━━━━━━━━━━━━━━━━━━━━━━
 // デバッグ・確認用
 //━━━━━━━━━━━━━━━━━━━━━━━
-#define DEBUG					(false)
+#define DEBUG					(true)
 #define HaveEnemy				(true)
 #define ShowGamePadInput		(false)
 

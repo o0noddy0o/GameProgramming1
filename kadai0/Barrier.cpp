@@ -1,73 +1,81 @@
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
-// ƒtƒ@ƒCƒ‹–¼@@FBarrier.cpp
-// ŠT—v@@@@@FƒoƒŠƒA‚ÌƒNƒ‰ƒX
-// ì¬Ò@@@@F20CU0314 ƒSƒRƒPƒ“
-// XV“à—e@@@F2021/11/21 ì¬iŒàj
-// @@@@@@@F2021/12/23 InputProcessƒƒ\ƒbƒh‚Ì•ÒWiƒQ[ƒ€ƒpƒbƒh‚ÌÀ‘•jiŒàj
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
+// ãƒ•ã‚¡ã‚¤ãƒ«åã€€ã€€ï¼šBarrier.cpp
+// æ¦‚è¦ã€€ã€€ã€€ã€€ã€€ï¼šãƒãƒªã‚¢ã®ã‚¯ãƒ©ã‚¹
+// ä½œæˆè€…ã€€ã€€ã€€ã€€ï¼š20CU0314 ã‚´ã‚³ã‚±ãƒ³
+// æ›´æ–°å†…å®¹ã€€ã€€ã€€ï¼š2021/11/21 ä½œæˆï¼ˆå‘‰ï¼‰
+// ã€€ã€€ã€€ã€€ã€€ã€€ã€€ï¼š2021/12/23 InputProcessãƒ¡ã‚½ãƒƒãƒ‰ã®ç·¨é›†ï¼ˆã‚²ãƒ¼ãƒ ãƒ‘ãƒƒãƒ‰ã®å®Ÿè£…ï¼‰ï¼ˆå‘‰ï¼‰
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
 #include "Barrier.h"
 #include "GameResource.h"
 #include "Define.h"
+#include "CircleBoundingBox.h"
 
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
-// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
-// ˆø”‚PFƒQ[ƒ€‚Ìî•ñ
-// ˆø”‚QFƒoƒŠƒA‚ÌŒü‚­•ûŒüi‰Šú‚ÌŠp“xj
-// ˆø”‚RFƒoƒŠƒA‚Ì‰ŠúÀ•Wiö…ŠÍ‚ÌÀ•W‚»‚Ì‚Ü‚Üj
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
+// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+// å¼•æ•°ï¼‘ï¼šã‚²ãƒ¼ãƒ ã®æƒ…å ±
+// å¼•æ•°ï¼’ï¼šãƒãƒªã‚¢ã®å‘ãæ–¹å‘ï¼ˆåˆæœŸã®è§’åº¦ï¼‰
+// å¼•æ•°ï¼“ï¼šãƒãƒªã‚¢ã®åˆæœŸåº§æ¨™ï¼ˆæ½œæ°´è‰¦ã®åº§æ¨™ãã®ã¾ã¾ï¼‰
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
 Barrier::Barrier(GameInfo* _pGameInfo, float _angle, XMFLOAT2 _pos)
 	: Super(_pGameInfo)
-	, m_angle(_angle)
+	, m_angle(_angle + 90.f)
 	, m_bIsBarrierOn(true)
 {
 	m_pImg = CreateSprite(Tex_Barrier, BARRIER_SIZE_X, BARRIER_SIZE_Y, kTexelBarrier);
 	m_pImg->setPos(_pos);
 	m_pImg->setAngleZ(_angle);
+	m_pBoundingBox = new CircleBoundingBox(_pos, BARRIER_SIZE_X / 2.f);
 }
 
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
-// ƒfƒXƒgƒ‰ƒNƒ^
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
+// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
 Barrier::~Barrier()
 {
+	if (m_pBoundingBox)delete m_pBoundingBox;
 }
 
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
-// ƒvƒŒƒCƒ„[‚Ì“ü—Íˆ—
-// ˆø”‚PFƒvƒŒƒCƒ„[‚Ì”Ô†
-// ˆø”‚QF‘O‚ÌƒtƒŒ[ƒ€‚Ìˆ—ŠÔ
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
+bool Barrier::IsBarrierOn()const
+{
+	return m_bIsBarrierOn;
+}
+
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
+// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®å…¥åŠ›å‡¦ç†
+// å¼•æ•°ï¼‘ï¼šãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ç•ªå·
+// å¼•æ•°ï¼’ï¼šå‰ã®ãƒ•ãƒ¬ãƒ¼ãƒ ã®å‡¦ç†æ™‚é–“
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
 void Barrier::InputProcess(int _playerIndex, float _deltaTime)
 {
-	// ƒQ[ƒ€ƒpƒbƒh‚Ì“ü—Í‚ğæ“¾
+	// ã‚²ãƒ¼ãƒ ãƒ‘ãƒƒãƒ‰ã®å…¥åŠ›ã‚’å–å¾—
 	float gamepadX = GetInput()->GetAnalogStickX(_playerIndex - 1);
 	if (Abs(gamepadX) > 0.05f)
 	{
 		m_angle -= BARRIER_ROTATION_SPEED * _deltaTime * gamepadX;
-		m_pImg->setAngleZ(m_angle);
-		m_bIsBarrierOn = false;
+		m_pImg->setAngleZ(m_angle - 90.f);
+		//m_bIsBarrierOn = false;
 	}
 
 	switch (_playerIndex)
 	{
 	case 1:
-		// ¶
+		// å·¦
 		if (GetInput()->isKeyPressed(DIK_LEFTARROW))
 		{
 			m_angle += BARRIER_ROTATION_SPEED * _deltaTime;
-			m_pImg->addAngleZ(m_angle);
-			m_bIsBarrierOn = false;
+			m_pImg->setAngleZ(m_angle - 90.f);
+			//m_bIsBarrierOn = false;
 		}
 
-		// ‰E
+		// å³
 		else if (GetInput()->isKeyPressed(DIK_RIGHTARROW))
 		{
 			m_angle -= BARRIER_ROTATION_SPEED * _deltaTime;
-			m_pImg->addAngleZ(m_angle);
-			m_bIsBarrierOn = false;
+			m_pImg->setAngleZ(m_angle - 90.f);
+			//m_bIsBarrierOn = false;
 		}
 
-		// ˆÚ“®‚µ‚Ä‚È‚©‚Á‚½‚çAƒoƒŠƒA‚ğƒIƒ“‚É‚·‚é
+		// ç§»å‹•ã—ã¦ãªã‹ã£ãŸã‚‰ã€ãƒãƒªã‚¢ã‚’ã‚ªãƒ³ã«ã™ã‚‹
 		else
 		{
 			m_bIsBarrierOn = true;
@@ -75,23 +83,23 @@ void Barrier::InputProcess(int _playerIndex, float _deltaTime)
 		break;
 
 	case 2:
-		// ¶
+		// å·¦
 		if (GetInput()->isKeyPressed(DIK_A))
 		{
 			m_angle += BARRIER_ROTATION_SPEED * _deltaTime;
-			m_pImg->addAngleZ(m_angle);
-			m_bIsBarrierOn = false;
+			m_pImg->setAngleZ(m_angle - 90.f);
+			//m_bIsBarrierOn = false;
 		}
 
-		// ‰E
+		// å³
 		else if (GetInput()->isKeyPressed(DIK_D))
 		{
 			m_angle -= BARRIER_ROTATION_SPEED * _deltaTime;
-			m_pImg->addAngleZ(m_angle);
-			m_bIsBarrierOn = false;
+			m_pImg->setAngleZ(m_angle - 90.f);
+			//m_bIsBarrierOn = false;
 		}
 
-		// ˆÚ“®‚µ‚Ä‚È‚©‚Á‚½‚çAƒoƒŠƒA‚ğƒIƒ“‚É‚·‚é
+		// ç§»å‹•ã—ã¦ãªã‹ã£ãŸã‚‰ã€ãƒãƒªã‚¢ã‚’ã‚ªãƒ³ã«ã™ã‚‹
 		else
 		{
 			m_bIsBarrierOn = true;
@@ -101,9 +109,9 @@ void Barrier::InputProcess(int _playerIndex, float _deltaTime)
 	
 }
 
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
-// ƒoƒŠƒA‚Ì‰æ‘œ‚ğ•`‰æ‚·‚é
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
+// ãƒãƒªã‚¢ã®ç”»åƒã‚’æç”»ã™ã‚‹
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
 void Barrier::renderSprite()
 {
 	if (m_bIsBarrierOn)
@@ -112,19 +120,18 @@ void Barrier::renderSprite()
 	}
 }
 
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
-// ’e‚Ì“–‚½‚è”»’èi“G‚Æ‚Ìj
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
-//bool Barrier::Collision(vector<shared_ptr<Enemy>>* _target)
-//{
-//
-//	return false;
-//}
+float Barrier::GetBarrierAngle()const
+{
+	return m_angle;
+}
 
-////„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
-//// ’e‚Ì“–‚½‚è”»’èiáŠQ•¨‚Æ‚Ìj
-////„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
-//bool Barrier::Collision(vector<shared_ptr<SceneryObject>>* _target)
-//{
-//	return false;
-//}
+BoundingBox* Barrier::GetBoundingBox()const
+{
+	return m_pBoundingBox;
+}
+
+void Barrier::SetPos(XMFLOAT2 _pos)
+{
+	m_pImg->setPos(_pos.x + m_relativePos.x, _pos.y + m_relativePos.y);
+	m_pBoundingBox->SetPos(XMFLOAT2(_pos.x + m_relativePos.x, _pos.y + m_relativePos.y));
+}

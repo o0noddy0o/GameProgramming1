@@ -16,19 +16,20 @@ class Fish:public Enemy
 {
 public:
 	Fish(GameInfo* _pGameInfo, XMFLOAT2 _pos = { 0.f,0.f }, float _angle = 0.f);
-	~Fish();
+	virtual ~Fish();
 
 	// UŒ‚‚Ìˆ—
-	virtual void AttackProcess();
+	virtual void AttackProcess(XMFLOAT2 _SubmarinePos = XMFLOAT2(0.f, 0.f));
 		
 	// ˆÚ“®ˆ—
 	virtual void MoveProcess(XMFLOAT2 _SubmarinePos, float _deltaTime);
 
 	virtual BoundingBox* GetBoundingBox()const;
-private:
+protected:
 	// “–‚½‚è”»’è
 	RectangleBoundingBox* m_pBoundingBox;
 	float m_angle;
-	float m_coolDownCnt;
+	int m_coolDownCnt;
+	int m_coolDown;
 };
 

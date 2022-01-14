@@ -27,7 +27,7 @@ public:
 	virtual void renderSprite();
 
 	// 攻撃の処理(ステージ用)
-	virtual void AttackProcess() = 0;
+	virtual void AttackProcess(XMFLOAT2 _SubmarinePos = XMFLOAT2(0.f, 0.f)) = 0;
 
 	// 移動の処理(ステージ用)
 	virtual void MoveProcess(XMFLOAT2 _SubmarinePos, float _deltaTime) = 0;

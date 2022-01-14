@@ -33,11 +33,14 @@ public:
 	void SetRelativePos(XMFLOAT2 _newRelativePos = { 0.f,0.f });
 
 	// 当たり判定
-	bool Collision(const BoundingBox* _target)const;
-	bool Collision(CPicture* _target)const;						// 画像
-	bool Collision(const CircleBoundingBox* _target)const;		// 丸いバウンディングボックス
-	bool Collision(const RectangleBoundingBox* _target)const;	// 四角形バウンディングボックス
-	bool Collision(const PolygonBoundingBox* _target)const;		// 多角形バウンディングボックス
+	bool Collision(const BoundingBox* _target, XMFLOAT2* _pDirectionVector = NULL)const;
+	bool Collision(CPicture* _target, XMFLOAT2* _pDirectionVector = NULL)const;						// 画像
+	bool Collision(const CircleBoundingBox* _target, XMFLOAT2* _pDirectionVector = NULL)const;		// 丸いバウンディングボックス
+	bool Collision(const RectangleBoundingBox* _target, XMFLOAT2* _pDirectionVector = NULL)const;	// 四角形バウンディングボックス
+	bool Collision(const PolygonBoundingBox* _target, XMFLOAT2* _pDirectionVector = NULL)const;		// 多角形バウンディングボックス
+
+private:
+	bool CollisionWithCircle(const CircleBoundingBox* _target)const;
 
 private:
 	XMFLOAT2 m_pos;			// バウンディングボックスの中心座標

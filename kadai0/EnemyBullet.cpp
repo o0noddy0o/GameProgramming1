@@ -15,15 +15,19 @@
 // ˆø”‚QF’e‚Ì‰ŠúÀ•W
 // ˆø”‚RF’e‚Ì‰ŠúˆÚ“®•ûŒüiŠp“xj
 //„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
-EnemyBullet::EnemyBullet(GameInfo* _pGameInfo, XMFLOAT2 _pos, float _angle)
+EnemyBullet::EnemyBullet(GameInfo* _pGameInfo, XMFLOAT2 _pos, float _angle, int _bulletType)
 	: Super(_pGameInfo)
 	, m_pBoundingBox(NULL)
+	, m_bulletType(_bulletType)
 {
-	m_pImg = CreateSprite(Tex_EnemyBullet, ENEMY_BULLET_SIZE_X, ENEMY_BULLET_SIZE_Y);
-	m_pImg->setPos(_pos);
+	if (!_bulletType)
+	{
+		m_pImg = CreateSprite(Tex_EnemyBullet, ENEMY_BULLET_SIZE_X, ENEMY_BULLET_SIZE_Y);
+		m_pImg->setPos(_pos);
+	}
 	m_moveDirection = XMFLOAT2(AngleToDirectionVector(_angle));
 
-	m_pBoundingBox = new CircleBoundingBox(_pos, ENEMY_BULLET_BOUNDING_BOX_RADIUS);
+	if(!m_pBoundingBox)m_pBoundingBox = new CircleBoundingBox(_pos, ENEMY_BULLET_BOUNDING_BOX_RADIUS);
 }
 
 //„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
@@ -35,6 +39,10 @@ EnemyBullet::~EnemyBullet()
 	delete m_pBoundingBox;
 }
 
+int EnemyBullet::GetBulletType()const
+{
+	return m_bulletType;
+}
 
 //„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
 // “G‚Ì’e‚Ì‰æ‘œ‚ð•`‰æ

@@ -39,7 +39,7 @@ Fish2::~Fish2()
 //„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
 // UŒ‚‚Ìˆ—
 //„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
-void Fish2::AttackProcess()
+void Fish2::AttackProcess(XMFLOAT2 _SubmarinePos)
 {
 }
 

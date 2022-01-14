@@ -1,14 +1,16 @@
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
-// ƒtƒ@ƒCƒ‹–¼@@FBarrier.h
-// ŠT—v@@@@@FƒoƒŠƒA‚ÌƒNƒ‰ƒX
-// ì¬Ò@@@@F20CU0314 ƒSƒRƒPƒ“
-// XV“à—e@@@F2021/11/21 ì¬
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
+// ãƒ•ã‚¡ã‚¤ãƒ«åã€€ã€€ï¼šBarrier.h
+// æ¦‚è¦ã€€ã€€ã€€ã€€ã€€ï¼šãƒãƒªã‚¢ã®ã‚¯ãƒ©ã‚¹
+// ä½œæˆè€…ã€€ã€€ã€€ã€€ï¼š20CU0314 ã‚´ã‚³ã‚±ãƒ³
+// æ›´æ–°å†…å®¹ã€€ã€€ã€€ï¼š2021/11/21 ä½œæˆ
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
 #pragma once
 #include "Component.h"
 
 class Enemy;
 class SceneryObject;
+class BoundingBox;
+class CircleBoundingBox;
 
 class Barrier : public Component
 {
@@ -16,13 +18,16 @@ class Barrier : public Component
 public:
 	Barrier(GameInfo* _pGameInfo, float _angle = 0.f, XMFLOAT2 _pos = { 0.f, 0.f });
 	~Barrier();
+	bool IsBarrierOn()const;
 	void InputProcess(int _playerIndex, float _deltaTime);
 	void renderSprite();
-	/*bool Collision(vector<shared_ptr<Enemy>>* _target);*/				// ’e‚Ì“–‚½‚è”»’èi“G‚Æ‚Ìj
-	/*bool Collision(vector<shared_ptr<SceneryObject>>* _target);*/		// ’e‚Ì“–‚½‚è”»’èiáŠQ•¨‚Æ‚Ìj
+	float GetBarrierAngle()const;
+	BoundingBox* GetBoundingBox()const;
+	void SetPos(XMFLOAT2 _pos)override;
 
 private:
 	bool m_bIsBarrierOn;
 	float m_angle;
+	CircleBoundingBox* m_pBoundingBox;
 };
 

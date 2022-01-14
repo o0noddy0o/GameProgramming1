@@ -146,7 +146,7 @@ void Player::InputProcess()
 	}
 	if (GetInput()->IsGamePadButtonPressed(GAMEPAD_KEY_Action, m_playerIndex - 1))
 	{
-		Jump();
+  		Jump();
 	}
 	switch (m_playerIndex)
 	{
