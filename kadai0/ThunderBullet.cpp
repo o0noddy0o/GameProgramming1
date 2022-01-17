@@ -10,7 +10,7 @@
 #include "CircleBoundingBox.h"
 
 ThunderBullet::ThunderBullet(GameInfo* _pGameInfo, XMFLOAT2 _pos, float _angle)
-	: Super(_pGameInfo, _pos, _angle, 1)
+	: Super(_pGameInfo, _pos, _angle, thunderBullet)
 {
 	m_pImg = CreateSprite(Tex_ThunderBullet, ELECTRICEEL_BULLET_SIZE_X, ELECTRICEEL_BULLET_SIZE_Y);
 	m_pImg->setAngleZ(_angle);
@@ -21,7 +21,7 @@ ThunderBullet::~ThunderBullet()
 {
 }
 
-void ThunderBullet::MoveProcess(float _deltaTime)
+void ThunderBullet::MoveProcess(float _deltaTime, XMFLOAT2 _SubmarinePos)
 {
 	if (m_pImg->getActive())
 	{

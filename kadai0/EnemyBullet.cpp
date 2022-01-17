@@ -15,19 +15,19 @@
 // ˆø”‚QF’e‚Ì‰ŠúÀ•W
 // ˆø”‚RF’e‚Ì‰ŠúˆÚ“®•ûŒüiŠp“xj
 //„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
-EnemyBullet::EnemyBullet(GameInfo* _pGameInfo, XMFLOAT2 _pos, float _angle, int _bulletType)
+EnemyBullet::EnemyBullet(GameInfo* _pGameInfo, XMFLOAT2 _pos, float _angle, TypeOfEnemyBullet _bulletType)
 	: Super(_pGameInfo)
 	, m_pBoundingBox(NULL)
 	, m_bulletType(_bulletType)
 {
-	if (!_bulletType)
+	if (_bulletType == normal)
 	{
 		m_pImg = CreateSprite(Tex_EnemyBullet, ENEMY_BULLET_SIZE_X, ENEMY_BULLET_SIZE_Y);
 		m_pImg->setPos(_pos);
 	}
 	m_moveDirection = XMFLOAT2(AngleToDirectionVector(_angle));
 
-	if(!m_pBoundingBox)m_pBoundingBox = new CircleBoundingBox(_pos, ENEMY_BULLET_BOUNDING_BOX_RADIUS);
+	if(m_bulletType == normal || m_bulletType == thunderBullet)m_pBoundingBox = new CircleBoundingBox(_pos, ENEMY_BULLET_BOUNDING_BOX_RADIUS);
 }
 
 //„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
@@ -91,7 +91,7 @@ void EnemyBullet::SetMoveDirection(float _angle)
 //„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
 // ˆÚ“®‚Ìˆ—
 //„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
-void EnemyBullet::MoveProcess(float _deltaTime)
+void EnemyBullet::MoveProcess(float _deltaTime, XMFLOAT2 _SubmarinePos)
 {
 	if (m_pImg->getActive())
 	{

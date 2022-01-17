@@ -43,11 +43,13 @@
 #define ELECTRICEEL_MOVE_SPEED		(120.f)
 #define ELECTRICEEL_TURRET_COOL_DOWN (30)
 
-#define MISSILELAUNCHER_HEAD_SIZE_X		(50.f)
-#define MISSILELAUNCHER_HEAD_SIZE_Y		(50.f)
-#define MISSILELAUNCHER_PEDESTAL_SIZE_X	(50.f)
-#define MISSILELAUNCHER_PEDESTAL_SIZE_Y	(30.f)
+#define MISSILELAUNCHER_HEAD_SIZE_X				(50.f)
+#define MISSILELAUNCHER_HEAD_SIZE_Y				(50.f)
+#define MISSILELAUNCHER_PEDESTAL_SIZE_X			(50.f)
+#define MISSILELAUNCHER_PEDESTAL_SIZE_Y			(30.f)
 #define MISSILELAUNCHER_HEAD_PEDESTAL_INTERVAL	(40.f)
+#define MISSILELAUNCHER_MAX_ROTATE_SPEED		(3.f)
+#define MISSILELAUNCHER_MIN_ATTACK_INTERVAL		(30)
 
 //━━━━━━━━━━━━━━━━━━━━━━━
 // タレット
@@ -95,11 +97,6 @@
 #define BULLET_MOVE_SPEED	(1000.f)
 #define BULLET_BOUNDING_BOX_RADIUS	(10.f)
 
-#define ELECTRICEEL_BULLET_SIZE_X				(10.f)
-#define ELECTRICEEL_BULLET_SIZE_Y				(20.f)
-#define ELECTRICEEL_BULLET_MOVE_SPEED			(1500.f)
-#define ELECTRICEEL_BULLET_BOUNDING_BOX_RADIUS	(10.f)
-
 //━━━━━━━━━━━━━━━━━━━━━━━
 // 敵の弾
 //━━━━━━━━━━━━━━━━━━━━━━━
@@ -108,6 +105,16 @@
 #define ENEMY_BULLET_SIZE		(XMFLOAT2(ENEMY_BULLET_SIZE_X, ENEMY_BULLET_SIZE_Y))
 #define ENEMY_BULLET_MOVE_SPEED	(600.f)
 #define ENEMY_BULLET_BOUNDING_BOX_RADIUS	(10.f)
+
+#define ELECTRICEEL_BULLET_SIZE_X				(10.f)
+#define ELECTRICEEL_BULLET_SIZE_Y				(20.f)
+#define ELECTRICEEL_BULLET_MOVE_SPEED			(1500.f)
+#define ELECTRICEEL_BULLET_BOUNDING_BOX_RADIUS	(10.f)
+
+#define MISSILE_SIZE_X				(50.f)
+#define MISSILE_SIZE_Y				(20.f)
+#define MISSILE_MOVE_SPEED			(1500.f)
+#define MISSILE_MAX_ROTATE_SPEED	(30.f)
 
 //━━━━━━━━━━━━━━━━━━━━━━━
 // ジェットエンジン
@@ -189,16 +196,28 @@
 //━━━━━━━━━━━━━━━━━━━━━━━
 // 計算用
 //━━━━━━━━━━━━━━━━━━━━━━━
-#define PI										((float)(3.1415926535))
-#define Abs(x)									(((x) >= 0)?(x):(-x))
-#define RadianToDegree(x)						((x) * 180.f / PI)
-#define DegreeToRadian(x)						((x) * PI / 180.f)
-#define AngleToDirectionVector(_angle)			{ cosf(DegreeToRadian(_angle)) , sinf(DegreeToRadian(_angle)) }
-#define Degree(_angle)							((float)((_angle >= 0.f)?((int)(_angle) % 360):((360 + ((int)(_angle) % 360)))))
-#define FindDistanceByCoordinateDifference(_coordinateDifference)	\
-		(sqrtf((_coordinateDifference).x * (_coordinateDifference).x + (_coordinateDifference).y * (_coordinateDifference).y))
-#define NormalizeVector(_vector)				\
-		{ float mag = FindDistanceByCoordinateDifference(_vector); _vector.x /= mag; _vector.y /= mag; }
+// π
+#define PI															((float)(3.1415926535))
+// 絶対値
+#define Abs(x)														(((x) >= 0)?(x):(-x))
+// ラジアン角を角度にする
+#define RadianToDegree(x)											((x) * 180.f / PI)
+// 角度をラジアン角にする
+#define DegreeToRadian(x)											((x) * PI / 180.f)
+// 角度で単位ベクトルを求める
+#define AngleToDirectionVector(_angle)								{ cosf(DegreeToRadian(_angle)) , sinf(DegreeToRadian(_angle)) }
+// 角度をプラス且つ360以内にする 
+#define Degree(_angle)												((float)((_angle >= 0.f)?((int)(_angle) % 360):((360 + ((int)(_angle) % 360)))))
+// ベクトルの大きさを求める
+#define FindDistanceByCoordinateDifference(_coordinateDifference)	(sqrtf((_coordinateDifference).x * (_coordinateDifference).x + (_coordinateDifference).y * (_coordinateDifference).y))
+// ベクトルを正規化する
+#define NormalizeVector(_vector)									{ float mag = FindDistanceByCoordinateDifference(_vector); _vector.x /= mag; _vector.y /= mag; }		
+// 内積
+#define CrossProduct(_vector1, _vector2)							((_vector1.x) * (_vector2.y) - (_vector1.y) * (_vector2.x))
+// 座標二つでベクトルを求める
+#define FindVectorByTwoPos(_pos1, _pos2)							{ _pos2.x - _pos1.x, _pos2.y - _pos1.y }
+// ベクトルを回転する
+#define VectorRotation(_vector, _angle)								{ XMFLOAT2 result = {(_vector.x * cosf(DegreeToRadian(_angle)) - _vector.y * sinf(DegreeToRadian(_angle))), _vector.x * sinf(DegreeToRadian(_angle)) + _vector.y * cosf(DegreeToRadian(_angle))}; _vector = result; }
 
 //━━━━━━━━━━━━━━━━━━━━━━━
 // デバッグ・確認用
