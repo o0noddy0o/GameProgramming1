@@ -7,7 +7,7 @@
 #define SUBMARINE_MOVE_SPEED		(400.f)
 #define SUBMARINE_SIZE_X			(384.f)
 #define SUBMARINE_SIZE_Y			(384.f)
-#define NUM_OF_OPERATION_DEVICE		(5)
+#define NUM_OF_OPERATION_DEVICE		(6)
 #define NUM_OF_COMPONENT			(6)
 
 
@@ -126,8 +126,8 @@
 //━━━━━━━━━━━━━━━━━━━━━━━
 // バリア
 //━━━━━━━━━━━━━━━━━━━━━━━
-#define BARRIER_SIZE_X			(6.f)
-#define BARRIER_SIZE_Y			(6.f)
+#define BARRIER_SIZE_X			(400.f)
+#define BARRIER_SIZE_Y			(400.f)
 #define BARRIER_RANGE			(90.f)
 #define BARRIER_ROTATION_SPEED	(300.f)
 

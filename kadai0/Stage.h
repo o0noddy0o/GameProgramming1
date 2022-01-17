@@ -29,8 +29,6 @@ public:
 
 	int GetKilledEnemyCnt()const;
 
-	float GetSubmarineHp()const;
-
 private:
 	// 潜水艦オブジェクト
 	shared_ptr < Submarine > m_pSubmarine;

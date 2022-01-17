@@ -69,9 +69,6 @@ public:
 	// カメラの移動の処理
 	void MoveCamera(float _deltaTime);
 
-	//追加
-	float GetHp()const;
-
 	// 潜水艦座標の取得
 	XMFLOAT2 GetPos()const;
 
