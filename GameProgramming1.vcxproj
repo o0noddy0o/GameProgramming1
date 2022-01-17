@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -147,6 +147,7 @@
     <ClCompile Include="CActionGameApp.cpp" />
     <ClCompile Include="CObjectBase.cpp" />
     <ClCompile Include="kadai0\Barrier.cpp" />
+    <ClCompile Include="kadai0\Boss.cpp" />
     <ClCompile Include="kadai0\Bullet.cpp" />
     <ClCompile Include="kadai0\CircleBoundingBox.cpp" />
     <ClCompile Include="kadai0\Component.cpp" />
@@ -176,6 +177,7 @@
     <ClCompile Include="kadai0\ThunderBullet.cpp" />
     <ClCompile Include="kadai0\Turret.cpp" />
     <ClCompile Include="kadai0\UI.cpp" />
+    <ClCompile Include="kadai0\Whale.cpp" />
     <ClCompile Include="stdafx.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -198,6 +200,7 @@
     <ClInclude Include="CActionGameApp.h" />
     <ClInclude Include="CObjectBase.h" />
     <ClInclude Include="kadai0\Barrier.h" />
+    <ClInclude Include="kadai0\Boss.h" />
     <ClInclude Include="kadai0\BoundingBox.h" />
     <ClInclude Include="kadai0\Bullet.h" />
     <ClInclude Include="kadai0\CircleBoundingBox.h" />
@@ -227,6 +230,7 @@
     <ClInclude Include="kadai0\Turret.h" />
     <ClInclude Include="kadai0\UI.h" />
     <ClInclude Include="kadai0\UV.h" />
+    <ClInclude Include="kadai0\Whale.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />

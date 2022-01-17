@@ -67,6 +67,12 @@
     <Filter Include="ヘッダー ファイル\Object\SceneryObject">
       <UniqueIdentifier>{1a6dca39-c4b3-45dc-a579-23198415f0cf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Object\Boss">
+      <UniqueIdentifier>{2dd82983-da73-459b-a7c4-51df166414af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Object\Boss">
+      <UniqueIdentifier>{b27c943a-1d47-4bf3-93c2-6b3364dbe394}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Common\CApplication.cpp">
@@ -203,6 +209,12 @@
     </ClCompile>
     <ClCompile Include="kadai0\Missile.cpp">
       <Filter>ソース ファイル\Object\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="kadai0\Boss.cpp">
+      <Filter>ソース ファイル\Object\Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="kadai0\Whale.cpp">
+      <Filter>ソース ファイル\Object\Boss</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -367,6 +379,12 @@
     </ClInclude>
     <ClInclude Include="kadai0\Missile.h">
       <Filter>ヘッダー ファイル\Object\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="kadai0\Boss.h">
+      <Filter>ヘッダー ファイル\Object\Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="kadai0\Whale.h">
+      <Filter>ヘッダー ファイル\Object\Boss</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

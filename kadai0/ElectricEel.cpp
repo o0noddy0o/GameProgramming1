@@ -2,7 +2,8 @@
 // ファイル名　　：ElectricEel.cpp
 // 概要　　　　　：電気ウナギのクラス
 // 作成者　　　　：20CU0314 ゴコケン
-// 更新内容　　　：2021/01/13 作成
+// 更新内容　　　：2022/01/13 作成（呉）
+// 　　　　　　　：2022/01/17 回転の部分を修正（呉）
 //━━━━━━━━━━━━━━━━━━━━━━━
 #include "GameResource.h"
 #include "RectangleBoundingBox.h"
@@ -63,11 +64,14 @@ void ElectricEel::AttackProcess(XMFLOAT2 _SubmarinePos)
 				}
 				else
 				{
-					// あったらそれを使う
-					(*m_pEnemyBullet)[i]->SetActive(true);
-					(*m_pEnemyBullet)[i]->SetPos(XMFLOAT2(pos.x, pos.y));
-					(*m_pEnemyBullet)[i]->SetMoveDirection(m_angle);
-					break;
+					if ((*m_pEnemyBullet)[i]->GetBulletType() == thunderBullet)
+					{
+						// あったらそれを使う
+						(*m_pEnemyBullet)[i]->SetActive(true);
+						(*m_pEnemyBullet)[i]->SetPos(XMFLOAT2(pos.x, pos.y));
+						(*m_pEnemyBullet)[i]->SetMoveDirection(m_angle);
+						break;
+					}
 				}
 			}
 		}
@@ -98,11 +102,27 @@ void ElectricEel::MoveProcess(XMFLOAT2 _SubmarinePos, float _deltaTime)
 
 	if (cross >= 0)
 	{
-		m_angle += 200.f * _deltaTime;
+		float angle = Degree(RadianToDegree(acosf(EnemyMoveDir.x * target.x + EnemyMoveDir.y * target.y)));
+		if (Abs(angle) > 200.f * _deltaTime)
+		{
+			m_angle += 200.f * _deltaTime;;
+		}
+		else
+		{
+			m_angle += angle;
+		}
 	}
 	else
 	{
-		m_angle -= 200.f * _deltaTime;
+		float angle = Degree(RadianToDegree(acosf(EnemyMoveDir.x * target.x + EnemyMoveDir.y * target.y)));
+		if (Abs(angle) > 200.f * _deltaTime)
+		{
+			m_angle -= 200.f * _deltaTime;;
+		}
+		else
+		{
+			m_angle -= angle;
+		}
 	}
 
 	// 敵の移動方向の設定
