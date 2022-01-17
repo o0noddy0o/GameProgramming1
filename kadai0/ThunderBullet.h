@@ -13,9 +13,9 @@ class ThunderBullet : public EnemyBullet
 	typedef EnemyBullet Super;
 public:
 	ThunderBullet(GameInfo* _pGameInfo, XMFLOAT2 _pos = { 0.f, 0.f }, float _angle = 0.f);
-	~ThunderBullet();
+	virtual ~ThunderBullet();
 
-	virtual void MoveProcess(float _deltaTime);
+	virtual void MoveProcess(float _deltaTime, XMFLOAT2 _SubmarinePos = XMFLOAT2(0.f, 0.f))override;
 
 private:
 

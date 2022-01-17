@@ -5,6 +5,7 @@
 // 更新内容　　　：2021/12/03 作成
 //			　　　2021/12/08　敵の弾を発射機能を追加
 //			　　　2021/12/10　敵の移動処理を追加
+// 　　　　　　　：2022/01/17 回転の部分を修正（呉）
 //━━━━━━━━━━━━━━━━━━━━━━━
 #include "Define.h"
 #include "Fish.h"
@@ -78,11 +79,14 @@ void Fish::AttackProcess(XMFLOAT2 _SubmarinePos)
 				}
 				else
 				{
-					// あったらそれを使う
-					(*m_pEnemyBullet)[i]->SetActive(true);
-					(*m_pEnemyBullet)[i]->SetPos(XMFLOAT2(pos.x, pos.y));
-					(*m_pEnemyBullet)[i]->SetMoveDirection(m_angle);
-					break;
+					if ((*m_pEnemyBullet)[i]->GetBulletType() == normal)
+					{
+						// あったらそれを使う
+						(*m_pEnemyBullet)[i]->SetActive(true);
+						(*m_pEnemyBullet)[i]->SetPos(XMFLOAT2(pos.x, pos.y));
+						(*m_pEnemyBullet)[i]->SetMoveDirection(m_angle);
+						break;
+					}
 				}
 			}
 		}
@@ -115,11 +119,27 @@ void Fish::MoveProcess(XMFLOAT2 _SubmarinePos, float _deltaTime)
 
 	if (cross >= 0)
 	{
-		m_angle += 200.f * _deltaTime;
+		float angle = Degree(RadianToDegree(acosf(EnemyMoveDir.x * target.x + EnemyMoveDir.y * target.y)));
+		if (Abs(angle) > 200.f * _deltaTime)
+		{
+			m_angle += 200.f * _deltaTime;;
+		}
+		else
+		{
+			m_angle += angle;
+		}
 	}
 	else
 	{
-		m_angle -= 200.f * _deltaTime;
+		float angle = Degree(RadianToDegree(acosf(EnemyMoveDir.x * target.x + EnemyMoveDir.y * target.y)));
+		if (Abs(angle) > 200.f * _deltaTime)
+		{
+			m_angle -= 200.f * _deltaTime;;
+		}
+		else
+		{
+			m_angle -= angle;
+		}
 	}
 
 	// 敵の移動方向の設定
