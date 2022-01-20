@@ -95,6 +95,14 @@ void JetEngine::InputProcess(int _playerIndex, float _deltaTime)
 		}
 		break;
 	}
+	if (Degree(m_moveDirection) > 90.f && Degree(m_moveDirection) < 270.f)
+	{
+		m_pImg->setAngle(180.f, 0.f, m_moveDirection);
+	}
+	else
+	{
+		m_pImg->setAngle(0.f, 0.f, m_moveDirection);
+	}
 }
 
 //„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª

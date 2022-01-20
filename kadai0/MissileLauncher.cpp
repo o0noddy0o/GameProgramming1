@@ -179,12 +179,12 @@ void MissileLauncher::MoveProcess(XMFLOAT2 _SubmarinePos, float _deltaTime)
 		if (CrossProduct(vector, vector2) > 0.f)
 		{
 			// ¶‚¾‚Á‚½‚çA‰æ‘œ‚Ì‚xŽ²‚Ì‰ñ“]‚ð‚P‚W‚O‹‚É‚·‚é
-			m_pImg->setAngle(180.f, 0.f, m_angle);
+			m_pImg->setAngle(0.f, 0.f, m_angle + 180.f);
 		}
 		else
 		{
 			// ‰E‚¾‚Á‚½‚çA‰æ‘œ‚Ì‚xŽ²‚Ì‰ñ“]‚ð‚O‹‚É‚·‚é
-			m_pImg->setAngle(0.f, 0.f, m_angle);
+			m_pImg->setAngle(0.f, 180.f, m_angle);
 		}
 	}
 }

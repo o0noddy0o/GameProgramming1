@@ -38,12 +38,12 @@ Player::Player(GameInfo* _pGameInfo, XMFLOAT2 _pos, XMFLOAT2 _relativePos, int _
 	{
 		//プレイヤー１の画像を作成
 	case 1:
-		m_pImg = CreateSprite(Tex_Player1, PLAYER_SIZE_Y, PLAYER_SIZE_Y);
+		m_pImg = CreateSprite(Tex_Player1, PLAYER_SIZE_X, PLAYER_SIZE_Y);
 		m_pImg->setPos(_pos);
 		break;
 		//プレイヤー１の画像を作成
 	case 2:
-		m_pImg = CreateSprite(Tex_Player2, PLAYER_SIZE_Y, PLAYER_SIZE_Y);
+		m_pImg = CreateSprite(Tex_Player2, PLAYER_SIZE_X, PLAYER_SIZE_Y);
 		m_pImg->setPos(_pos);
 		break;
 	}

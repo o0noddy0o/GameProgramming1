@@ -11,6 +11,7 @@
 #include "SceneryObject.h"
 
 class EnemyBullet;
+class Boss;
 
 class Stage :public CObjectBase
 {
@@ -29,6 +30,14 @@ public:
 
 	int GetKilledEnemyCnt()const;
 
+	void SetNextStage(const int _stageNum = -1);
+
+	void ResetStage();
+
+private:
+	void InitStage1();
+	void InitStage2();
+
 private:
 	// 潜水艦オブジェクト
 	shared_ptr < Submarine > m_pSubmarine;
@@ -45,10 +54,16 @@ private:
 	// 敵の弾の配列のアドレスの配列
 	shared_ptr<vector<shared_ptr<EnemyBullet>>> m_pEnemyBullet;
 
+	shared_ptr<Boss> m_pBoss;
+
+	shared_ptr<vector<shared_ptr<EnemyBullet>>> m_pBossBullet;
+
 	// 前1フレームの時間(deltaTime計算用)
 	clock_t m_lastFrameTime;
 
 	float m_deltaTime;
 
 	int m_map[Map_Y_SIZE][Map_X_SIZE];
+
+	int m_nowStageNum;
 };

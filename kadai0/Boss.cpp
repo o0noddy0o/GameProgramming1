@@ -5,6 +5,7 @@
 // 更新内容　　　：2022/01/17 作成（呉）
 //━━━━━━━━━━━━━━━━━━━━━━━
 #include "Boss.h"
+#include "BoundingBox.h"
 
 shared_ptr<vector<shared_ptr<EnemyBullet>>> Boss::m_pBullet;
 
@@ -27,12 +28,17 @@ void Boss::renderSprite()
 {
 	for (int i = 0; i < (int)m_pImg.size(); ++i)
 	{
-		RenderSprite(m_pImg[i]);
+		if(m_pImg[i])RenderSprite(m_pImg[i]);
 	}
 }
 
+vector<BoundingBox*>* Boss::GetBoundingBox()const
+{
+	return (vector<BoundingBox*>*)&m_pBoundingBox;
+}
+
 // 弾の配列を取得する
-shared_ptr<vector<shared_ptr<EnemyBullet>>>	Boss::GetEnemyBullet()
+shared_ptr<vector<shared_ptr<EnemyBullet>>>	Boss::GetBossBullet()
 {
 	return m_pBullet;
 }

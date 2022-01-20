@@ -46,11 +46,16 @@
 #define Tex_Enemy					L"Media/Sprite/ActionGame_Sprite/Fish.png"
 #define Tex_Enemy2					L"Media/Sprite/ActionGame_Sprite/Enemy2.png"
 #define Tex_EnemyBullet				L"Media/Sprite/ActionGame_Sprite/EnemyBullet.png"
-#define Tex_ElectricEel				L"Media/Sprite/ActionGame_Sprite/ElectricEel.png" // (仮)
+#define Tex_ElectricEel				L"Media/Sprite/ActionGame_Sprite/ElectricEel.png"
 #define Tex_ThunderBullet			L"Media/Sprite/ActionGame_Sprite/ThunderBullet.png" // (仮)
-#define Tex_MissileLauncherHead		L"Media/Sprite/ActionGame_Sprite/TestImage1.png" // (仮)
-#define Tex_MissileLauncherPedestal	L"Media/Sprite/ActionGame_Sprite/TestImage1.png" // (仮)
-#define Tex_Missile					L"Media/Sprite/ActionGame_Sprite/TestImage2.png" // (仮)
+#define Tex_MissileLauncherHead		L"Media/Sprite/ActionGame_Sprite/pao.png" // (仮)
+#define Tex_MissileLauncherPedestal	L"Media/Sprite/ActionGame_Sprite/Fish.png" // (仮)
+#define Tex_Missile					L"Media/Sprite/ActionGame_Sprite/Missile.png"
+
+// ボス
+#define Tex_Whale					L"Media/Sprite/ActionGame_Sprite/TestImage1.png"
+#define Tex_Laser					L"Media/Sprite/ActionGame_Sprite/TestImage1.png"
+#define Tex_Fire					L"Media/Sprite/ActionGame_Sprite/fireBullet.png"
 
 // UI
 #define Tex_HPBar					L"Media/Sprite/ActionGame_Sprite/HpBar.png"

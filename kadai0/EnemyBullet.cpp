@@ -29,6 +29,25 @@ EnemyBullet::EnemyBullet(GameInfo* _pGameInfo, XMFLOAT2 _pos, float _angle, Type
 
 	if(m_bulletType == normal || m_bulletType == thunderBullet)m_pBoundingBox = new CircleBoundingBox(_pos, ENEMY_BULLET_BOUNDING_BOX_RADIUS);
 }
+EnemyBullet::EnemyBullet(GameInfo* _pGameInfo, XMFLOAT2 _pos, XMFLOAT2 _moveDirection, TypeOfEnemyBullet _bulletType)
+	: Super(_pGameInfo)
+	, m_pBoundingBox(NULL)
+	, m_bulletType(_bulletType)
+	, m_moveDirection(_moveDirection)
+{
+	if (_bulletType == normal)
+	{
+		m_pImg = CreateSprite(Tex_EnemyBullet, ENEMY_BULLET_SIZE_X, ENEMY_BULLET_SIZE_Y);
+		m_pImg->setPos(_pos);
+	}
+
+	if (m_bulletType == normal || m_bulletType == thunderBullet)m_pBoundingBox = new CircleBoundingBox(_pos, ENEMY_BULLET_BOUNDING_BOX_RADIUS);
+}
+EnemyBullet::EnemyBullet(GameInfo* _pGameInfo, TypeOfEnemyBullet _bulletType)
+	: Super(_pGameInfo)
+	, m_bulletType(_bulletType)
+{
+}
 
 //━━━━━━━━━━━━━━━━━━━━━━━
 // デストラクタ
@@ -86,6 +105,15 @@ void EnemyBullet::SetActive(bool _b)
 void EnemyBullet::SetMoveDirection(float _angle)
 {
 	m_moveDirection = XMFLOAT2(AngleToDirectionVector(_angle));
+}
+
+//━━━━━━━━━━━━━━━━━━━━━━━
+// 敵の弾の移動方向をセットする
+// 引数１：新しい移動方向（ベクトル）
+//━━━━━━━━━━━━━━━━━━━━━━━
+void EnemyBullet::SetMoveDirection(XMFLOAT2 _moveDirection)
+{
+	m_moveDirection = _moveDirection;
 }
 
 //━━━━━━━━━━━━━━━━━━━━━━━

@@ -216,6 +216,12 @@
     <ClCompile Include="kadai0\Whale.cpp">
       <Filter>ソース ファイル\Object\Boss</Filter>
     </ClCompile>
+    <ClCompile Include="kadai0\StageInit.cpp">
+      <Filter>ソース ファイル\Object\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="kadai0\Fire.cpp">
+      <Filter>ソース ファイル\Object\Bullet</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Common\CApplication.h">
@@ -385,6 +391,9 @@
     </ClInclude>
     <ClInclude Include="kadai0\Whale.h">
       <Filter>ヘッダー ファイル\Object\Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="kadai0\Fire.h">
+      <Filter>ヘッダー ファイル\Object\Bullet</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

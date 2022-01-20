@@ -155,6 +155,7 @@
     <ClCompile Include="kadai0\ElectricEel.cpp" />
     <ClCompile Include="kadai0\Enemy.cpp" />
     <ClCompile Include="kadai0\EnemyBullet.cpp" />
+    <ClCompile Include="kadai0\Fire.cpp" />
     <ClCompile Include="kadai0\Fish.cpp" />
     <ClCompile Include="kadai0\Fish2.cpp" />
     <ClCompile Include="kadai0\GameClear.cpp" />
@@ -173,6 +174,7 @@
     <ClCompile Include="kadai0\Rock.cpp" />
     <ClCompile Include="kadai0\SceneryObject.cpp" />
     <ClCompile Include="kadai0\Stage.cpp" />
+    <ClCompile Include="kadai0\StageInit.cpp" />
     <ClCompile Include="kadai0\Submarine.cpp" />
     <ClCompile Include="kadai0\ThunderBullet.cpp" />
     <ClCompile Include="kadai0\Turret.cpp" />
@@ -210,6 +212,7 @@
     <ClInclude Include="kadai0\ElectricEel.h" />
     <ClInclude Include="kadai0\Enemy.h" />
     <ClInclude Include="kadai0\EnemyBullet.h" />
+    <ClInclude Include="kadai0\Fire.h" />
     <ClInclude Include="kadai0\Fish.h" />
     <ClInclude Include="kadai0\Fish2.h" />
     <ClInclude Include="kadai0\GameResource.h" />

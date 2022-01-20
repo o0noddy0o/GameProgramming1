@@ -1,6 +1,11 @@
 #pragma once
 
 //━━━━━━━━━━━━━━━━━━━━━━━
+// ステージ
+//━━━━━━━━━━━━━━━━━━━━━━━
+#define NUM_OF_STAGE	(2)
+
+//━━━━━━━━━━━━━━━━━━━━━━━
 // 潜水艦
 //━━━━━━━━━━━━━━━━━━━━━━━
 #define SUBMARINE_MAX_HP			(200.f)
@@ -37,8 +42,8 @@
 #define ENEMY_2_SIZE_Y				(40.f)
 #define ENEMY_2_MOVE_SPEED			(250.f)
 
-#define ELECTRICEEL_SIZE_X			(311.f)
-#define ELECTRICEEL_SIZE_Y			(162.f)
+#define ELECTRICEEL_SIZE_X			(155.f)
+#define ELECTRICEEL_SIZE_Y			(42.f)
 #define ELECTRICEEL_SIZE			(XMFLOAT2(ELECTRICEEL_SIZE_X, ELECTRICEEL_SIZE_Y))
 #define ELECTRICEEL_MOVE_SPEED		(120.f)
 #define ELECTRICEEL_TURRET_COOL_DOWN (30)
@@ -50,6 +55,28 @@
 #define MISSILELAUNCHER_HEAD_PEDESTAL_INTERVAL	(40.f)
 #define MISSILELAUNCHER_MAX_ROTATE_SPEED		(3.f)
 #define MISSILELAUNCHER_MIN_ATTACK_INTERVAL		(30)
+
+//━━━━━━━━━━━━━━━━━━━━━━━
+// ボス
+//━━━━━━━━━━━━━━━━━━━━━━━
+
+// クジラ
+#define WHALE_MAX_HP								(200)
+#define WHALE_RELATIVE_POS_X_FROM_CAMERA			(1000.f)
+#define WHALE_RELATIVE_POS_Y_FROM_CAMERA			(0.f)
+#define WHALE_SIZE_X								(1500.f)
+#define WHALE_SIZE_Y								(600.f)
+#define WHALE_MISSILELAUNCHER_RELATIVE_POS_X		(-600.f)
+#define WHALE_MISSILELAUNCHER_RELATIVE_POS_Y		((WHALE_SIZE_Y + MISSILELAUNCHER_PEDESTAL_SIZE_Y) / 2.f)
+
+// 攻撃パターン１（火を噴く）
+#define WHALE_PATTERN1_DURATION_TIME				(1 * 60)
+#define WHALE_PATTERN1_BIOW_FIRE_DISTANCE			(450.f)
+#define WHALE_PATTERN1_BIOW_FIRE_ANGLE				(90.f)
+#define WHALE_PATTERN1_BIOW_FIRE_POS				(XMFLOAT2(-750.f, 0.f))
+// 攻撃パターン２（ダッシュ）
+#define WHALE_PATTERN2_DASH_DISTANCE				(750.f)
+// 攻撃パターン３
 
 //━━━━━━━━━━━━━━━━━━━━━━━
 // タレット
@@ -116,11 +143,16 @@
 #define MISSILE_MOVE_SPEED			(1500.f)
 #define MISSILE_MAX_ROTATE_SPEED	(30.f)
 
+#define FIRE_SIZE_X					(100.f)
+#define FIRE_SIZE_Y					(100.f)
+#define FIRE_MOVE_SPEED				(200.f)
+#define FIRE_DISAPPEAR_TIME			(30)
+
 //━━━━━━━━━━━━━━━━━━━━━━━
 // ジェットエンジン
 //━━━━━━━━━━━━━━━━━━━━━━━
-#define JET_ENGINE_SIZE_X			(600.f)
-#define JET_ENGINE_SIZE_Y			(384.f)
+#define JET_ENGINE_SIZE_X			(654.f)
+#define JET_ENGINE_SIZE_Y			(433.f)
 #define JET_ENGINE_ROTATION_SPEED	(300.f)
 
 //━━━━━━━━━━━━━━━━━━━━━━━
@@ -208,6 +240,8 @@
 #define AngleToDirectionVector(_angle)								{ cosf(DegreeToRadian(_angle)) , sinf(DegreeToRadian(_angle)) }
 // 角度をプラス且つ360以内にする 
 #define Degree(_angle)												((float)((_angle >= 0.f)?((int)(_angle) % 360):((360 + ((int)(_angle) % 360)))))
+// ベクトルで角度を求める
+#define DirectionVectorToAngle(_vector)								( RadianToDegree(atanf((_vector.y) / (_vector.x))))
 // ベクトルの大きさを求める
 #define FindDistanceByCoordinateDifference(_coordinateDifference)	(sqrtf((_coordinateDifference).x * (_coordinateDifference).x + (_coordinateDifference).y * (_coordinateDifference).y))
 // ベクトルを正規化する

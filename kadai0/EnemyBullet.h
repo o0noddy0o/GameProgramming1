@@ -18,6 +18,7 @@ enum TypeOfEnemyBullet
 	normal = 0,
 	thunderBullet,
 	missile,
+	fire,
 	Total
 };
 
@@ -25,16 +26,19 @@ class EnemyBullet : public CObjectBase
 {
 	typedef CObjectBase Super;
 public:
-	EnemyBullet(GameInfo* _pGameInfo, XMFLOAT2 _pos = { 0.f, 0.f }, float _angle = 0.f, TypeOfEnemyBullet _bulletType = normal);
+	EnemyBullet(GameInfo* _pGameInfo, TypeOfEnemyBullet _bulletType = normal);
+	EnemyBullet(GameInfo* _pGameInfo, XMFLOAT2 _pos, float _angle = 0.f, TypeOfEnemyBullet _bulletType = normal);
+	EnemyBullet(GameInfo* _pGameInfo, XMFLOAT2 _pos, XMFLOAT2 _moveDirection, TypeOfEnemyBullet _bulletType = normal);
 	~EnemyBullet();
 
 	BoundingBox* GetBoundingBox()const;
 	int GetBulletType()const;
-	void renderSprite();											// 弾の画像を描画
-	void SetPos(XMFLOAT2 _newPos);									// 弾の画像の位置をセットする
-	bool GetActive()const;											// 弾の画像画像が表示可能か
-	void SetActive(bool _b);										// 弾の画像を表示可能（不可）にする
-	void SetMoveDirection(float _angle);							// 弾の移動方向をセットする
+	virtual void renderSprite();										// 弾の画像を描画
+	virtual void SetPos(XMFLOAT2 _newPos);								// 弾の画像の位置をセットする
+	virtual bool GetActive()const;										// 弾の画像画像が表示可能か
+	virtual void SetActive(bool _b);									// 弾の画像を表示可能（不可）にする
+	virtual void SetMoveDirection(float _angle);								// 弾の移動方向をセットする
+	virtual void SetMoveDirection(XMFLOAT2 _moveDirection);						// 弾の移動方向をセットする
 	virtual void MoveProcess(float _deltaTime, XMFLOAT2 _SubmarinePos = XMFLOAT2(0.f, 0.f));	// 移動の処理
 
 protected:
@@ -42,4 +46,8 @@ protected:
 	XMFLOAT2 m_moveDirection;	// 弾の移動方向（ベクトル）
 	BoundingBox* m_pBoundingBox;
 	TypeOfEnemyBullet m_bulletType;
+
+	int m_hp;
+	CPicture* m_pHpBar;
+	CPicture* m_pFreamOfHpBar;
 };
