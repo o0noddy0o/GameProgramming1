@@ -40,7 +40,7 @@ void JetEngine::InputProcess(int _playerIndex, float _deltaTime)
 {
 	// タレットの回転
 	// ゲームパッドの入力を取得
-	float gamepadX = GetInput()->GetAnalogStickX(_playerIndex - 1);
+	float gamepadX = GetInput()->GetLeftAnalogStickX(_playerIndex - 1);
 	if (Abs(gamepadX) > 0.05f)
 	{
 		m_moveDirection -= JET_ENGINE_ROTATION_SPEED * _deltaTime * gamepadX;

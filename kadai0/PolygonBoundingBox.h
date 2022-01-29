@@ -16,7 +16,7 @@ class PolygonBoundingBox : public BoundingBox
 	typedef BoundingBox Super;
 public:
 	// コンストラクタ
-	PolygonBoundingBox(XMFLOAT2 _pos, vector<XMFLOAT2>& _vertexPos, XMFLOAT2 _relativePos = { 0.f, 0.f });
+	PolygonBoundingBox(XMFLOAT2 _pos, vector<XMFLOAT2>& _vertexPos, bool _bRelativePosActive = false, XMFLOAT2 _relativePos = { 0.f, 0.f });
 
 	// デストラクタ
 	~PolygonBoundingBox();
@@ -35,11 +35,11 @@ public:
 	void RotateVertex(float _angle);
 	
 	// 当たり判定
-	bool Collision(const BoundingBox* _target, XMFLOAT2* _pDirectionVector = NULL)const;
-	bool Collision(CPicture* _target, XMFLOAT2* _pDirectionVector = NULL)const;						// 画像
-	bool Collision(const CircleBoundingBox* _target, XMFLOAT2* _pDirectionVector = NULL)const;		// 丸いバウンディングボックス
-	bool Collision(const RectangleBoundingBox* _target, XMFLOAT2* _pDirectionVector = NULL)const;	// 四角形バウンディングボックス
-	bool Collision(const PolygonBoundingBox* _target, XMFLOAT2* _pDirectionVector = NULL)const;		// 多角形バウンディングボックス
+	bool Collision(const BoundingBox* _target, XMFLOAT2* _pDirectionVector = NULL)const override;
+	bool Collision(CPicture* _target, XMFLOAT2* _pDirectionVector = NULL)const override;					// 画像
+	bool Collision(const CircleBoundingBox* _target, XMFLOAT2* _pDirectionVector = NULL)const override;		// 丸いバウンディングボックス
+	bool Collision(const RectangleBoundingBox* _target, XMFLOAT2* _pDirectionVector = NULL)const override;	// 四角形バウンディングボックス
+	bool Collision(const PolygonBoundingBox* _target, XMFLOAT2* _pDirectionVector = NULL)const override;	// 多角形バウンディングボックス
 
 private:
 	bool CollisionWithCircle(const CircleBoundingBox* _target)const;
@@ -53,4 +53,5 @@ private:
 	shared_ptr<vector<XMFLOAT2>>	m_pVertexPos;	// 頂点座標の配列
 	shared_ptr<vector<XMFLOAT2>>	m_pVector;		// 頂点座標から頂点座標のベクトルの配列
 	XMFLOAT2						m_relativePos;	// バウンディングボックスとそれを持っているオブジェクトの座標の差
+	bool							m_bRelativePosActive;
 };

@@ -9,6 +9,7 @@
 //							  プレイヤー数を分ける（ズン）
 //				   2021/12/03 移動メソッドを修正（ズン）
 // 　　　　　　　：2021/12/23 InputProcessメソッドの編集（ゲームパッドの実装）（呉）
+// 				   2022/01/20 ハシゴの当たり判定を実装（ズン）
 //━━━━━━━━━━━━━━━━━━━━━━━
 #include "Player.h"
 #include "Define.h"
@@ -26,6 +27,8 @@ Player::Player(GameInfo* _pGameInfo, XMFLOAT2 _pos, XMFLOAT2 _relativePos, int _
 	: Super(_pGameInfo)
 	, m_bMoveable(true)
 	, m_bJumping(false)
+	, m_bClimbing(false)
+	, m_bClimbable(false)
 	, m_jumpPower(0.f)
 	, m_jumpTime(0.f)
 	, m_relativePos(_pos)
@@ -38,12 +41,12 @@ Player::Player(GameInfo* _pGameInfo, XMFLOAT2 _pos, XMFLOAT2 _relativePos, int _
 	{
 		//プレイヤー１の画像を作成
 	case 1:
-		m_pImg = CreateSprite(Tex_Player1, PLAYER_SIZE_X, PLAYER_SIZE_Y);
+		m_pImg = CreateSprite(Tex_Player1, PLAYER_SIZE_Y, PLAYER_SIZE_Y);
 		m_pImg->setPos(_pos);
 		break;
 		//プレイヤー１の画像を作成
 	case 2:
-		m_pImg = CreateSprite(Tex_Player2, PLAYER_SIZE_X, PLAYER_SIZE_Y);
+		m_pImg = CreateSprite(Tex_Player2, PLAYER_SIZE_Y, PLAYER_SIZE_Y);
 		m_pImg->setPos(_pos);
 		break;
 	}
@@ -61,10 +64,11 @@ Player::~Player()
 //━━━━━━━━━━━━━━━━━━━━━━━
 // 毎フレームにやる処理
 //━━━━━━━━━━━━━━━━━━━━━━━
-void Player::Tick(float _deltaTime, vector<Submarine::Wall>* _pWall, vector<Submarine::Floor>* _pFloor)
+void Player::Tick(float _deltaTime, vector<Submarine::Wall>* _pWall, vector<Submarine::Floor>* _pFloor, vector<Submarine::Ladder>* _pLadder)
 {
 	InputProcess();
-	CollisionWithWallAndFloor(_pWall, _pFloor);
+	CollisionWithWallAndFloor(_pWall, _pFloor, _pLadder);
+	CollisionWithLadder(_pLadder);
 	Move(_deltaTime);
 }
 
@@ -129,7 +133,7 @@ void Player::InputProcess()
 	if (!m_bMoveable)return;
 
 	// ゲームパッドの入力を取得
-	float gamepadX = GetInput()->GetAnalogStickX(m_playerIndex - 1);
+	float gamepadX = GetInput()->GetLeftAnalogStickX(m_playerIndex - 1);
 	// 右
 	if (gamepadX > 0.05f)
 	{
@@ -146,7 +150,7 @@ void Player::InputProcess()
 	}
 	if (GetInput()->IsGamePadButtonPressed(GAMEPAD_KEY_Action, m_playerIndex - 1))
 	{
-  		Jump();
+		Jump();
 	}
 	switch (m_playerIndex)
 	{
@@ -173,12 +177,12 @@ void Player::InputProcess()
 		// 上に移動
 		if (GetInput()->isKeyPressed(DIK_UPARROW))
 		{
-			m_relativePos.y += 20.f;
+			m_relativePos.y += 10.f;
 		}
 		// 下に移動
 		else if (GetInput()->isKeyPressed(DIK_DOWNARROW))
 		{
-			m_relativePos.y -= 20.f;
+			m_relativePos.y -= 10.f;
 		}
 #endif
 		break;
@@ -205,12 +209,12 @@ void Player::InputProcess()
 		// 上に移動
 		if (GetInput()->isKeyPressed(DIK_W))
 		{
-			m_relativePos.y += 20.f;
+			m_relativePos.y += 10.f;
 		}
 		// 下に移動
 		else if (GetInput()->isKeyPressed(DIK_S))
 		{
-			m_relativePos.y -= 20.f;
+			m_relativePos.y -= 10.f;
 		}
 #endif
 		break;
@@ -228,7 +232,7 @@ void Player::CollisionWithOperationDevice(vector<shared_ptr<OperationDevice>>* _
 //━━━━━━━━━━━━━━━━━━━━━━━
 // プレイヤーと壁の当たり判定
 //━━━━━━━━━━━━━━━━━━━━━━━
-void Player::CollisionWithWallAndFloor(vector<Submarine::Wall>* _pWall, vector<Submarine::Floor>* _pFloor)
+void Player::CollisionWithWallAndFloor(vector<Submarine::Wall>* _pWall, vector<Submarine::Floor>* _pFloor, vector<Submarine::Ladder>* _pLadder)
 {
 	m_bIsOnFloor = false;
 	for (int i = 0; i < (int)_pWall->size(); ++i)
@@ -339,10 +343,16 @@ void Player::CollisionWithWallAndFloor(vector<Submarine::Wall>* _pWall, vector<S
 		else
 		{
 			//下に
-			if ((*_pFloor)[i].ob->collisionTop(m_pImg) != false)
+			if ((*_pFloor)[i].ob->collisionTop(m_pImg) != false && m_bClimbing == false)
 			{
 				m_relativePos.y = (*_pFloor)[i].relativePos.y + (*_pFloor)[i].ob->getSize().y / 2.f + (PLAYER_SIZE_Y / 2.f);
 				m_bIsOnFloor = true;
+				m_jumpPower = 0.f;
+			}
+			else if ((*_pFloor)[i].ob->collisionBottom(m_pImg) != false && m_bClimbing == false)
+			{
+				m_relativePos.y = (*_pFloor)[i].relativePos.y - (*_pFloor)[i].ob->getSize().y / 2.f - (PLAYER_SIZE_Y / 2.f);
+				m_bJumping = false;
 				m_jumpPower = 0.f;
 			}
 			else
@@ -366,8 +376,66 @@ void Player::CollisionWithWallAndFloor(vector<Submarine::Wall>* _pWall, vector<S
 					}
 				}
 			}
+
+			//ハシゴに当たり判定
+			bool b = false;
+			for (int i = 0; i < (int)_pLadder->size(); ++i)
+			{
+				if ((*_pLadder)[i].ob->collision(m_pImg) != false)
+				{
+					m_bClimbable = true;
+
+					if (m_bClimbable != false)
+					{
+						switch (m_playerIndex)
+						{
+						case 1:
+							if (GetInput()->isKeyPressed(DIK_UPARROW) || GetInput()->GetLeftAnalogStickY(m_playerIndex - 1) > 0.f)
+							{
+								m_relativePos.x = (*_pLadder)[i].relativePos.x;
+								m_relativePos.y += 0.4f;
+								m_bClimbing = true;
+							}
+							else if (GetInput()->isKeyPressed(DIK_DOWNARROW) || GetInput()->GetLeftAnalogStickY(m_playerIndex - 1) < 0.f)
+							{
+								m_relativePos.x = (*_pLadder)[i].relativePos.x;
+								m_relativePos.y -= 0.4f;
+								m_bClimbing = true;
+							}
+							break;
+						case 2:
+							if (GetInput()->isKeyPressed(DIK_W) || GetInput()->GetLeftAnalogStickY(m_playerIndex - 1) > 0.f)
+							{
+								m_relativePos.x = (*_pLadder)[i].relativePos.x;
+								m_relativePos.y += 0.4f;
+								m_bClimbing = true;
+							}
+							else if (GetInput()->isKeyPressed(DIK_S) || GetInput()->GetLeftAnalogStickY(m_playerIndex - 1) < 0.f)
+							{
+								m_relativePos.x = (*_pLadder)[i].relativePos.x;
+								m_relativePos.y -= 0.4f;
+								m_bClimbing = true;
+							}
+							break;
+						}
+					}
+					b = true;
+				}
+			}
+			if (!b)
+			{
+				m_bClimbing = false;
+			}
 		}
 	}
+}
+
+//━━━━━━━━━━━━━━━━━━━━━━━
+// プレイヤーとハシゴの当たり判定
+//━━━━━━━━━━━━━━━━━━━━━━━
+void Player::CollisionWithLadder(vector<Submarine::Ladder>* _pLadder)
+{
+
 }
 
 //━━━━━━━━━━━━━━━━━━━━━━━
@@ -399,10 +467,11 @@ void Player::Move(float _deltaTime)
 		{
 			m_relativePos.x = -BorderOfSubmarine.x;
 		}
-
 		m_bMovingLeft = false;
 	}
-	if (!m_bIsOnFloor)
+
+
+	if (!m_bIsOnFloor && m_bClimbing == false/* && m_bClimbable == false*/)
 	{
 		m_jumpTime += _deltaTime * PLAYER_JUMP_SPEED;
 		float moveY = (-GRAVITATION / 2.f) * m_jumpTime * m_jumpTime + m_jumpPower * m_jumpTime;
@@ -417,11 +486,43 @@ void Player::Move(float _deltaTime)
 		}
 
 		m_relativePos.y += moveY;
-		if (m_relativePos.y < -BorderOfSubmarine.y)
-		{
-			m_relativePos.y = -BorderOfSubmarine.y;
-		}
+
 	}
+	//下側
+	if (m_relativePos.y < -BorderOfSubmarine.y + YUKA_DOWN_SIZE_Y)
+	{
+		m_relativePos.y = -BorderOfSubmarine.y + YUKA_DOWN_SIZE_Y;
+		if (m_relativePos.x < -(YUKA_DOWN_SIZE_X / 2.f) && m_bMovingLeft != false)
+		{
+			m_relativePos.x = -(YUKA_DOWN_SIZE_X / 2.f);
+			m_bMovingLeft = false;
+		}
+		else if (m_relativePos.x > YUKA_DOWN_SIZE_X / 2.f && m_bMovingRight != false)
+		{
+			m_relativePos.x = YUKA_DOWN_SIZE_X / 2.f;
+			m_bMovingRight = false;
+		}
+
+	}
+
+
+	//上側
+	if (m_relativePos.y > BorderOfSubmarine.y - YUKA_UP_SIZE_Y / 2.f)
+	{
+		m_relativePos.y = BorderOfSubmarine.y - YUKA_UP_SIZE_Y / 2.f;
+		if (m_relativePos.x < -(YUKA_UP_SIZE_X / 2.f) && m_bMovingLeft != false)
+		{
+			m_relativePos.x = -(YUKA_UP_SIZE_X / 2.f);
+			m_bMovingLeft = false;
+		}
+		else if (m_relativePos.x > (YUKA_UP_SIZE_X / 2.f) && m_bMovingRight != false)
+		{
+			m_relativePos.x = (YUKA_UP_SIZE_X / 2.f);
+			m_bMovingRight = false;
+		}
+
+	}
+
 }
 
 //━━━━━━━━━━━━━━━━━━━━━━━

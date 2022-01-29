@@ -19,12 +19,14 @@ public:
 	virtual ~Boss();
 
 	// –ˆƒtƒŒ[ƒ€‚Ìˆ—
-	virtual void Tick(XMFLOAT2 _SubmarinePos) = 0;
+	virtual void Tick(XMFLOAT2 _SubmarinePos, float _deltaTime) = 0;
 
 	// ‰æ‘œ‚Ì•`‰æ
 	virtual void renderSprite();
 
 	virtual vector<BoundingBox*>* GetBoundingBox()const;
+
+	virtual void GetDamege(int _damage);
 
 public:
 	// ’e‚Ì”z—ñ‚ğæ“¾‚·‚é
@@ -37,6 +39,13 @@ public:
 	static shared_ptr<vector<shared_ptr<EnemyBullet>>> m_pBullet;	// ’e
 
 protected:
+	int m_hp;
 	vector<CPicture*>		m_pImg;				// ‰æ‘œ
 	vector<BoundingBox*>	m_pBoundingBox;
+
+	int m_maxHp;
+	CPicture* m_pHpBar;
+	CPicture* m_pFreamOfHpBar;
+	XMFLOAT2 m_hpBarRelativePos;
+	XMFLOAT2 m_hpBarSize;
 };

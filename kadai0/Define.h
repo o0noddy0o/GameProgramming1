@@ -61,22 +61,38 @@
 //━━━━━━━━━━━━━━━━━━━━━━━
 
 // クジラ
-#define WHALE_MAX_HP								(200)
+#define WHALE_HP_BAR_RELATIVE_POS_X					(0.f)
+#define WHALE_HP_BAR_RELATIVE_POS_Y					(-500.f)
+#define WHALE_HP_BAR_RELATIVE_POS					(XMFLOAT2(WHALE_HP_BAR_RELATIVE_POS_X, WHALE_HP_BAR_RELATIVE_POS_Y))
+#define WHALE_HP_BAR_SIZE_X							(1800.f)
+#define WHALE_HP_BAR_SIZE_Y							(40.f)
+#define WHALE_HP_BAR_FREAM_SIZE_X					(WHALE_HP_BAR_SIZE_X + 4.f)
+#define WHALE_HP_BAR_FREAM_SIZE_Y					(WHALE_HP_BAR_SIZE_Y + 4.f)
+#define WHALE_MAX_HP								(1000)
 #define WHALE_RELATIVE_POS_X_FROM_CAMERA			(1000.f)
 #define WHALE_RELATIVE_POS_Y_FROM_CAMERA			(0.f)
 #define WHALE_SIZE_X								(1500.f)
-#define WHALE_SIZE_Y								(600.f)
-#define WHALE_MISSILELAUNCHER_RELATIVE_POS_X		(-600.f)
-#define WHALE_MISSILELAUNCHER_RELATIVE_POS_Y		((WHALE_SIZE_Y + MISSILELAUNCHER_PEDESTAL_SIZE_Y) / 2.f)
+#define WHALE_SIZE_Y								(850.f)
+#define WAHLE_RELATIVE_POS_OF_MOUTH					(XMFLOAT2(-750.f, 100.f))
+#define WHALE_MISSILELAUNCHER_RELATIVE_POS_X		(-500.f)
+#define WHALE_MISSILELAUNCHER_RELATIVE_POS_Y		((WHALE_SIZE_Y + MISSILELAUNCHER_PEDESTAL_SIZE_Y - 125.f) / 2.f)
+#define WHALE_COUNTDOWN_BETWEEN_ACTION				(1 * 60)
 
 // 攻撃パターン１（火を噴く）
-#define WHALE_PATTERN1_DURATION_TIME				(1 * 60)
-#define WHALE_PATTERN1_BIOW_FIRE_DISTANCE			(450.f)
-#define WHALE_PATTERN1_BIOW_FIRE_ANGLE				(90.f)
-#define WHALE_PATTERN1_BIOW_FIRE_POS				(XMFLOAT2(-750.f, 0.f))
+#define WHALE_PATTERN1_DURATION_TIME				(2 * 60)
+#define WHALE_PATTERN1_BIOW_FIRE_DISTANCE			(500.f)
+#define WHALE_PATTERN1_BIOW_FIRE_ANGLE				(90.f)		
 // 攻撃パターン２（ダッシュ）
+#define WHALE_PATTERN2_DURATION_TIME				(3 * 60)
 #define WHALE_PATTERN2_DASH_DISTANCE				(750.f)
-// 攻撃パターン３
+// 攻撃パターン３（レーザー）
+#define WHALE_PATTERN3_DURATION_TIME				(3 * 60)
+#define WHALE_PATTERN3_LASER_START_ANGLE			(204.f)
+#define WHALE_PATTERN3_LASER_END_ANGLE				(156.f)
+#define WHALE_PATTERN3_LASER_SIZE					(XMFLOAT2(2000.f, 25.f))
+// 攻撃パターン４（エネミー召喚）
+#define WHALE_COOLDOWN_AFTER_PATTERN4				(6 * 60)
+#define WHALE_PATTERN4_SUMMON_ENEMY_NUM				(5)
 
 //━━━━━━━━━━━━━━━━━━━━━━━
 // タレット
@@ -92,29 +108,52 @@
 // 床
 //━━━━━━━━━━━━━━━━━━━━━━━
 #define YUKA_POSITION				(-30.f)
+#define YUKA_SIZE_X				(380.f)
+#define YUKA_SIZE_Y				(10.f)
+
+#define YUKA_UP_POSITION			(130.f)
+#define YUKA_UP_SIZE_X				(86.f)
+#define YUKA_UP_SIZE_Y				(10.f)
+
+#define YUKA_DOWN_POSITION			(-186.f)
+#define YUKA_DOWN_SIZE_X			(84.f)
+#define YUKA_DOWN_SIZE_Y			(10.f)
 
 //━━━━━━━━━━━━━━━━━━━━━━━
 // 壁
 //━━━━━━━━━━━━━━━━━━━━━━━
 #define WALL_1_SIZE_X				(128.f)
 #define WALL_1_SIZE_Y				(142.f)
-#define WALL_1_X					(110.f)
+#define WALL_1_X					(116.f)
 #define WALL_1_Y					(110.f)
 
-#define WALL_2_SIZE_X				(128.f)
-#define WALL_2_SIZE_Y				(142.f)
-#define WALL_2_X					(-110.f)
-#define WALL_2_Y					(110.f)
+#define WALL_2_SIZE_X				(112.f)
+#define WALL_2_SIZE_Y				(126.f)
+#define WALL_2_X					(-126.f)
+#define WALL_2_Y					(114.f)
 
 #define WALL_3_SIZE_X				(128.f)
 #define WALL_3_SIZE_Y				(142.f)
-#define WALL_3_X					(-110.f)
-#define WALL_3_Y					(-110.f)
+#define WALL_3_X					(-126.f)
+#define WALL_3_Y					(-114.f)
 
 #define WALL_4_SIZE_X				(128.f)
 #define WALL_4_SIZE_Y				(142.f)
 #define WALL_4_X					(110.f)
 #define WALL_4_Y					(-110.f)
+
+//━━━━━━━━━━━━━━━━━━━━━━━
+// ハシゴ
+//━━━━━━━━━━━━━━━━━━━━━━━
+#define LADDER_1_SIZE_X				(32.f)
+#define LADDER_1_SIZE_Y				(116.f)
+#define LADDER_1_X					(20.f)
+#define LADDER_1_Y					(84.f)
+
+#define LADDER_2_SIZE_X				(32.f)
+#define LADDER_2_SIZE_Y				(118.f)
+#define LADDER_2_X					(-12.f)
+#define LADDER_2_Y					(-82.f)
 
 //━━━━━━━━━━━━━━━━━━━━━━━
 // 弾
@@ -143,10 +182,10 @@
 #define MISSILE_MOVE_SPEED			(1500.f)
 #define MISSILE_MAX_ROTATE_SPEED	(30.f)
 
-#define FIRE_SIZE_X					(100.f)
-#define FIRE_SIZE_Y					(100.f)
-#define FIRE_MOVE_SPEED				(200.f)
-#define FIRE_DISAPPEAR_TIME			(30)
+#define FIRE_SIZE_X					(150.f)
+#define FIRE_SIZE_Y					(150.f)
+#define FIRE_MOVE_SPEED				(200)
+#define FIRE_DISAPPEAR_TIME			(60)
 
 //━━━━━━━━━━━━━━━━━━━━━━━
 // ジェットエンジン
@@ -187,14 +226,18 @@
 #define ENEMY_NUM_POS_X			(-66.f)
 #define ENEMY_NUM_POS_Y			(500.f)
 #define ENEMY_NUM_POS			(XMFLOAT2(ENEMY_NUM_POS_X, ENEMY_NUM_POS_Y))
-#define MAX_ENEMY_NUM			(20)
+#define MAX_ENEMY_NUM			(31)
 
 //━━━━━━━━━━━━━━━━━━━━━━━
 // ダメージ
 //━━━━━━━━━━━━━━━━━━━━━━━
+#define DAMAGE_OF_SUBMARINE_BULLET				(5)
 #define DAMAGE_WHEN_ENEMY_HIT_SUBMARINE			(0.1f)
 #define DAMAGE_WHEN_ENEMY_BULLET_HIT_SUBMARINE	(0.1f)
 #define DAMAGE_WHEN_SUBMARINE_HIT_SCENERYOBJECT	(0.1f)
+#define DAMAGE_WHEN_SUBMARINE_HIT_BOSS			(1.f)
+#define DAMAGE_WHEN_SUBMARINE_HIT_BOSS_FIRE		(0.05f)
+#define DAMAGE_WHEN_SUBMARINE_HIT_BOSS_LASER	(5.5f)
 
 //━━━━━━━━━━━━━━━━━━━━━━━
 // カメラ
@@ -259,6 +302,8 @@
 #define DEBUG					(true)
 #define HaveEnemy				(true)
 #define ShowGamePadInput		(false)
+#define SchoolPC				(false)
+#define GameOverActive			(false)
 
 #define DebugMessage			(false)
 #if DebugMessage

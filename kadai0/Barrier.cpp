@@ -21,9 +21,9 @@ Barrier::Barrier(GameInfo* _pGameInfo, float _angle, XMFLOAT2 _pos)
 	, m_angle(_angle + 90.f)
 	, m_bIsBarrierOn(true)
 {
-	m_pImg = CreateSprite(Tex_Barrier, BARRIER_SIZE_X, BARRIER_SIZE_Y, kTexelBarrier);
+	m_pImg = CreateSprite(Tex_Barrier, BARRIER_SIZE_X, BARRIER_SIZE_Y);
 	m_pImg->setPos(_pos);
-	m_pImg->setAngleZ(_angle);
+	m_pImg->setAngleZ(_angle + 45.f);
 	m_pBoundingBox = new CircleBoundingBox(_pos, BARRIER_SIZE_X / 2.f);
 }
 
@@ -48,11 +48,11 @@ bool Barrier::IsBarrierOn()const
 void Barrier::InputProcess(int _playerIndex, float _deltaTime)
 {
 	// ゲームパッドの入力を取得
-	float gamepadX = GetInput()->GetAnalogStickX(_playerIndex - 1);
+	float gamepadX = GetInput()->GetLeftAnalogStickX(_playerIndex - 1);
 	if (Abs(gamepadX) > 0.05f)
 	{
 		m_angle -= BARRIER_ROTATION_SPEED * _deltaTime * gamepadX;
-		m_pImg->setAngleZ(m_angle - 90.f);
+		m_pImg->setAngleZ(m_angle - 90.f + 45.f);
 		//m_bIsBarrierOn = false;
 	}
 
@@ -63,7 +63,7 @@ void Barrier::InputProcess(int _playerIndex, float _deltaTime)
 		if (GetInput()->isKeyPressed(DIK_LEFTARROW))
 		{
 			m_angle += BARRIER_ROTATION_SPEED * _deltaTime;
-			m_pImg->setAngleZ(m_angle - 90.f);
+			m_pImg->setAngleZ(m_angle - 90.f + 45.f);
 			//m_bIsBarrierOn = false;
 		}
 
@@ -71,7 +71,7 @@ void Barrier::InputProcess(int _playerIndex, float _deltaTime)
 		else if (GetInput()->isKeyPressed(DIK_RIGHTARROW))
 		{
 			m_angle -= BARRIER_ROTATION_SPEED * _deltaTime;
-			m_pImg->setAngleZ(m_angle - 90.f);
+			m_pImg->setAngleZ(m_angle - 90.f + 45.f);
 			//m_bIsBarrierOn = false;
 		}
 
@@ -87,7 +87,7 @@ void Barrier::InputProcess(int _playerIndex, float _deltaTime)
 		if (GetInput()->isKeyPressed(DIK_A))
 		{
 			m_angle += BARRIER_ROTATION_SPEED * _deltaTime;
-			m_pImg->setAngleZ(m_angle - 90.f);
+			m_pImg->setAngleZ(m_angle - 90.f + 45.f);
 			//m_bIsBarrierOn = false;
 		}
 
@@ -95,7 +95,7 @@ void Barrier::InputProcess(int _playerIndex, float _deltaTime)
 		else if (GetInput()->isKeyPressed(DIK_D))
 		{
 			m_angle -= BARRIER_ROTATION_SPEED * _deltaTime;
-			m_pImg->setAngleZ(m_angle - 90.f);
+			m_pImg->setAngleZ(m_angle - 90.f + 45.f);
 			//m_bIsBarrierOn = false;
 		}
 

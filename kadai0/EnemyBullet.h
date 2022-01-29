@@ -19,6 +19,7 @@ enum TypeOfEnemyBullet
 	thunderBullet,
 	missile,
 	fire,
+	laser,
 	Total
 };
 
@@ -46,8 +47,4 @@ protected:
 	XMFLOAT2 m_moveDirection;	// 弾の移動方向（ベクトル）
 	BoundingBox* m_pBoundingBox;
 	TypeOfEnemyBullet m_bulletType;
-
-	int m_hp;
-	CPicture* m_pHpBar;
-	CPicture* m_pFreamOfHpBar;
 };

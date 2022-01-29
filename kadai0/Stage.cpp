@@ -6,6 +6,7 @@
 // 　　　　　　　　2021/12/08　敵の弾を発射機能を追加
 // 　　　　　　　　2021/12/10　敵の移動処理を追加
 // 　　　　　　　　2021/01/13　障害物の配置(呉)
+// 　　　　　　　：2022/01/29 カメラを管理するメソッドを追加（呉）
 //━━━━━━━━━━━━━━━━━━━━━━━
 
 #include "Stage.h"
@@ -22,6 +23,8 @@
 #include "ElectricEel.h"
 #include "MissileLauncher.h"
 #include "Boss.h"
+#include "Whale.h"
+#include "CameraManager.h"
 
 //━━━━━━━━━━━━━━━━━━━━━━━
 // コンストラクタ
@@ -32,10 +35,13 @@ Stage::Stage(GameInfo* _pGameInfo)
 	, m_pSubmarine(NULL)
 	, m_nowStageNum(0)
 	, m_pBoss(NULL)
+	, m_bBossBettle(false)
 {
 	srand((unsigned)time(NULL));
 
-	SetNextStage(2);
+	CameraManager::SetUpCamera(m_pGameInfo->pCamera);
+
+	SetNextStage(1);
 
 	m_lastFrameTime = clock();
 }
@@ -70,10 +76,14 @@ void Stage::RenderProcess()
 		m_pEnemy[i]->renderSprite();
 	}
 
-	for (int i = 0; i < (int)m_pBossBullet->size(); ++i)
+	if (m_pBossBullet)
 	{
-		(*m_pBossBullet)[i].get()->renderSprite();
+		for (int i = 0; i < (int)m_pBossBullet->size(); ++i)
+		{
+			(*m_pBossBullet)[i].get()->renderSprite();
+		}
 	}
+
 	if (m_pBoss)m_pBoss->renderSprite();
 
 #endif
@@ -97,10 +107,7 @@ void Stage::Tick()
 		m_lastFrameTime = thisFrameTime;
 	}
 
-	m_pSubmarine->Tick(m_deltaTime);
-
-	m_pSubmarine->CollisionProcess(&m_pEnemy, m_pEnemyBullet, &m_pSceneryObject, NULL);
-
+#if HaveEnemy
 	{
 		XMFLOAT2 SubmarinePos(m_pSubmarine->GetPos());
 		for (int i = 0; i < (int)m_pEnemy.size(); ++i)
@@ -108,29 +115,75 @@ void Stage::Tick()
 			m_pEnemy[i]->AttackProcess();
 			m_pEnemy[i]->MoveProcess(SubmarinePos, m_deltaTime);
 		}
-	}
-#if HaveEnemy
-	{
-		XMFLOAT2 SubmarinePos(m_pSubmarine->GetPos());
 
-		if (m_pBoss)m_pBoss->Tick(SubmarinePos);
+		if (m_pBoss)m_pBoss->Tick(SubmarinePos, m_deltaTime);
 
-		for (int i = 0; i < (int)m_pBossBullet->size(); ++i)
+		if (m_pBossBullet)
 		{
-			(*m_pBossBullet)[i].get()->MoveProcess(m_deltaTime, SubmarinePos);
+			for (int i = 0; i < (int)m_pBossBullet->size(); ++i)
+			{
+				(*m_pBossBullet)[i].get()->MoveProcess(m_deltaTime, SubmarinePos);
+			}
 		}
 
-		for (int i = 0; i < (int)m_pEnemyBullet->size(); ++i)
+		if (m_pEnemyBullet)
 		{
-			(*m_pEnemyBullet)[i].get()->MoveProcess(m_deltaTime, SubmarinePos);
+			for (int i = 0; i < (int)m_pEnemyBullet->size(); ++i)
+			{
+				(*m_pEnemyBullet)[i].get()->MoveProcess(m_deltaTime, SubmarinePos);
+			}
+		}
+
+		if (m_pSubmarine->GetKilledEnemyCnt() == MAX_ENEMY_NUM && !m_bBossBettle)
+		{
+			StartBossBattle();
 		}
 	}
 #endif
-	m_pSubmarine->MoveProcess(m_deltaTime);
 
+	m_pSubmarine->CollisionProcess(&m_pEnemy, m_pEnemyBullet, &m_pSceneryObject, (m_pBoss.get())?(m_pBoss.get()):(NULL),m_pBossBullet , NULL);
+	m_pSubmarine->Tick(m_deltaTime);
 }
 
 int Stage::GetKilledEnemyCnt()const
 {
 	return m_pSubmarine->GetKilledEnemyCnt();
+}
+
+void Stage::StartBossBattle()
+{
+	m_bBossBettle = true;
+
+	SetCameraPos(m_pSubmarine->GetPos());
+
+	XMFLOAT2 cameraPos = m_pSubmarine->GetPos();
+
+	SetCameraMoveRange(XMFLOAT2(cameraPos.x - 300.f, cameraPos.y - 300.f), XMFLOAT2(cameraPos.x, cameraPos.y + 300.f));
+
+	switch (m_nowStageNum)
+	{
+	case 1:
+		m_pBoss = (shared_ptr<Boss>)new Whale(m_pGameInfo, XMFLOAT2(cameraPos.x + WHALE_RELATIVE_POS_X_FROM_CAMERA, cameraPos.y + WHALE_RELATIVE_POS_Y_FROM_CAMERA), &m_pEnemy);
+		break;
+	case 2:
+		m_pBoss = (shared_ptr<Boss>)new Whale(m_pGameInfo, XMFLOAT2(cameraPos.x + WHALE_RELATIVE_POS_X_FROM_CAMERA, cameraPos.y + WHALE_RELATIVE_POS_Y_FROM_CAMERA), &m_pEnemy);
+		break;
+	}
+	
+}
+
+//━━━━━━━━━━━━━━━━━━━━━━━
+// カメラの座標をセットする
+//━━━━━━━━━━━━━━━━━━━━━━━
+void Stage::SetCameraPos(XMFLOAT2 _newPos)
+{
+	CameraManager::SetCameraPos(_newPos);
+}
+
+//━━━━━━━━━━━━━━━━━━━━━━━
+// カメラの移動範囲をセットする
+//━━━━━━━━━━━━━━━━━━━━━━━
+void Stage::SetCameraMoveRange(XMFLOAT2 _min, XMFLOAT2 _max)
+{
+	CameraManager::SetCameraMoveRange(_min, _max);
 }

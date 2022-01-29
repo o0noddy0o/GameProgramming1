@@ -48,16 +48,28 @@ void CActionGameApp::procPlayMain()
 	XMFLOAT3 camPos = m_pCamera->getPos();
 #endif
 
-	pStage->Tick();
-	pStage->CollisionProcess();
+	try
+	{
+		pStage->Tick();
+	}
+	catch (string _msg)
+	{
+		if (_msg == "GameClear")
+		{
+			GamePhase = eEnd;
+			goNextStatusFromPlaying = eGameClear;
+		}
+		else if (_msg == "GameOver")
+		{
+			GamePhase = eEnd;
+			goNextStatusFromPlaying = eGameOver;
+		}
+	}
 	pStage->RenderProcess();
 
-	// Xキーを押したら、インゲーム画面からゲームクリア画面へ移す
-	if (pStage->GetKilledEnemyCnt() >= MAX_ENEMY_NUM
 #if DEBUG
-		|| getInput()->isPressedOnce(DIK_X)
-#endif
-		)
+	// Xキーを押したら、インゲーム画面からゲームクリア画面へ移す
+	if (getInput()->isPressedOnce(DIK_X))
 	{
 		GamePhase = eEnd;
 		goNextStatusFromPlaying = eGameClear;
@@ -67,13 +79,14 @@ void CActionGameApp::procPlayMain()
 		GamePhase = eEnd;
 		goNextStatusFromPlaying = eGameOver;
 	}
+#endif
 
 #if ShowGamePadInput
 	pText->setPos(camPos.x - 900.f, camPos.y + 350.f);
 	pText2->setPos(camPos.x - 900, camPos.y);
 
-	float x = getInput()->GetAnalogStickX(0);
-	float y = getInput()->GetAnalogStickY(0);
+	float x = getInput()->GetLeftAnalogStickX(0);
+	float y = getInput()->GetLeftAnalogStickY(0);
 
 	string text = "GAMEPAD 1\nX ";
 	if (x < 0.f)text += "-";
@@ -88,8 +101,8 @@ void CActionGameApp::procPlayMain()
 	pText->SetText(text);
 	
 
-	x = getInput()->GetAnalogStickX(1);
-	y = getInput()->GetAnalogStickY(1);
+	x = getInput()->GetLeftAnalogStickX(1);
+	y = getInput()->GetLeftAnalogStickY(1);
 
 	text = "GAMEPAD 2\nX ";
 	if (x < 0.f)text += "-";

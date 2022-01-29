@@ -33,11 +33,11 @@ public:
 	void SetRelativePos(XMFLOAT2 _newRelativePos = { 0.f,0.f });
 
 	// 当たり判定
-	bool Collision(const BoundingBox* _target, XMFLOAT2* _pDirectionVector = NULL)const;
-	bool Collision(CPicture* _target, XMFLOAT2* _pDirectionVector = NULL)const;						// 画像
-	bool Collision(const CircleBoundingBox* _target, XMFLOAT2* _pDirectionVector = NULL)const;		// 丸いバウンディングボックス
-	bool Collision(const RectangleBoundingBox* _target, XMFLOAT2* _pDirectionVector = NULL)const;	// 四角形バウンディングボックス
-	bool Collision(const PolygonBoundingBox* _target, XMFLOAT2* _pDirectionVector = NULL)const;		// 多角形バウンディングボックス
+	bool Collision(const BoundingBox* _target, XMFLOAT2* _pDirectionVector = NULL)const override;
+	bool Collision(CPicture* _target, XMFLOAT2* _pDirectionVector = NULL)const override;					// 画像
+	bool Collision(const CircleBoundingBox* _target, XMFLOAT2* _pDirectionVector = NULL)const override;		// 丸いバウンディングボックス
+	bool Collision(const RectangleBoundingBox* _target, XMFLOAT2* _pDirectionVector = NULL)const override;	// 四角形バウンディングボックス
+	bool Collision(const PolygonBoundingBox* _target, XMFLOAT2* _pDirectionVector = NULL)const override;	// 多角形バウンディングボックス
 
 private:
 	bool CollisionWithCircle(const CircleBoundingBox* _target)const;

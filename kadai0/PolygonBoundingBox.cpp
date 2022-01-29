@@ -18,11 +18,12 @@
 // 　　　：※ 要素は二つ以上
 // 引数３：バウンディングボックスとそれを持っているオブジェクトの座標の差
 //━━━━━━━━━━━━━━━━━━━━━━━
-PolygonBoundingBox::PolygonBoundingBox(XMFLOAT2 _pos, vector<XMFLOAT2>& _vertexPos, XMFLOAT2 _relativePos)
+PolygonBoundingBox::PolygonBoundingBox(XMFLOAT2 _pos, vector<XMFLOAT2>& _vertexPos, bool _bRelativePosActive, XMFLOAT2 _relativePos)
 	: m_pos(_pos)
 	, m_pVertexPos(new vector<XMFLOAT2>(_vertexPos))
 	, m_pVector(new vector<XMFLOAT2>())
 	, m_relativePos(_relativePos)
+	, m_bRelativePosActive(_bRelativePosActive)
 	, Super(3)
 {
 	// 頂点座標の配列の要素数を取得しておく
@@ -295,35 +296,24 @@ void PolygonBoundingBox::RotateVertex(float _angle)
 	float radian = DegreeToRadian(_angle);
 
 	{
+		XMFLOAT2 pos;
+		for (int i = 0; i < arraySize; ++i)
+		{
+			pos = (*m_pVertexPos)[i];
+
+			(*m_pVertexPos)[i].x = pos.x * cosf(radian) - pos.y * sinf(radian);
+			(*m_pVertexPos)[i].y = pos.x * sinf(radian) + pos.y * cosf(radian);
+		}
+
 		XMFLOAT2 newRelativePos;
-		if (m_relativePos.x != 0.f && m_relativePos.y != 0.f)
+		if (m_bRelativePosActive)
 		{
 			newRelativePos =
 			{
 				m_relativePos.x * cosf(radian) - m_relativePos.y * sinf(radian),
 				m_relativePos.x * sinf(radian) + m_relativePos.y * cosf(radian)
 			};
-		}
-
-		XMFLOAT2 pos;
-		for (int i = 0; i < arraySize; ++i)
-		{
-			pos = (*m_pVertexPos)[i];
-
-			if (m_relativePos.x != 0.f && m_relativePos.y != 0.f)
-			{
-				pos.x += m_relativePos.x;
-				pos.y += m_relativePos.y;
-			}
-
-			(*m_pVertexPos)[i].x = pos.x * cosf(radian) - pos.y * sinf(radian);
-			(*m_pVertexPos)[i].y = pos.x * sinf(radian) + pos.y * cosf(radian);
-
-			if (m_relativePos.x != 0.f && m_relativePos.y != 0.f)
-			{
-				pos.x -= newRelativePos.x;
-				pos.y -= newRelativePos.y;
-			}
+			m_relativePos = newRelativePos;
 		}
 	}
 

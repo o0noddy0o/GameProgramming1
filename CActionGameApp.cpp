@@ -44,7 +44,7 @@ void CActionGameApp::initCameraInfo()
 	m_angle		= (FLOAT)XM_PI / 4;					//!< 視野角
 	m_aspect	= ASPECT;							//!< アスペクト比
 	m_near		= 0.1f;								//!< 前方クリップ
-	m_far		= abs(z) + 100.0f;					//!< 後方クリップ
+	m_far		= abs(z) + 2000.0f;					//!< 後方クリップ
 }
 
 

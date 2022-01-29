@@ -23,7 +23,7 @@ public:
 	~Player();
 
 	//毎フレームにやる処理
-	void Tick(float _deltaTime, vector<Submarine::Wall>* _pWall, vector<Submarine::Floor>* _pFloor);
+	void Tick(float _deltaTime, vector<Submarine::Wall>* _pWall, vector<Submarine::Floor>* _pFloor, vector<Submarine::Ladder>* _pLadder);
 
 	//画像を描画
 	void RenderChara();
@@ -56,16 +56,20 @@ private:
 	//プレイヤーキャラクターと各操作装置の当たり判定
 	void CollisionWithOperationDevice(vector<shared_ptr<OperationDevice>>* _pOperationDevice);
 
-	void CollisionWithWallAndFloor(vector < Submarine::Wall>* _pWall, vector<Submarine::Floor>* _pFloor);
+	void CollisionWithWallAndFloor(vector < Submarine::Wall>* _pWall, vector<Submarine::Floor>* _pFloor, vector<Submarine::Ladder>* _pLadder);
+
+	void CollisionWithLadder(vector<Submarine::Ladder>* _pLadder);
 
 	//プレイヤーの移動
 	void Move(float _deltaTime);
 
-	
 
-	CPicture*	m_pImg;				//プレイヤーキャラクターの画像
+
+	CPicture* m_pImg;				//プレイヤーキャラクターの画像
 	bool		m_bMoveable;		//プレイヤーが移動できるかフラグ
 	bool		m_bJumping;			//プレイヤーがジャンプしているかのフラグ
+	bool		m_bClimbing;		//プレイヤーがハシゴをのぼっているかのフラグ
+	bool		m_bClimbable;		//上ることができるかフラグ。
 
 	float		m_jumpPower;
 	float		m_jumpTime;

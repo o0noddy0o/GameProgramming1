@@ -149,6 +149,7 @@
     <ClCompile Include="kadai0\Barrier.cpp" />
     <ClCompile Include="kadai0\Boss.cpp" />
     <ClCompile Include="kadai0\Bullet.cpp" />
+    <ClCompile Include="kadai0\CameraManager.cpp" />
     <ClCompile Include="kadai0\CircleBoundingBox.cpp" />
     <ClCompile Include="kadai0\Component.cpp" />
     <ClCompile Include="kadai0\CText.cpp" />
@@ -164,6 +165,7 @@
     <ClCompile Include="kadai0\GameTitle.cpp" />
     <ClCompile Include="kadai0\InOutputFile.cpp" />
     <ClCompile Include="kadai0\JetEngine.cpp" />
+    <ClCompile Include="kadai0\Laser.cpp" />
     <ClCompile Include="kadai0\Map.cpp" />
     <ClCompile Include="kadai0\Missile.cpp" />
     <ClCompile Include="kadai0\MissileLauncher.cpp" />
@@ -180,6 +182,7 @@
     <ClCompile Include="kadai0\Turret.cpp" />
     <ClCompile Include="kadai0\UI.cpp" />
     <ClCompile Include="kadai0\Whale.cpp" />
+    <ClCompile Include="kadai0\XMFLOAT.cpp" />
     <ClCompile Include="stdafx.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -205,6 +208,7 @@
     <ClInclude Include="kadai0\Boss.h" />
     <ClInclude Include="kadai0\BoundingBox.h" />
     <ClInclude Include="kadai0\Bullet.h" />
+    <ClInclude Include="kadai0\CameraManager.h" />
     <ClInclude Include="kadai0\CircleBoundingBox.h" />
     <ClInclude Include="kadai0\Component.h" />
     <ClInclude Include="kadai0\CText.h" />
@@ -218,6 +222,7 @@
     <ClInclude Include="kadai0\GameResource.h" />
     <ClInclude Include="kadai0\InOutputFile.h" />
     <ClInclude Include="kadai0\JetEngine.h" />
+    <ClInclude Include="kadai0\Laser.h" />
     <ClInclude Include="kadai0\Map.h" />
     <ClInclude Include="kadai0\Missile.h" />
     <ClInclude Include="kadai0\MissileLauncher.h" />

@@ -222,6 +222,15 @@
     <ClCompile Include="kadai0\Fire.cpp">
       <Filter>ソース ファイル\Object\Bullet</Filter>
     </ClCompile>
+    <ClCompile Include="kadai0\Laser.cpp">
+      <Filter>ソース ファイル\Object\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="kadai0\XMFLOAT.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="kadai0\CameraManager.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Common\CApplication.h">
@@ -394,6 +403,12 @@
     </ClInclude>
     <ClInclude Include="kadai0\Fire.h">
       <Filter>ヘッダー ファイル\Object\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="kadai0\Laser.h">
+      <Filter>ヘッダー ファイル\Object\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="kadai0\CameraManager.h">
+      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

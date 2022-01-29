@@ -68,16 +68,7 @@ void Fish::AttackProcess(XMFLOAT2 _SubmarinePos)
 		{
 			for (unsigned int i = 0; i < m_pEnemyBullet->size(); ++i)
 			{
-				if ((*m_pEnemyBullet)[i]->GetActive())
-				{
-					// ‚È‚©‚Á‚½‚çV‚µ‚¢‚Ì‚ğì‚é
-					if (i >= m_pEnemyBullet->size() - 1)
-					{
-						m_pEnemyBullet->push_back(shared_ptr<EnemyBullet>(new EnemyBullet(m_pGameInfo, XMFLOAT2(pos.x, pos.y), m_angle)));
-						break;
-					}
-				}
-				else
+				if (!(*m_pEnemyBullet)[i]->GetActive())
 				{
 					if ((*m_pEnemyBullet)[i]->GetBulletType() == normal)
 					{
@@ -87,6 +78,11 @@ void Fish::AttackProcess(XMFLOAT2 _SubmarinePos)
 						(*m_pEnemyBullet)[i]->SetMoveDirection(m_angle);
 						break;
 					}
+				}
+				if (i == m_pEnemyBullet->size() - 1)
+				{
+					m_pEnemyBullet->push_back(shared_ptr<EnemyBullet>(new EnemyBullet(m_pGameInfo, XMFLOAT2(pos.x, pos.y), m_angle)));
+					break;
 				}
 			}
 		}
@@ -107,57 +103,60 @@ void Fish::MoveProcess(XMFLOAT2 _SubmarinePos, float _deltaTime)
 	float diffX = _SubmarinePos.x - _EnemyPos.x;
 	float diffY = _SubmarinePos.y - _EnemyPos.y;
 	float mag = sqrtf(diffX * diffX + diffY * diffY);
-	// “G‚©‚çö…ŠÍ‚Ö‚Ì•ûŒü
-	XMFLOAT2 target;
-	target.x = diffX / mag;
-	target.y = diffY / mag;
-
-	XMFLOAT2 EnemyMoveDir = AngleToDirectionVector(m_angle);
-
-	// ŠOÏ‚ÌŒvZ
-	float cross = (EnemyMoveDir.x * target.y - EnemyMoveDir.y * target.x);
-
-	if (cross >= 0)
+	if (_EnemyPos.x - 1300.f <= _SubmarinePos.x && _SubmarinePos.x <= _EnemyPos.x + 1300.f && _EnemyPos.y - 800.f <= _SubmarinePos.y && _SubmarinePos.y <= _EnemyPos.y + 800.f)
 	{
-		float angle = Degree(RadianToDegree(acosf(EnemyMoveDir.x * target.x + EnemyMoveDir.y * target.y)));
-		if (Abs(angle) > 200.f * _deltaTime)
+		// “G‚©‚çö…ŠÍ‚Ö‚Ì•ûŒü
+		XMFLOAT2 target;
+		target.x = diffX / mag;
+		target.y = diffY / mag;
+
+		XMFLOAT2 EnemyMoveDir = AngleToDirectionVector(m_angle);
+
+		// ŠOÏ‚ÌŒvZ
+		float cross = (EnemyMoveDir.x * target.y - EnemyMoveDir.y * target.x);
+
+		if (cross >= 0)
 		{
-			m_angle += 200.f * _deltaTime;;
+			float angle = Degree(RadianToDegree(acosf(EnemyMoveDir.x * target.x + EnemyMoveDir.y * target.y)));
+			if (Abs(angle) > 200.f * _deltaTime)
+			{
+				m_angle += 200.f * _deltaTime;;
+			}
+			else
+			{
+				m_angle += angle;
+			}
 		}
 		else
 		{
-			m_angle += angle;
+			float angle = Degree(RadianToDegree(acosf(EnemyMoveDir.x * target.x + EnemyMoveDir.y * target.y)));
+			if (Abs(angle) > 200.f * _deltaTime)
+			{
+				m_angle -= 200.f * _deltaTime;;
+			}
+			else
+			{
+				m_angle -= angle;
+			}
 		}
+
+		// “G‚ÌˆÚ“®•ûŒü‚Ìİ’è
+		EnemyMoveDir = AngleToDirectionVector(m_angle);
+		XMFLOAT4 EnemyMove = { EnemyMoveDir.x * ENEMY_1_MOVE_SPEED * _deltaTime, EnemyMoveDir.y * ENEMY_1_MOVE_SPEED * _deltaTime, 0.f, 0.f };
+		m_pImg->offsetPos(EnemyMove);
+		{
+			// “G‚ÌŒü‚«‚Ìİ’è
+			int angle = Abs((int)m_angle % 360);
+			if (angle < 90 || angle > 270)
+			{
+				m_pImg->setAngle(0.f, 180.f, m_angle);
+			}
+			else
+			{
+				m_pImg->setAngle(180.f, 180.f, m_angle);
+			}}
+		m_pImg->setAngleZ(m_angle);
 	}
-	else
-	{
-		float angle = Degree(RadianToDegree(acosf(EnemyMoveDir.x * target.x + EnemyMoveDir.y * target.y)));
-		if (Abs(angle) > 200.f * _deltaTime)
-		{
-			m_angle -= 200.f * _deltaTime;;
-		}
-		else
-		{
-			m_angle -= angle;
-		}
-	}
-
-	// “G‚ÌˆÚ“®•ûŒü‚Ìİ’è
-	EnemyMoveDir = AngleToDirectionVector(m_angle);
-	XMFLOAT4 EnemyMove = { EnemyMoveDir.x * ENEMY_1_MOVE_SPEED * _deltaTime, EnemyMoveDir.y * ENEMY_1_MOVE_SPEED * _deltaTime, 0.f, 0.f };
-	m_pImg->offsetPos(EnemyMove);
-	{
-		// “G‚ÌŒü‚«‚Ìİ’è
-		int angle = Abs((int)m_angle % 360);
-		if (angle < 90 || angle > 270)
-		{
-			m_pImg->setAngle(0.f, 180.f, m_angle);
-		}
-		else
-		{
-			m_pImg->setAngle(180.f, 180.f, m_angle);
-		}}
-	m_pImg->setAngleZ(m_angle);
 	m_pBoundingBox->SetPos({ m_pImg->getPos().x, m_pImg->getPos().y });
 }
 

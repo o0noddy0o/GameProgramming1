@@ -24,6 +24,7 @@ class JetEngine;
 class EnemyBullet;
 class BoundingBox;
 class CircleBoundingBox;
+class Boss;
 
 class Submarine : public CObjectBase
 {
@@ -43,8 +44,16 @@ public:
 		Floor(CPicture* _ob = NULL, XMFLOAT2 _relativePos = { 0.f, 0.f }) : ob(_ob), relativePos(_relativePos) {}
 	};
 
+	//ハシゴ
+	struct Ladder
+	{
+		CPicture* ob;
+		XMFLOAT2  relativePos;
+		Ladder(CPicture* _ob = NULL, XMFLOAT2 _relativePos = { 0.f, 0.f }) : ob(_ob), relativePos(_relativePos) {}
+	};
+
 public:
-	Submarine(GameInfo* _pGameInfo);
+	Submarine(GameInfo* _pGameInfo, XMFLOAT2 _pos = XMFLOAT2(0.f, 0.f));
 	~Submarine();
 
 	// 毎フレームにやる処理
@@ -58,6 +67,8 @@ public:
 		vector<shared_ptr<Enemy>>*								_pEnemy,
 		shared_ptr<vector<shared_ptr<EnemyBullet>>>				_pEnemyBullet,
 		vector<shared_ptr<SceneryObject>>*						_pSceneryObject,
+		Boss*													_pBoss,
+		shared_ptr<vector<shared_ptr<EnemyBullet>>>				_pBossBullet,
 		vector<shared_ptr<Item>>*								_pItem);
 		
 	// 潜水艦全体の移動
@@ -82,9 +93,10 @@ public:
 private:
 	int killedEnemyCnt;
 
-	CPicture*					m_pImg;
+	CPicture* m_pImg;
 	vector<Floor>				m_floor;
 	vector<Wall>				m_wall;
+	vector<Ladder>				m_ladder;											//ハシゴ
 
 	float						m_hp;
 	XMFLOAT2					m_pos;

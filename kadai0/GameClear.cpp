@@ -73,7 +73,7 @@ void CActionGameApp::procClearMain()
 		getInput()->IsGamePadButtonPressedOnce(GAMEPAD_B, 1))
 	{
 		GameClearPhase = eEnd;
-		goNextStatusFromGameClear = eGameOver;
+		goNextStatusFromGameClear = eTitle;
 	}
 }
 

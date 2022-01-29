@@ -3,6 +3,7 @@
 // 概要　　　　　：ステージに出る他の物のクラス
 // 作成者　　　　：20CU0340 林星
 // 更新内容　　　：2021/12/01 作成
+// 　　　　　　　：2022/01/29 カメラを管理するメソッドを追加（呉）
 //━━━━━━━━━━━━━━━━━━━━━━━
 #pragma once
 #include "CObjectBase.h"
@@ -34,9 +35,15 @@ public:
 
 	void ResetStage();
 
+	void SetCameraPos(XMFLOAT2 _newPos);
+
+	void SetCameraMoveRange(XMFLOAT2 _min, XMFLOAT2 _max);
+
 private:
 	void InitStage1();
 	void InitStage2();
+
+	void StartBossBattle();
 
 private:
 	// 潜水艦オブジェクト
@@ -66,4 +73,6 @@ private:
 	int m_map[Map_Y_SIZE][Map_X_SIZE];
 
 	int m_nowStageNum;
+
+	bool m_bBossBettle;
 };

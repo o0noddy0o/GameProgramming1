@@ -20,6 +20,7 @@
 #define Tex_rightdown				L"Media/Sprite/ActionGame_Sprite/rightdown.png"
 #define Tex_leftup					L"Media/Sprite/ActionGame_Sprite/leftup.png"
 #define Tex_leftdown				L"Media/Sprite/ActionGame_Sprite/leftdown.png"
+#define Tex_Ladder					L"Media/Sprite/ActionGame_Sprite/hashigo.png"
 
 // テスト用
 #define Tex_TestImage1				L"Media/Sprite/ActionGame_Sprite/TestImage1.png"
@@ -53,9 +54,10 @@
 #define Tex_Missile					L"Media/Sprite/ActionGame_Sprite/Missile.png"
 
 // ボス
-#define Tex_Whale					L"Media/Sprite/ActionGame_Sprite/TestImage1.png"
-#define Tex_Laser					L"Media/Sprite/ActionGame_Sprite/TestImage1.png"
+#define Tex_Whale					L"Media/Sprite/ActionGame_Sprite/whale.png"
+#define Tex_Laser					L"Media/Sprite/ActionGame_Sprite/Laser.png"
 #define Tex_Fire					L"Media/Sprite/ActionGame_Sprite/fireBullet.png"
+#define Tex_Laser					L"Media/Sprite/ActionGame_Sprite/EnemyBullet.png"
 
 // UI
 #define Tex_HPBar					L"Media/Sprite/ActionGame_Sprite/HpBar.png"

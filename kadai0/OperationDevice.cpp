@@ -5,6 +5,7 @@
 // 更新内容　　　：2021/11/29 作成（ズン）
 // 　　　　　　　：2021/12/01 描画メソッドを定義（ズン）
 // 　　　　　　　：2021/12/23 InputProcessメソッドの編集（ゲームパッドの実装）（呉）
+// 　　　　　　　：2022/01/29 コンストラクタの修正（呉）
 //━━━━━━━━━━━━━━━━━━━━━━━
 #include "OperationDevice.h"
 #include "GameResource.h"
@@ -16,7 +17,7 @@
 //━━━━━━━━━━━━━━━━━━━━━━━
 OperationDevice::OperationDevice(GameInfo* _pGameInfo, XMFLOAT2 _pos, XMFLOAT2 _relativePos, int _index)
 	: Super(_pGameInfo)
-	, m_relativePos(_pos)
+	, m_relativePos(_relativePos)
 	, m_bPlayer1IsUsing(false)
 	, m_bPlayer2IsUsing(false)
 {
