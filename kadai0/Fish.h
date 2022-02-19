@@ -24,6 +24,10 @@ public:
 	// ˆÚ“®ˆ—
 	virtual void MoveProcess(XMFLOAT2 _SubmarinePos, float _deltaTime);
 
+	virtual XMFLOAT2 GetMoveDirection()const override;
+	
+	virtual void SetMoveDirection(XMFLOAT2 _newMoveDirection)override;
+
 	virtual BoundingBox* GetBoundingBox()const;
 protected:
 	// “–‚½‚è”»’è

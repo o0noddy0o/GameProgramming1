@@ -14,6 +14,7 @@
 #include "MissileLauncher.h"
 #include "Whale.h"
 #include "CameraManager.h"
+#include "Goal.h"
 
 //━━━━━━━━━━━━━━━━━━━━━━━
 // 次のステージに設置する
@@ -29,7 +30,7 @@ void Stage::SetNextStage(const int _stageNum)
 		// 全ステージクリア
 		if (m_nowStageNum == NUM_OF_STAGE)
 		{
-
+			throw (string)"EndOfAllStage";
 		}
 	}
 	// 指定ステージ
@@ -75,6 +76,8 @@ void Stage::InitStage1()
 	m_pSubmarine = (shared_ptr<Submarine>)new Submarine(m_pGameInfo);
 
 	SetCameraMoveRange(XMFLOAT2(0.f, -WINDOW_HEIGHT * (SCREEN_MULTIPLE_Y - 1.f)), XMFLOAT2(WINDOW_WIDTH * (SCREEN_MULTIPLE_X - 1.f), 0.f));
+	
+	m_pGoal = (shared_ptr<Goal>)new Goal(m_pGameInfo, XMFLOAT2(3500.f, -2750.f), XMFLOAT2(680.f, 400.f));
 
 	//障害物を作成
 	m_pSceneryObject.push_back((shared_ptr<SceneryObject>)new Rock(m_pGameInfo, 3, XMFLOAT2(2115.f, 540.f), -5.f));

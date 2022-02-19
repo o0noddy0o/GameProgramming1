@@ -24,6 +24,10 @@ public:
 
 	virtual BoundingBox* GetBoundingBox()const override;
 
+	virtual XMFLOAT2 GetMoveDirection()const override;
+
+	virtual void SetMoveDirection(XMFLOAT2 _newMoveDirection)override {};
+
 	void SetPosAndAngle(XMFLOAT2 _newPos, float _newAngle);
 
 private:

@@ -25,6 +25,7 @@
 #include "Boss.h"
 #include "Whale.h"
 #include "CameraManager.h"
+#include "Goal.h"
 
 //━━━━━━━━━━━━━━━━━━━━━━━
 // コンストラクタ
@@ -36,12 +37,13 @@ Stage::Stage(GameInfo* _pGameInfo)
 	, m_nowStageNum(0)
 	, m_pBoss(NULL)
 	, m_bBossBettle(false)
+	, m_pGoal(NULL)
 {
 	srand((unsigned)time(NULL));
 
 	CameraManager::SetUpCamera(m_pGameInfo->pCamera);
 
-	SetNextStage(1);
+	SetNextStage(2);
 
 	m_lastFrameTime = clock();
 }
@@ -63,6 +65,9 @@ void Stage::RenderProcess()
 	{
 		m_pSceneryObject[i]->renderSprite();
 	}
+
+	if(m_pGoal)m_pGoal->rendingSprite();
+	
 	m_pSubmarine->RenderProcess();
 
 #if HaveEnemy
@@ -141,7 +146,7 @@ void Stage::Tick()
 	}
 #endif
 
-	m_pSubmarine->CollisionProcess(&m_pEnemy, m_pEnemyBullet, &m_pSceneryObject, (m_pBoss.get())?(m_pBoss.get()):(NULL),m_pBossBullet , NULL);
+	m_pSubmarine->CollisionProcess(&m_pEnemy, m_pEnemyBullet, &m_pSceneryObject, (m_pBoss.get())?(m_pBoss.get()):(NULL), m_pBossBullet, m_pGoal.get(), NULL);
 	m_pSubmarine->Tick(m_deltaTime);
 }
 
@@ -163,10 +168,10 @@ void Stage::StartBossBattle()
 	switch (m_nowStageNum)
 	{
 	case 1:
-		m_pBoss = (shared_ptr<Boss>)new Whale(m_pGameInfo, XMFLOAT2(cameraPos.x + WHALE_RELATIVE_POS_X_FROM_CAMERA, cameraPos.y + WHALE_RELATIVE_POS_Y_FROM_CAMERA), &m_pEnemy);
+		m_pBoss = (shared_ptr<Boss>)new Whale(m_pGameInfo, XMFLOAT2(cameraPos.x + CameraManager::GetCameraRangeMax().x, cameraPos.y), &m_pEnemy);
 		break;
 	case 2:
-		m_pBoss = (shared_ptr<Boss>)new Whale(m_pGameInfo, XMFLOAT2(cameraPos.x + WHALE_RELATIVE_POS_X_FROM_CAMERA, cameraPos.y + WHALE_RELATIVE_POS_Y_FROM_CAMERA), &m_pEnemy);
+		m_pBoss = (shared_ptr<Boss>)new Whale(m_pGameInfo, XMFLOAT2(cameraPos.x + CameraManager::GetCameraRangeMax().x, cameraPos.y), &m_pEnemy);
 		break;
 	}
 	

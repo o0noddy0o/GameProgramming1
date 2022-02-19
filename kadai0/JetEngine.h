@@ -21,9 +21,11 @@ public:
 	bool GetIsMoving()const;
 	void SetIsMoveingToFalse();
 	float GetMoveDirection()const;
+	float GetMovePower()const;
 
 private:
 	float m_moveDirection;
 	bool m_bIsMoving;
+	float m_movePower;
 };
 

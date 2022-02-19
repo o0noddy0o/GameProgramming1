@@ -41,10 +41,15 @@ public:
 	virtual void SetMoveDirection(float _angle);								// 弾の移動方向をセットする
 	virtual void SetMoveDirection(XMFLOAT2 _moveDirection);						// 弾の移動方向をセットする
 	virtual void MoveProcess(float _deltaTime, XMFLOAT2 _SubmarinePos = XMFLOAT2(0.f, 0.f));	// 移動の処理
+	virtual void Hit();
+	virtual bool ImgActive()const;
 
 protected:
 	CPicture* m_pImg;			// 弾の画像
 	XMFLOAT2 m_moveDirection;	// 弾の移動方向（ベクトル）
 	BoundingBox* m_pBoundingBox;
 	TypeOfEnemyBullet m_bulletType;
+	CPicture* m_pEff;
+	int m_effCnt;
+	int m_effAnimIndex;
 };

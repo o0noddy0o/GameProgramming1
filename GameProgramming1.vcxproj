@@ -163,6 +163,7 @@
     <ClCompile Include="kadai0\GameOver.cpp" />
     <ClCompile Include="kadai0\GamePlay.cpp" />
     <ClCompile Include="kadai0\GameTitle.cpp" />
+    <ClCompile Include="kadai0\Goal.cpp" />
     <ClCompile Include="kadai0\InOutputFile.cpp" />
     <ClCompile Include="kadai0\JetEngine.cpp" />
     <ClCompile Include="kadai0\Laser.cpp" />
@@ -220,6 +221,7 @@
     <ClInclude Include="kadai0\Fish.h" />
     <ClInclude Include="kadai0\Fish2.h" />
     <ClInclude Include="kadai0\GameResource.h" />
+    <ClInclude Include="kadai0\Goal.h" />
     <ClInclude Include="kadai0\InOutputFile.h" />
     <ClInclude Include="kadai0\JetEngine.h" />
     <ClInclude Include="kadai0\Laser.h" />

@@ -134,7 +134,7 @@ void Turret::InputProcess(int _playerIndex, float _deltaTime)
 	}
 
 	// íeÇë≈Ç¬ë¨ìxÇÃêßå‰
-	if (m_coolDownCnt < TURRET_COOL_DOWN)
+	if (m_coolDownCnt <= ((_playerIndex == 1)?(TURRET_COOL_DOWN_PLAYER1):(TURRET_COOL_DOWN_PLAYER2)))
 	{
 		m_coolDownCnt += _deltaTime;
 	}
@@ -147,43 +147,93 @@ void Turret::InputProcess(int _playerIndex, float _deltaTime)
 			// ÉJÉEÉìÉ^Å[ÇÉäÉZÉbÉgÇ∑ÇÈ
 			m_coolDownCnt = 0;
 
-			// íeÇÃç¿ïWÇåvéZ
-			XMFLOAT4 pos = m_pImg->getPos();
+			if (_playerIndex == TURRET_3WAY_PLAYER_INDEX)
 			{
-				XMFLOAT2 pos2 = AngleToDirectionVector(m_angle);
-				pos.x += pos2.x * (TURRET_SIZE_X / 2.f) + pos2.x * 10.f;
-				pos.y += pos2.y * (TURRET_SIZE_X / 2.f) + pos2.y * 10.f;
-			}
+				// íeÇÃç¿ïWÇåvéZ
+				XMFLOAT4 pos[3];
+				pos[0] = m_pImg->getPos();
+				pos[1] = pos[0];
+				pos[2] = pos[0];
 
-			// égÇ¶ÇÈíeÇíTÇ∑
-			if (m_pBullet.size() >= 1)
-			{
-				for (unsigned int i = 0; i < m_pBullet.size(); ++i)
+				float angle[3];
+				for (int i = 0; i < 3; ++i)angle[i] = m_angle;
+				angle[0] += TURRET_PLAYER1_INTERVAL_BETWEEN_BULLET;
+				angle[2] -= TURRET_PLAYER1_INTERVAL_BETWEEN_BULLET;
+				for (int j = 0; j < 3; ++j)
 				{
-					if (m_pBullet[i]->GetActive())
+					XMFLOAT2 pos2 = AngleToDirectionVector(angle[j]);
+					pos[j].x += pos2.x * (TURRET_SIZE_X / 2.f) + pos2.x * 10.f;
+					pos[j].y += pos2.y * (TURRET_SIZE_X / 2.f) + pos2.y * 10.f;
+
+					// égÇ¶ÇÈíeÇíTÇ∑
+					if (m_pBullet.size() >= 1)
 					{
-						// Ç»Ç©Ç¡ÇΩÇÁêVÇµÇ¢ÇÃÇçÏÇÈ
-						if (i >= m_pBullet.size() - 1)
+						for (unsigned int i = 0; i < m_pBullet.size(); ++i)
 						{
-							m_pBullet.push_back(shared_ptr<Bullet>(new Bullet(m_pGameInfo, XMFLOAT2(pos.x, pos.y), m_angle)));
-							break;
+							if (m_pBullet[i]->GetActive())
+							{
+								// Ç»Ç©Ç¡ÇΩÇÁêVÇµÇ¢ÇÃÇçÏÇÈ
+								if (i >= m_pBullet.size() - 1)
+								{
+									m_pBullet.push_back(shared_ptr<Bullet>(new Bullet(m_pGameInfo, XMFLOAT2(pos[j].x, pos[j].y), angle[j])));
+									break;
+								}
+							}
+							else
+							{
+								// Ç†Ç¡ÇΩÇÁÇªÇÍÇégÇ§
+								m_pBullet[i]->SetActive(true);
+								m_pBullet[i]->SetPos(XMFLOAT2(pos[j].x, pos[j].y));
+								m_pBullet[i]->SetMoveDirection(angle[j]);
+								break;
+							}
 						}
 					}
 					else
 					{
-						// Ç†Ç¡ÇΩÇÁÇªÇÍÇégÇ§
-						m_pBullet[i]->SetActive(true);
-						m_pBullet[i]->SetPos(XMFLOAT2(pos.x, pos.y));
-						m_pBullet[i]->SetMoveDirection(m_angle);
-						break;
+						m_pBullet.push_back(shared_ptr<Bullet>(new Bullet(m_pGameInfo, XMFLOAT2(pos[j].x, pos[j].y), angle[j])));
 					}
 				}
 			}
 			else
 			{
-				m_pBullet.push_back(shared_ptr<Bullet>(new Bullet(m_pGameInfo, XMFLOAT2(pos.x, pos.y), m_angle)));
-			}
+				// íeÇÃç¿ïWÇåvéZ
+				XMFLOAT4 pos = m_pImg->getPos();
+				{
+					XMFLOAT2 pos2 = AngleToDirectionVector(m_angle);
+					pos.x += pos2.x * (TURRET_SIZE_X / 2.f) + pos2.x * 10.f;
+					pos.y += pos2.y * (TURRET_SIZE_X / 2.f) + pos2.y * 10.f;
+				}
 
+				// égÇ¶ÇÈíeÇíTÇ∑
+				if (m_pBullet.size() >= 1)
+				{
+					for (unsigned int i = 0; i < m_pBullet.size(); ++i)
+					{
+						if (m_pBullet[i]->GetActive())
+						{
+							// Ç»Ç©Ç¡ÇΩÇÁêVÇµÇ¢ÇÃÇçÏÇÈ
+							if (i >= m_pBullet.size() - 1)
+							{
+								m_pBullet.push_back(shared_ptr<Bullet>(new Bullet(m_pGameInfo, XMFLOAT2(pos.x, pos.y), m_angle)));
+								break;
+							}
+						}
+						else
+						{
+							// Ç†Ç¡ÇΩÇÁÇªÇÍÇégÇ§
+							m_pBullet[i]->SetActive(true);
+							m_pBullet[i]->SetPos(XMFLOAT2(pos.x, pos.y));
+							m_pBullet[i]->SetMoveDirection(m_angle);
+							break;
+						}
+					}
+				}
+				else
+				{
+					m_pBullet.push_back(shared_ptr<Bullet>(new Bullet(m_pGameInfo, XMFLOAT2(pos.x, pos.y), m_angle)));
+				}
+			}
 		}
 	}
 }

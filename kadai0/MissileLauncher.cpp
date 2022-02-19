@@ -80,7 +80,7 @@ void MissileLauncher::AttackProcess(XMFLOAT2 _SubmarinePos)
 	}
 	else
 	{
-		m_coolDown = rand() % 60 + MISSILELAUNCHER_MIN_ATTACK_INTERVAL;
+		m_coolDown = rand() % 60 + MISSILELAUNCHER_MIN_ATTACK_INTERVAL + 30;
 		// カウンターをリセットする
 		m_coolDownCnt = 0;
 
@@ -216,4 +216,9 @@ void MissileLauncher::SetPosAndAngle(XMFLOAT2 _newPos, float _newAngle)
 	boundingBoxPos.x += _newPos.x;
 	boundingBoxPos.y += _newPos.y;
 	m_pBoundingBox->SetPos(boundingBoxPos);
+}
+
+XMFLOAT2 MissileLauncher::GetMoveDirection()const
+{
+	return AngleToDirectionVector(m_angle);
 }

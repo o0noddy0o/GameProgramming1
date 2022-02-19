@@ -23,6 +23,7 @@
 #include "Rock.h"
 #include "Whale.h"
 #include "CameraManager.h"
+#include "Goal.h"
 
 //━━━━━━━━━━━━━━━━━━━━━━━
 // コンストラクタ
@@ -34,6 +35,8 @@ Submarine::Submarine(GameInfo* _pGameInfo, XMFLOAT2 _pos)
 	, m_hp(SUBMARINE_MAX_HP)
 	, m_pBullet{ nullptr }
 	, killedEnemyCnt(0)
+	, m_invincibleCnt(0)
+	, m_bInvincible(false)
 {
 	CameraManager::SetCameraPos(m_pos);
 
@@ -144,6 +147,15 @@ Submarine::~Submarine()
 //━━━━━━━━━━━━━━━━━━━━━━━
 void Submarine::Tick(float _deltaTime)
 {
+	if (m_bInvincible)
+	{
+		if (m_invincibleCnt-- <= 0)
+		{
+			m_invincibleCnt = 0;
+			m_bInvincible = false;
+		}
+	}
+
 #if DEBUG
 	if (GetInput()->isPressedOnce(DIK_BACKSPACE))
 	{
@@ -198,9 +210,16 @@ void Submarine::RenderProcess()
 {
 	m_pUI->renderSprite();
 
-	m_pComponent[4]->renderSprite();
-	m_pComponent[5]->renderSprite();
-	RenderSprite(m_pImg);
+	float alphaValue = 1.f;
+
+	if (m_bInvincible && InvincibleFlashingOn)
+	{
+		alphaValue = INVINCIBLE_ALPHA_VALUE_MIN + Abs(cos(DegreeToRadian((float)(m_invincibleCnt * INVINCIBLE_FLASHING_SPEED)))) * (1.f - INVINCIBLE_ALPHA_VALUE_MIN);
+	}
+
+	m_pComponent[4]->renderSprite(alphaValue);
+	m_pComponent[5]->renderSprite(alphaValue);
+	RenderSprite(m_pImg, XMFLOAT4(1.f, 1.f, 1.f, alphaValue));
 
 	for (int i = 0; i < NUM_OF_COMPONENT; ++i)
 	{
@@ -209,13 +228,13 @@ void Submarine::RenderProcess()
 		{
 			continue;
 		}
-		m_pComponent[i]->renderSprite();
+		m_pComponent[i]->renderSprite(alphaValue);
 	}
 
 	//操作装置の画像を描画
 	for (int i = 0; i < NUM_OF_OPERATION_DEVICE; ++i)
 	{
-		m_pOperationDevice[i]->RenderDevice();
+		m_pOperationDevice[i]->RenderDevice(alphaValue);
 	}
 
 	for (int i = 0; i < 4; ++i)
@@ -233,19 +252,19 @@ void Submarine::RenderProcess()
 	// 床
 	for (int i = 0; i < (int)m_floor.size(); ++i)
 	{
-		RenderSprite(m_floor[i].ob);
+		RenderSprite(m_floor[i].ob, XMFLOAT4(1.f, 1.f, 1.f, alphaValue));
 	}
 
 	// 壁
 	for (int i = 0; i < (int)m_wall.size(); ++i)
 	{
-		RenderSprite(m_wall[i].ob);
+		RenderSprite(m_wall[i].ob, XMFLOAT4(1.f, 1.f, 1.f, alphaValue));
 	}
 
 	//ハシゴ
 	for (int i = 0; i < (int)m_ladder.size(); ++i)
 	{
-		RenderSprite(m_ladder[i].ob);
+		RenderSprite(m_ladder[i].ob, XMFLOAT4(1.f, 1.f, 1.f, alphaValue));
 	}
 
 #if ShowDeltaTimeAndFPS
@@ -262,6 +281,7 @@ void Submarine::CollisionProcess(
 	vector < shared_ptr < SceneryObject > >*				_pSceneryObject,
 	Boss*													_pBoss,
 	shared_ptr<vector<shared_ptr<EnemyBullet>>>				_pBossBullet,
+	Goal*													_pGoal,
 	vector < shared_ptr < Item > >*							_pItem)
 {
 	XMFLOAT2 moveDirection = AngleToDirectionVector(m_pJetEngine->GetMoveDirection());
@@ -277,39 +297,47 @@ void Submarine::CollisionProcess(
 		{
 			// 敵のバウンディングボックスを取得しておく
 			BoundingBox* boundingBox = i->get()->GetBoundingBox();
+			XMFLOAT2 moveDirection = i->get()->GetMoveDirection();
 
 			// 敵と潜水艦の当たり判定
 			if (pBarrier->IsBarrierOn())
 			{
-				if (pBarrierBoundingBox->Collision(boundingBox))
+				if (boundingBox->Collision(pBarrierBoundingBox, &moveDirection))
 				{
+					// 潜水艦から敵までのベクトルを計算
 					XMFLOAT2 vectorToEnemy = i->get()->GetBoundingBox()->GetPos();
 					vectorToEnemy.x -= m_pos.x;
 					vectorToEnemy.y -= m_pos.y;
 
-					float d = FindDistanceByCoordinateDifference(vectorToEnemy);
-					vectorToEnemy.x /= d;
-					vectorToEnemy.y /= d;
+					// 正規化する
+					NormalizeVector(vectorToEnemy);
 
-					// 内積
-					if (!barrierVector.x * vectorToEnemy.x + barrierVector.y * vectorToEnemy.y > cosAngle)
+					// バリアにあたった
+					if (barrierVector.x * vectorToEnemy.x + barrierVector.y * vectorToEnemy.y > cosAngle)
 					{
-						if (boundingBox->Collision(m_pCircleBoundingBox.get()))
+						i->get()->HitSubmarineProcess(moveDirection);
+					}
+					// バリアにあたってない
+					else
+					{
+						// 潜水艦の本体との当たり判定
+						if (boundingBox->Collision(m_pCircleBoundingBox.get(), &moveDirection))
 						{
 							GetDamaged(DAMAGE_WHEN_ENEMY_HIT_SUBMARINE);
+							i->get()->HitSubmarineProcess(moveDirection);
 						}
 					}
 				}
 			}
 			else
 			{
-				if (boundingBox->Collision(m_pCircleBoundingBox.get()))
+				if (boundingBox->Collision(pBarrierBoundingBox, &moveDirection))
 				{
 					GetDamaged(DAMAGE_WHEN_ENEMY_HIT_SUBMARINE);
+					i->get()->SetMoveDirection(moveDirection);
 				}
 			}
 			
-
 			// 潜水艦の弾と敵の当たり判定
 			bool bEndloop = false;
 			for (int j = 0; j < 4; ++j)
@@ -359,6 +387,11 @@ void Submarine::CollisionProcess(
 		// 敵の弾と潜水艦の当たり判定
 		for (auto i = _pEnemyBullet->begin(); i != _pEnemyBullet->end();)
 		{
+			if (!i->get()->ImgActive()) 
+			{
+				++i;
+				continue;
+			}
 			if (pBarrier->IsBarrierOn() && i->get()->GetBulletType() != 1)
 			{
 				if (i->get()->GetBoundingBox()->Collision(pBarrierBoundingBox))
@@ -374,37 +407,14 @@ void Submarine::CollisionProcess(
 					// 内積
 					if (barrierVector.x * vectorToEnemyBullet.x + barrierVector.y * vectorToEnemyBullet.y > cosAngle)
 					{
-						if (i == _pEnemyBullet->begin())
-						{
-							_pEnemyBullet->erase(i);
-							i = _pEnemyBullet->begin();
-						}
-						else
-						{
-							--i;
-							_pEnemyBullet->erase(i + 1);
-							++i;
-						}
-						continue;
-						
+						i->get()->Hit();
 					}
 					else
 					{
 						if (i->get()->GetBoundingBox()->Collision(m_pCircleBoundingBox.get()))
 						{
 							GetDamaged(DAMAGE_WHEN_ENEMY_BULLET_HIT_SUBMARINE);
-							if (i == _pEnemyBullet->begin())
-							{
-								_pEnemyBullet->erase(i);
-								i = _pEnemyBullet->begin();
-							}
-							else
-							{
-								--i;
-								_pEnemyBullet->erase(i + 1);
-								++i;
-							}
-							continue;
+							i->get()->Hit();
 						}
 					}
 				}
@@ -412,18 +422,7 @@ void Submarine::CollisionProcess(
 			else if (i->get()->GetBoundingBox()->Collision(m_pCircleBoundingBox.get()))
 			{
 				GetDamaged(DAMAGE_WHEN_ENEMY_BULLET_HIT_SUBMARINE);
-				if (i == _pEnemyBullet->begin())
-				{
-					_pEnemyBullet->erase(i);
-					i = _pEnemyBullet->begin();
-				}
-				else
-				{
-					--i;
-					_pEnemyBullet->erase(i + 1);
-					++i;
-				}
-				continue;
+				i->get()->Hit();
 			}
 			++i;
 		}
@@ -444,18 +443,7 @@ void Submarine::CollisionProcess(
 				{
 					if (j->get()->GetBoundingBox()->Collision(boundingBox))
 					{
-						if (j == _pEnemyBullet->begin())
-						{
-							_pEnemyBullet->erase(j);
-							j = _pEnemyBullet->begin();
-						}
-						else
-						{
-							--j;
-							_pEnemyBullet->erase(j + 1);
-							++j;
-						}
-						continue;
+						j->get()->Hit();
 					}
 					++j;
 				}
@@ -483,54 +471,7 @@ void Submarine::CollisionProcess(
 					++k;
 				}
 			}
-			if (pBarrier->IsBarrierOn())
-			{
-				if (pBarrierBoundingBox->Collision(boundingBox))
-				{
-					XMFLOAT2 vectorToSceneryObject = boundingBox->GetPos();
-					vectorToSceneryObject.x -= m_pos.x;
-					vectorToSceneryObject.y -= m_pos.y;
-
-					float d = FindDistanceByCoordinateDifference(vectorToSceneryObject);
-					vectorToSceneryObject.x /= d;
-					vectorToSceneryObject.y /= d;
-
-					// 内積
-					if (barrierVector.x * vectorToSceneryObject.x + barrierVector.y * vectorToSceneryObject.y > cosAngle)
-					{
-						if (m_pJetEngine->GetIsMoving())
-						{
-							XMFLOAT2 targetPos = boundingBox->GetPos();
-							if ((moveDirection.x > 0.f && targetPos.x > m_pos.x) ||
-								(moveDirection.x < 0.f && targetPos.x < m_pos.x) ||
-								(moveDirection.y > 0.f && targetPos.y > m_pos.y) ||
-								(moveDirection.y < 0.f && targetPos.y < m_pos.y))
-							{
-								m_pJetEngine->SetIsMoveingToFalse();
-							}
-						}
-					}
-					else
-					{
-						if (m_pCircleBoundingBox->Collision(boundingBox))
-						{
-							if (m_pJetEngine->GetIsMoving())
-							{
-								//GetDamaged(DAMAGE_WHEN_SUBMARINE_HIT_SCENERYOBJECT);
-								XMFLOAT2 targetPos = boundingBox->GetPos();
-								if ((moveDirection.x > 0.f && targetPos.x > m_pos.x) ||
-									(moveDirection.x < 0.f && targetPos.x < m_pos.x) ||
-									(moveDirection.y > 0.f && targetPos.y > m_pos.y) ||
-									(moveDirection.y < 0.f && targetPos.y < m_pos.y))
-								{
-									m_pJetEngine->SetIsMoveingToFalse();
-								}
-							}
-						}
-					}
-				}
-			}
-			else if (m_pCircleBoundingBox->Collision(boundingBox))
+			if (m_pCircleBoundingBox->Collision(boundingBox))
 			{
 				if (m_pJetEngine->GetIsMoving())
 				{
@@ -560,7 +501,7 @@ void Submarine::CollisionProcess(
 				{
 					for (int j = 0; j < (int)bossBoundingBox.size(); ++j)
 					{
-						if ((*iterator)->GetBoundingBox()->Collision(bossBoundingBox[j]))
+						if (bossBoundingBox[j]->Collision((*iterator)->GetBoundingBox()))
 						{
 							_pBoss->GetDamege(DAMAGE_OF_SUBMARINE_BULLET);
 							throw 1;
@@ -602,6 +543,11 @@ void Submarine::CollisionProcess(
 		// 敵の弾と潜水艦の当たり判定
 		for (auto i = _pBossBullet->begin(); i != _pBossBullet->end();)
 		{
+			if (!i->get()->ImgActive())
+			{
+				++i;
+				continue;
+			}
 			if (!(*i)->GetActive()) { ++i; continue; }
 			if (m_pCircleBoundingBox.get()->Collision((*i)->GetBoundingBox()))
 			{
@@ -623,26 +569,27 @@ void Submarine::CollisionProcess(
 				{
 					if (_msg == "delete")
 					{
-						if (i == _pBossBullet->begin())
-						{
-							_pBossBullet->erase(i);
-							i = _pBossBullet->begin();
-						}
-						else
-						{
-							--i;
-							_pBossBullet->erase(i + 1);
-							++i;
-						}
+						i->get()->Hit();
 					}
 					else
 					{
 						throw _msg;
 					}
-					continue;
 				}
 			}
 			++i;
+		}
+	}
+
+	// NULLチェック
+	if (_pGoal)
+	{
+		if (killedEnemyCnt >= GOAL_ON_THRESHOLD)
+		{
+			if (m_pCircleBoundingBox->Collision(_pGoal->GetBoundingBox()))
+			{
+				throw (string)"Goal";
+			}
 		}
 	}
 
@@ -668,11 +615,12 @@ void Submarine::MoveProcess(float _deltaTime)
 	}
 
 	float moveDirection = m_pJetEngine->GetMoveDirection();
+	float movePower = m_pJetEngine->GetMovePower();
 
 	// 潜水艦の新しい座標を計算
 	XMFLOAT2 offsetPos = AngleToDirectionVector(moveDirection);
-	m_pos.x += offsetPos.x * SUBMARINE_MOVE_SPEED / 30.f/* * _deltaTime*/;
-	m_pos.y += offsetPos.y * SUBMARINE_MOVE_SPEED / 30.f/* * _deltaTime*/;
+	m_pos.x += offsetPos.x * SUBMARINE_MOVE_SPEED / 30.f/* * _deltaTime*/ * movePower;
+	m_pos.y += offsetPos.y * SUBMARINE_MOVE_SPEED / 30.f/* * _deltaTime*/ * movePower;
 
 	//潜水艦の移動制御
 	XMFLOAT3 cameraPos = CameraManager::GetCameraPos();
@@ -771,6 +719,7 @@ XMFLOAT2 Submarine::GetPos()const
 //━━━━━━━━━━━━━━━━━━━━━━━
 void Submarine::GetDamaged(float _damage)
 {
+	if (m_invincibleCnt > 0)return;
 	m_hp -= _damage;
 
 #if GameOverActive
@@ -778,6 +727,12 @@ void Submarine::GetDamaged(float _damage)
 #endif
 
 	m_pUI->SetHP(m_hp);
+
+	if (InvincibleTimeActive)
+	{
+		m_invincibleCnt = INVINCIBLE_TIME;
+		m_bInvincible = true;
+	}
 }
 
 //━━━━━━━━━━━━━━━━━━━━━━━

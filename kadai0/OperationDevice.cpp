@@ -69,9 +69,9 @@ void OperationDevice::Tick(float _deltaTime)
 //„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
 // ‰æ‘œ‚ð•`‰æ
 //„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
-void OperationDevice::RenderDevice()
+void OperationDevice::RenderDevice(float _alpha)
 {
-	RenderSprite(m_pImg);
+	RenderSprite(m_pImg, XMFLOAT4(1.f, 1.f, 1.f, _alpha));
 }
 
 //„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª

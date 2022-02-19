@@ -34,6 +34,22 @@ XMFLOAT3 CameraManager::GetCameraPos()
 }
 
 //━━━━━━━━━━━━━━━━━━━━━━━
+// カメラの移動範囲の上限を取得する
+//━━━━━━━━━━━━━━━━━━━━━━━
+XMFLOAT2 CameraManager::GetCameraRangeMax()
+{
+	return CameraManager::pCameraManager->m_moveRangeMax;
+}
+
+//━━━━━━━━━━━━━━━━━━━━━━━
+// カメラの移動範囲の下限を取得する
+//━━━━━━━━━━━━━━━━━━━━━━━
+XMFLOAT2 CameraManager::GetCameraRangeMin()
+{
+	return CameraManager::pCameraManager->m_moveRangeMin;
+}
+
+//━━━━━━━━━━━━━━━━━━━━━━━
 // カメラをセットアップする
 //━━━━━━━━━━━━━━━━━━━━━━━
 void CameraManager::SetUpCamera(std::unique_ptr<CCamera>* _pCamera)

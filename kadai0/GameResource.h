@@ -55,9 +55,10 @@
 
 // ボス
 #define Tex_Whale					L"Media/Sprite/ActionGame_Sprite/whale.png"
+#define Tex_WhaleTooth				L"Media/Sprite/ActionGame_Sprite/whaleTooth.png"
 #define Tex_Laser					L"Media/Sprite/ActionGame_Sprite/Laser.png"
 #define Tex_Fire					L"Media/Sprite/ActionGame_Sprite/fireBullet.png"
-#define Tex_Laser					L"Media/Sprite/ActionGame_Sprite/EnemyBullet.png"
+#define Tex_Laser					L"Media/Sprite/ActionGame_Sprite/Laser.png"
 
 // UI
 #define Tex_HPBar					L"Media/Sprite/ActionGame_Sprite/HpBar.png"
@@ -69,3 +70,6 @@
 #define Tex_Rock3				L"Media/Sprite/ActionGame_Sprite/rock3.png"
 #define Tex_Rock4				L"Media/Sprite/ActionGame_Sprite/rock4.png"
 #define Tex_Rock5				L"Media/Sprite/ActionGame_Sprite/rock5.png"
+
+// エフェクト
+#define Tex_Bong				L"Media/Sprite/ActionGame_Sprite/Bong.png"

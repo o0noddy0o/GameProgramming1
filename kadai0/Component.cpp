@@ -34,9 +34,9 @@ CPicture* Component::GetImg()
 	return m_pImg;
 }
 
-void Component::renderSprite()
+void Component::renderSprite(float _alpha)
 {
-	RenderSprite(m_pImg);
+	RenderSprite(m_pImg, XMFLOAT4(1.f, 1.f, 1.f, _alpha));
 }
 
 //„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª

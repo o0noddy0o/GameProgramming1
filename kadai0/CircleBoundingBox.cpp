@@ -3,6 +3,7 @@
 // 概要　　　　　：丸いバウンディングボックスのクラス
 // 作成者　　　　：20CU0314 ゴコケン
 // 更新内容　　　：2021/11/26 作成
+// 　　　　　　　：2022/02/17 四角形バウンディングボックスとの当たり判定を修正
 //━━━━━━━━━━━━━━━━━━━━━━━
 #include "Define.h"
 #include "CPicture.h"
@@ -215,6 +216,10 @@ bool CircleBoundingBox::CollisionWithRectangle(const RectangleBoundingBox* _targ
 	if (m_pos.x < targetPos.x - targetSize.x / 2.f - m_radius)return false;
 	if (m_pos.y > targetPos.y + targetSize.y / 2.f + m_radius)return false;
 	if (m_pos.y < targetPos.y - targetSize.y / 2.f - m_radius)return false;
+
+	if (Abs(m_pos.x - targetPos.x) < targetSize.x / 2.f &&
+		Abs(m_pos.y - targetPos.y) < targetSize.y / 2.f)
+		return true;
 
 	if (Abs(targetPos.x - m_pos.x) < targetSize.x / 2.f)
 	{
@@ -464,7 +469,7 @@ bool CircleBoundingBox::Collision(const RectangleBoundingBox* _target, XMFLOAT2*
 //━━━━━━━━━━━━━━━━━━━━━━━
 bool CircleBoundingBox::Collision(const PolygonBoundingBox* _target, XMFLOAT2* _pDirectionVector)const
 {
-	CircleBoundingBox ob(m_pos, m_radius, m_relativePos);
+	//CircleBoundingBox ob(m_pos, m_radius, m_relativePos);
 
-	return _target->Collision(&ob);
+	return _target->Collision(this);
 }

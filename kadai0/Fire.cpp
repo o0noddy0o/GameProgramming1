@@ -22,7 +22,7 @@ Fire::Fire(GameInfo* _pGameInfo, XMFLOAT2 _pos, XMFLOAT2 _moveDirection, int _di
 		// ‰æ‘œì¬
 		m_pImg = CreateSprite(Tex_Fire, FIRE_SIZE_X, FIRE_SIZE_Y);
 		m_pImg->setPos(_pos);
-		m_pImg->setAngleZ(DirectionVectorToAngle(_moveDirection) + 90.f);
+		m_pImg->setAngleZ(DirectionVectorToAngle(_moveDirection) - 90.f);
 		m_pBoundingBox = new CircleBoundingBox(_pos, FIRE_SIZE_X);
 	}
 }
@@ -72,12 +72,12 @@ void Fire::SetDisappearTime(int _newDisappearTime)
 
 void Fire::SetMoveDirection(float _angle)
 {
-	m_pImg->setAngleZ(_angle + 90.f);
+	m_pImg->setAngleZ(_angle - 90.f);
 	Super::SetMoveDirection(_angle);
 }
 
 void Fire::SetMoveDirection(XMFLOAT2 _moveDirection)
 {
-	m_pImg->setAngleZ(DirectionVectorToAngle(_moveDirection) + 90.f);
+	m_pImg->setAngleZ(DirectionVectorToAngle(_moveDirection) - 90.f);
 	Super::SetMoveDirection(_moveDirection);
 }

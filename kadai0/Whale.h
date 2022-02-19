@@ -21,7 +21,7 @@ private:
 		biowFire,
 		dash,
 		laser,
-		summonEnemy,
+		//summonEnemy,
 		Total
 	};
 
@@ -42,21 +42,26 @@ public:
 
 	virtual void GetDamege(int _damage)override;
 
+	// 左右反転する
+	virtual void FlipHorizontal();
+
 // 各攻撃パターンの関数
 private:
 	void BiowFireProcess(XMFLOAT2 _SubmarinePos);
 	void LaserProcess(XMFLOAT2 _SubmarinePos);
 	void DashProcess();
-	void SummonEnemyProcess();
+	//void SummonEnemyProcess();
 
 private:
 	ActionPattern			m_nowAction;
+	ActionPattern			m_lastTimeAction;
 	XMFLOAT2				m_pos;
 	MissileLauncher*		m_pMissileLauncher;	// クジラの背に乗せたミサイル発射機
 	vector<shared_ptr<Enemy>>*	pEnemy;
 	int						m_actionTimeCnt;
 	int						m_cooldown;
+	float					m_moveRangeOfXAxis[2];	// [0]->min, [1]->max
 
-	
+	bool m_bFacingRight;
 	bool m_bLaserStartFromDown;
 };
