@@ -26,6 +26,7 @@
 #include "Whale.h"
 #include "CameraManager.h"
 #include "Goal.h"
+#include "Arrow.h"
 
 //━━━━━━━━━━━━━━━━━━━━━━━
 // コンストラクタ
@@ -38,12 +39,13 @@ Stage::Stage(GameInfo* _pGameInfo)
 	, m_pBoss(NULL)
 	, m_bBossBettle(false)
 	, m_pGoal(NULL)
+	, m_pArrow(NULL)
 {
 	srand((unsigned)time(NULL));
 
 	CameraManager::SetUpCamera(m_pGameInfo->pCamera);
 
-	SetNextStage(2);
+	SetNextStage(1);
 
 	m_lastFrameTime = clock();
 }
@@ -60,7 +62,6 @@ Stage::~Stage()
 //━━━━━━━━━━━━━━━━━━━━━━━
 void Stage::RenderProcess()
 {
-	
 	for (int i = 0; i < (int)m_pSceneryObject.size(); ++i)
 	{
 		m_pSceneryObject[i]->renderSprite();
@@ -91,6 +92,8 @@ void Stage::RenderProcess()
 
 	if (m_pBoss)m_pBoss->renderSprite();
 
+	if (m_pSubmarine->GetKilledEnemyCnt() >= GOAL_ON_THRESHOLD)
+		if (m_pArrow)m_pArrow->RenderSprite();
 #endif
 }
 
@@ -138,13 +141,11 @@ void Stage::Tick()
 				(*m_pEnemyBullet)[i].get()->MoveProcess(m_deltaTime, SubmarinePos);
 			}
 		}
-
-		if (m_pSubmarine->GetKilledEnemyCnt() == MAX_ENEMY_NUM && !m_bBossBettle)
-		{
-			StartBossBattle();
-		}
 	}
 #endif
+
+	if(m_pSubmarine->GetKilledEnemyCnt() >= GOAL_ON_THRESHOLD)
+		if (m_pArrow)m_pArrow->Tick();
 
 	m_pSubmarine->CollisionProcess(&m_pEnemy, m_pEnemyBullet, &m_pSceneryObject, (m_pBoss.get())?(m_pBoss.get()):(NULL), m_pBossBullet, m_pGoal.get(), NULL);
 	m_pSubmarine->Tick(m_deltaTime);

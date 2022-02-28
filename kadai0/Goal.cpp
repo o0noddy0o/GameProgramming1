@@ -42,3 +42,11 @@ void Goal::rendingSprite()
 {
 	RenderSprite(m_pImg);
 }
+
+//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
+// ƒS[ƒ‹‚ÌÀ•W‚ðŽæ“¾‚·‚é
+//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
+XMFLOAT2 Goal::GetPos()const
+{
+	return XMFLOAT2(m_pImg->getPos().x, m_pImg->getPos().y);
+}

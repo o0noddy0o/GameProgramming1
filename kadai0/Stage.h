@@ -14,6 +14,7 @@
 class EnemyBullet;
 class Boss;
 class Goal;
+class Arrow;
 
 class Stage :public CObjectBase
 {
@@ -67,6 +68,8 @@ private:
 	shared_ptr<vector<shared_ptr<EnemyBullet>>> m_pBossBullet;
 
 	shared_ptr<Goal> m_pGoal;
+
+	shared_ptr<Arrow> m_pArrow;
 
 	// 前1フレームの時間(deltaTime計算用)
 	clock_t m_lastFrameTime;

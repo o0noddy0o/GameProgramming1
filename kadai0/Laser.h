@@ -19,9 +19,12 @@ public:
 	virtual void SetOffsetAngle(float _angle);
 	virtual void MoveProcess(float _deltaTime, XMFLOAT2 _SubmarinePos = XMFLOAT2(0.f, 0.f))override;
 
+	void renderSprite()override;
+
 private:
 	XMFLOAT2 m_pos;
 	XMFLOAT2 m_size;
 	float m_angle;
 	bool m_bMove;
+	std::vector<QuadrangleTexel> m_texels;
 };

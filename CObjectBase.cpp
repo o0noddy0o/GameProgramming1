@@ -98,6 +98,14 @@ void CObjectBase::disposeFont(CFont* object)
 }
 
 //━━━━━━━━━━━━━━━━━━━━━━━
+// 
+//━━━━━━━━━━━━━━━━━━━━━━━
+void CObjectBase::SetTexels(CPicture* _object, std::vector<QuadrangleTexel> _texels, XMFLOAT2 _size)
+{
+	_object->SetTexels(*(m_pGameInfo->pDevice), _texels, _size);
+}
+
+//━━━━━━━━━━━━━━━━━━━━━━━
 // 入力を取得するメソッド
 //━━━━━━━━━━━━━━━━━━━━━━━
 std::shared_ptr<CDirectInput> CObjectBase::GetInput()

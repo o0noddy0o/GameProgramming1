@@ -15,6 +15,7 @@
 #include "Whale.h"
 #include "CameraManager.h"
 #include "Goal.h"
+#include "Arrow.h"
 
 //━━━━━━━━━━━━━━━━━━━━━━━
 // 次のステージに設置する
@@ -54,6 +55,7 @@ void Stage::ResetStage()
 	//m_pItem.clear();
 	if(m_pEnemyBullet)m_pEnemyBullet->clear();
 	m_pEnemyBullet = NULL;
+	m_pGoal = NULL;
 
 	Enemy::ResetEnemyBullet();
 	m_pEnemyBullet = Enemy::GetBullet();
@@ -64,6 +66,15 @@ void Stage::ResetStage()
 	{
 	case 1: InitStage1(); break;
 	case 2: InitStage2(); break;
+	}
+
+	if (m_pGoal)
+	{
+		m_pArrow = (shared_ptr<Arrow>)new Arrow(m_pGameInfo, m_pGoal->GetPos());
+	}
+	else
+	{
+		m_pArrow = NULL;
 	}
 }
 

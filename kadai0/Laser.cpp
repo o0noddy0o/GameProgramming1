@@ -27,8 +27,10 @@ Laser::Laser(GameInfo* _pGameInfo, XMFLOAT2 _size, XMFLOAT2 _startPointPos, floa
 {
 	if (m_bulletType == TypeOfEnemyBullet::laser)
 	{
+		m_texels.push_back({ { 1.f - LASER_TEXEL_SIZE_X, 1.f },{ 1.f - LASER_TEXEL_SIZE_X, 0.f },{ 1.f, 1.f },{ 1.f, 0.f } });
+
 		// レーザーの画像を作成し、設置する
-		m_pImg = CreateSprite(Tex_Laser, _size.x, _size.y);
+		m_pImg = CreateSprite(Tex_Laser, _size.x, _size.y, m_texels);
 
 		// 回転させる
 		m_pImg->setAngleZ(m_angle);
@@ -131,4 +133,23 @@ void Laser::MoveProcess(float _deltaTime, XMFLOAT2 _SubmarinePos)
 {
 	if (!m_bMove)return;
 	Super::MoveProcess(_deltaTime, _SubmarinePos);
+}
+
+void Laser::renderSprite()
+{
+	m_texels[0].v1.x += LASER_TEXEL_SCROLL_SPEED;
+	m_texels[0].v2.x += LASER_TEXEL_SCROLL_SPEED;
+	m_texels[0].v3.x += LASER_TEXEL_SCROLL_SPEED;
+	m_texels[0].v4.x += LASER_TEXEL_SCROLL_SPEED;
+	if (m_texels[0].v1.x < 0.f) 
+	{ 
+		m_texels[0].v1.x += 1.f; 
+		m_texels[0].v3.x += 1.f; 
+		m_texels[0].v2.x += 1.f; 
+		m_texels[0].v4.x += 1.f; 
+	}
+
+	SetTexels(m_pImg, m_texels);
+	m_pImg->stepAnimation();
+	RenderSprite(m_pImg);
 }

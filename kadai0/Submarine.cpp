@@ -548,7 +548,7 @@ void Submarine::CollisionProcess(
 				++i;
 				continue;
 			}
-			if (!(*i)->GetActive()) { ++i; continue; }
+			if (!((*i)->GetActive())) { ++i; continue; }
 			if (m_pCircleBoundingBox.get()->Collision((*i)->GetBoundingBox()))
 			{
 				try

@@ -96,7 +96,7 @@
 #define WHALE_PATTERN2_ENTER_SCREEN_TIME			(30)
 //#define WHALE_PATTERN2_DASH_DISTANCE				(750.f)
 #define WHALE_RETREAT_DISTANCE						(250.f)
-#define WHALE_PATTERN2_Y_AXIS_MOVE_LIMIT			(3.f)
+#define WHALE_PATTERN2_Y_AXIS_MOVE_LIMIT			(1.f)
 // 攻撃パターン３（レーザー）
 #define WHALE_PATTERN3_DURATION_TIME				(2 * 60)
 #define WHALE_PATTERN3_LASER_START_ANGLE			(204.f)
@@ -105,6 +105,12 @@
 // 攻撃パターン４（エネミー召喚）
 //#define WHALE_COOLDOWN_AFTER_PATTERN4				(6 * 60)
 //#define WHALE_PATTERN4_SUMMON_ENEMY_NUM				(5)
+
+//━━━━━━━━━━━━━━━━━━━━━━━
+// レーザー
+//━━━━━━━━━━━━━━━━━━━━━━━
+#define LASER_TEXEL_SIZE_X			(0.3f)
+#define LASER_TEXEL_SCROLL_SPEED	(-0.01f)
 
 //━━━━━━━━━━━━━━━━━━━━━━━
 // タレット
@@ -234,6 +240,8 @@
 //━━━━━━━━━━━━━━━━━━━━━━━
 // UI
 //━━━━━━━━━━━━━━━━━━━━━━━
+#define ARROW_SIZE_X			(128.f)
+#define ARROW_SIZE_Y			(128.f)
 #define HP_BAR_RELATIVE_POS_X	(-750.f)
 #define HP_BAR_RELATIVE_POS_Y	( 500.f)
 #define HP_BAR_RELATIVE_POS		(XMFLOAT2(HP_BAR_RELATIVE_POS_X, HP_BAR_RELATIVE_POS_Y))

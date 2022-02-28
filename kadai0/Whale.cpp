@@ -385,14 +385,28 @@ void Whale::LaserProcess(XMFLOAT2 _SubmarinePos)
 		m_actionTimeCnt = 0;
 		m_cooldown = WHALE_COUNTDOWN_BETWEEN_ACTION;
 		m_nowAction = ActionPattern::none;
-		for (int i = 0; i < (int)m_pBullet->size(); ++i)
+		for (auto i = m_pBullet->begin(); i != m_pBullet->end();)
 		{
-			// ‚ ‚Á‚½‚ç‚»‚Ì—v‘f”Ô†‚ð•Û‘¶‚·‚é
-			if ((*m_pBullet)[i]->GetBulletType() == TypeOfEnemyBullet::laser)
+			if ((*i)->GetBulletType() == TypeOfEnemyBullet::laser)
 			{
-				(*m_pBullet)[i]->SetActive(false);
-				break;
+				if (i == m_pBullet->begin())
+				{
+					++i;
+					m_pBullet->erase(i - 1);
+					if (m_pBullet->size() == 0)
+					{
+						break;
+					}
+				}
+				else
+				{
+					--i;
+					m_pBullet->erase(i + 1);
+					++i;
+				}
+				continue;
 			}
+			++i;
 		}
 		return;
 	}

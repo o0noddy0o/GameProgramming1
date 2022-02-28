@@ -18,6 +18,7 @@ public:
 	virtual ~Goal();
 	virtual BoundingBox* GetBoundingBox()const;
 	virtual void rendingSprite();
+	XMFLOAT2 GetPos()const;
 
 protected:
 	CPicture* m_pImg;
