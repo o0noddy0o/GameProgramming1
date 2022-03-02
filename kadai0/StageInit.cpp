@@ -14,6 +14,8 @@
 #include "MissileLauncher.h"
 #include "Whale.h"
 #include "CameraManager.h"
+#include "GameResource.h"
+#include "Board.h"
 
 //━━━━━━━━━━━━━━━━━━━━━━━
 // 次のステージに設置する
@@ -76,6 +78,9 @@ void Stage::InitStage1()
 
 	SetCameraMoveRange(XMFLOAT2(0.f, -WINDOW_HEIGHT * (SCREEN_MULTIPLE_Y - 1.f)), XMFLOAT2(WINDOW_WIDTH * (SCREEN_MULTIPLE_X - 1.f), 0.f));
 
+	//掲示板
+	m_pBoard.push_back((shared_ptr<Board>)new Board(m_pGameInfo, 1, XMFLOAT2(600.f, 300.f)));
+
 	//障害物を作成
 	m_pSceneryObject.push_back((shared_ptr<SceneryObject>)new Rock(m_pGameInfo, 3, XMFLOAT2(2115.f, 540.f), -5.f));
 	m_pSceneryObject.push_back((shared_ptr<SceneryObject>)new Rock(m_pGameInfo, 2, XMFLOAT2(3755.f, 116.f), 90.f));
@@ -134,6 +139,8 @@ void Stage::InitStage1()
 	m_pEnemy.push_back((shared_ptr<Enemy>)new ElectricEel(m_pGameInfo, XMFLOAT2(3320.f, -3150.f), (float)rand()));
 
 	m_pEnemy.push_back((shared_ptr<Enemy>)new MissileLauncher(m_pGameInfo, XMFLOAT2(400.f, -2900.f)));
+
+	
 
 #endif
 }

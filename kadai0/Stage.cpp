@@ -63,6 +63,13 @@ void Stage::RenderProcess()
 	{
 		m_pSceneryObject[i]->renderSprite();
 	}
+
+	//掲示板
+	for (int i = 0; i < (int)m_pBoard.size(); ++i)
+	{
+		m_pBoard[i]->RenderBoard();
+	}
+
 	m_pSubmarine->RenderProcess();
 
 #if HaveEnemy

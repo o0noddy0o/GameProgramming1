@@ -10,6 +10,7 @@
 #include "Define.h"
 #include "Submarine.h"
 #include "SceneryObject.h"
+#include "Board.h"
 
 class EnemyBullet;
 class Boss;
@@ -52,6 +53,9 @@ private:
 	// マップにある障害物などのオブジェクトの配列
 	vector < shared_ptr < SceneryObject > > m_pSceneryObject;
 
+	//掲示板
+	vector < shared_ptr < Board > > m_pBoard;
+
 	// 敵のオブジェクトの配列
 	vector < shared_ptr < Enemy > > m_pEnemy;
 
@@ -67,6 +71,9 @@ private:
 
 	// 前1フレームの時間(deltaTime計算用)
 	clock_t m_lastFrameTime;
+
+	//掲示板
+	CPicture* pBoard = nullptr;
 
 	float m_deltaTime;
 
