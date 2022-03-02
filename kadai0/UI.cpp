@@ -23,6 +23,34 @@ UI::UI(GameInfo* _pGameInfo)
 {
 	XMFLOAT3 cameraPos = m_pGameInfo->pCamera->get()->getPos();
 
+	//åfé¶î¬
+	for (int i = 0; i < NUM_OF_BOARD; ++i)
+	{
+		pBoard[i] = NULL;
+	}
+	/*pBoard[0] = CreateSprite(Tex_Board, 300.f, 300.f);
+	pBoard[0]->setPos(600.f, 300.f);
+	pBoard[1] = CreateSprite(Tex_Board, 300.f, 300.f);
+	pBoard[1]->setPos(1300.f, 180.f);*/
+	/*pBoard[2] = CreateSprite(Tex_Board, 300.f, 300.f);
+	pBoard[2]->setPos(3700.f, -500.f);
+	pBoard[3] = CreateSprite(Tex_Board, 300.f, 300.f);
+	pBoard[3]->setPos(1600.f, -1800.f);*/
+
+	//åfé¶î¬ÇÃï∂èÕ
+	for (int i = 0; i < NUM_OF_TEXT; ++i)
+	{
+		pText[i] = NULL;
+	}
+	/*pText[0] = CreateSprite(Tex_Text_1, 300.f, 300.f);
+	pText[0]->setPos(600.f, 300.f);
+	pText[1] = CreateSprite(Tex_Text_2, 300.f, 300.f);
+	pText[1]->setPos(1300.f, 180.f);*/
+	/*pText[2] = CreateSprite(Tex_Text_3, 300.f, 300.f);
+	pText[2]->setPos(3700.f, -500.f);
+	pText[3] = CreateSprite(Tex_Text_4, 300.f, 300.f);
+	pText[3]->setPos(1600.f, -1800.f);*/
+
 	m_pHpBar = CreateSprite(Tex_HPBar, HP_BAR_SIZE_X, HP_BAR_SIZE_Y);
 	m_pFreamOfHpBar = CreateSprite(Tex_HPBarFream, HP_BAR_FREAM_SIZE_X, HP_BAR_FREAM_SIZE_Y);
 	m_pNumOfEnemy = new CText(m_pGameInfo, Tex_Text, kTexelText, XMFLOAT2(28.f, 28.f), ENEMY_NUM_POS, XMFLOAT2(5.f, 5.f));
@@ -39,6 +67,17 @@ UI::~UI()
 {
 	DisposeSprite(m_pHpBar);
 	DisposeSprite(m_pFreamOfHpBar);
+
+	for (int i = 0; i < NUM_OF_BOARD; ++i)
+	{
+		DisposeSprite(pBoard[i]);
+	}
+
+	for (int i = 0; i < NUM_OF_TEXT; ++i)
+	{
+		DisposeSprite(pText[i]);
+	}
+
 	delete m_pNumOfEnemy;
 }
 
@@ -84,8 +123,20 @@ void UI::SetNumOfKilledEnemy(int _numOfKilledEnemy)
 //Ñ™Ñ™Ñ™Ñ™Ñ™Ñ™Ñ™Ñ™Ñ™Ñ™Ñ™Ñ™Ñ™Ñ™Ñ™Ñ™Ñ™Ñ™Ñ™Ñ™Ñ™Ñ™Ñ™
 void UI::renderSprite()
 {
+	for (int i = 0; i < NUM_OF_BOARD; ++i)
+	{
+		RenderSprite(pBoard[i]);
+	}
+
+	for (int i = 0; i < NUM_OF_TEXT; ++i)
+	{
+		RenderSprite(pText[i]);
+	}
 	RenderSprite(m_pFreamOfHpBar);
 	RenderSprite(m_pHpBar);
+
+	
+
 	m_pNumOfEnemy->SetText(m_text);
 	m_pNumOfEnemy->RenderText();
 }

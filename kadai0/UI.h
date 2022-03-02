@@ -8,6 +8,7 @@
 
 #include "CObjectBase.h"
 #include "CText.h"
+#include "Define.h"
 
 class Map;
 
@@ -33,6 +34,9 @@ public:
 private:
 	CPicture* m_pHpBar;
 	CPicture* m_pFreamOfHpBar;
+	CPicture* pBoard[NUM_OF_BOARD];
+	CPicture* pText[NUM_OF_TEXT];
+
 	Map*      m_pMap;
 	CText*	  m_pNumOfEnemy;
 	XMFLOAT2  m_hpBarRelativePos;

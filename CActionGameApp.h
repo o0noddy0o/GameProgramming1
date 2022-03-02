@@ -123,6 +123,8 @@ private:
 	CXAudio2* pAudio = new CXAudio2;
 	CPicture* pBackground = nullptr;
 
+	
+
 	// ステージを管理するオブジェクト
 	CText* pText  = nullptr;
 	InOutputFile* pInOutFile = nullptr;

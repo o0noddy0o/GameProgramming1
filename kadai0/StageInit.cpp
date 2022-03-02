@@ -1,9 +1,9 @@
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
-// ƒtƒ@ƒCƒ‹–¼@@FStageInit.cpp
-// ŠT—v@@@@@FŠeƒXƒe[ƒW‚Ì”z’u‚ğ‚Ü‚Æ‚ß‚½ƒtƒ@ƒCƒ‹
-// ì¬Ò@@@@F20CU0314 ƒSƒRƒPƒ“
-// XV“à—e@@@F2021/12/19 ì¬
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
+// ãƒ•ã‚¡ã‚¤ãƒ«åã€€ã€€ï¼šStageInit.cpp
+// æ¦‚è¦ã€€ã€€ã€€ã€€ã€€ï¼šå„ã‚¹ãƒ†ãƒ¼ã‚¸ã®é…ç½®ã‚’ã¾ã¨ã‚ãŸãƒ•ã‚¡ã‚¤ãƒ«
+// ä½œæˆè€…ã€€ã€€ã€€ã€€ï¼š20CU0314 ã‚´ã‚³ã‚±ãƒ³
+// æ›´æ–°å†…å®¹ã€€ã€€ã€€ï¼š2021/12/19 ä½œæˆ
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
 #include "Stage.h"
 #include "Define.h"
 #include "Fish.h"
@@ -14,27 +14,28 @@
 #include "MissileLauncher.h"
 #include "Whale.h"
 #include "CameraManager.h"
+#include "Board.h"
 #include "Goal.h"
 #include "Arrow.h"
 
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
-// Ÿ‚ÌƒXƒe[ƒW‚Éİ’u‚·‚é
-// ˆø”‚PFİ’u‚·‚éƒXƒe[ƒW‚Ì”Ô†i“ü‚ê‚È‚©‚Á‚½‚çŸ‚ÌƒXƒe[ƒWj
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
+// æ¬¡ã®ã‚¹ãƒ†ãƒ¼ã‚¸ã«è¨­ç½®ã™ã‚‹
+// å¼•æ•°ï¼‘ï¼šè¨­ç½®ã™ã‚‹ã‚¹ãƒ†ãƒ¼ã‚¸ã®ç•ªå·ï¼ˆå…¥ã‚Œãªã‹ã£ãŸã‚‰æ¬¡ã®ã‚¹ãƒ†ãƒ¼ã‚¸ï¼‰
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
 void Stage::SetNextStage(const int _stageNum)
 {
-	// Ÿ‚ÌƒXƒe[ƒW
+	// æ¬¡ã®ã‚¹ãƒ†ãƒ¼ã‚¸
 	if (_stageNum == -1)
 	{
 		++m_nowStageNum;
 
-		// ‘SƒXƒe[ƒWƒNƒŠƒA
+		// å…¨ã‚¹ãƒ†ãƒ¼ã‚¸ã‚¯ãƒªã‚¢
 		if (m_nowStageNum == NUM_OF_STAGE)
 		{
 			throw (string)"EndOfAllStage";
 		}
 	}
-	// w’èƒXƒe[ƒW
+	// æŒ‡å®šã‚¹ãƒ†ãƒ¼ã‚¸
 	else if(!(_stageNum > NUM_OF_STAGE || _stageNum < 0))
 	{
 		m_nowStageNum = _stageNum;
@@ -43,12 +44,12 @@ void Stage::SetNextStage(const int _stageNum)
 	ResetStage();
 }
 
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
-// ƒXƒe[ƒW‚ğƒŠƒZƒbƒg‚·‚é
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
+// ã‚¹ãƒ†ãƒ¼ã‚¸ã‚’ãƒªã‚»ãƒƒãƒˆã™ã‚‹
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
 void Stage::ResetStage()
 {
-	// ‘O‰ñg‚Á‚½•¨‚ğÁ‚·
+	// å‰å›ä½¿ã£ãŸç‰©ã‚’æ¶ˆã™
 	m_pSubmarine = NULL;
 	m_pSceneryObject.clear();
 	m_pEnemy.clear();
@@ -78,19 +79,22 @@ void Stage::ResetStage()
 	}
 }
 
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
-// ƒXƒe[ƒW‚P
-//„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
+// ã‚¹ãƒ†ãƒ¼ã‚¸ï¼‘
+//â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
 void Stage::InitStage1()
 {
-	//ö…ŠÍ‚ğì¬
+	//æ½œæ°´è‰¦ã‚’ä½œæˆ
 	m_pSubmarine = (shared_ptr<Submarine>)new Submarine(m_pGameInfo);
 
 	SetCameraMoveRange(XMFLOAT2(0.f, -WINDOW_HEIGHT * (SCREEN_MULTIPLE_Y - 1.f)), XMFLOAT2(WINDOW_WIDTH * (SCREEN_MULTIPLE_X - 1.f), 0.f));
 	
 	m_pGoal = (shared_ptr<Goal>)new Goal(m_pGameInfo, XMFLOAT2(3500.f, -2750.f), XMFLOAT2(680.f, 400.f));
 
-	//áŠQ•¨‚ğì¬
+	//æ²ç¤ºæ¿
+	m_pBoard.push_back((shared_ptr<Board>)new Board(m_pGameInfo, 1, XMFLOAT2(600.f, 300.f)));
+
+	//éšœå®³ç‰©ã‚’ä½œæˆ
 	m_pSceneryObject.push_back((shared_ptr<SceneryObject>)new Rock(m_pGameInfo, 3, XMFLOAT2(2115.f, 540.f), -5.f));
 	m_pSceneryObject.push_back((shared_ptr<SceneryObject>)new Rock(m_pGameInfo, 2, XMFLOAT2(3755.f, 116.f), 90.f));
 	m_pSceneryObject.push_back((shared_ptr<SceneryObject>)new Rock(m_pGameInfo, 1, XMFLOAT2(4323.f, -809.f)));
@@ -113,7 +117,7 @@ void Stage::InitStage1()
 	m_pSceneryObject.push_back((shared_ptr<SceneryObject>)new Rock(m_pGameInfo, 4, XMFLOAT2(1817.f, -1407.f)));
 
 #if HaveEnemy
-	//“G‚ğì¬
+	//æ•µã‚’ä½œæˆ
 	m_pEnemy.push_back((shared_ptr<Enemy>)new Fish(m_pGameInfo, XMFLOAT2(3600.f, -750.f), (float)rand()));
 	m_pEnemy.push_back((shared_ptr<Enemy>)new Fish(m_pGameInfo, XMFLOAT2(3500.f, -710.f), (float)rand()));
 	m_pEnemy.push_back((shared_ptr<Enemy>)new Fish(m_pGameInfo, XMFLOAT2(2300.f, -310.f), (float)rand()));
@@ -149,12 +153,14 @@ void Stage::InitStage1()
 
 	m_pEnemy.push_back((shared_ptr<Enemy>)new MissileLauncher(m_pGameInfo, XMFLOAT2(400.f, -2900.f)));
 
+	
+
 #endif
 }
 
 void Stage::InitStage2()
 {
-	//ö…ŠÍ‚ğì¬
+	//æ½œæ°´è‰¦ã‚’ä½œæˆ
 	m_pSubmarine = (shared_ptr<Submarine>)new Submarine(m_pGameInfo, XMFLOAT2(1000.f, -1000.f));
 
 	StartBossBattle();
