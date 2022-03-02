@@ -256,6 +256,8 @@
 #define ENEMY_NUM_POS_Y			(500.f)
 #define ENEMY_NUM_POS			(XMFLOAT2(ENEMY_NUM_POS_X, ENEMY_NUM_POS_Y))
 #define MAX_ENEMY_NUM			(31)
+#define NUM_OF_BOARD			(4)
+#define NUM_OF_TEXT				(4)
 
 //━━━━━━━━━━━━━━━━━━━━━━━
 // ダメージ

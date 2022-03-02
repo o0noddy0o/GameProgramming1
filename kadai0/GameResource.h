@@ -63,6 +63,11 @@
 // UI
 #define Tex_HPBar					L"Media/Sprite/ActionGame_Sprite/HpBar.png"
 #define Tex_HPBarFream				L"Media/Sprite/ActionGame_Sprite/HpBarFream.png"
+#define Tex_Board					L"Media/Sprite/ActionGame_Sprite/board.png"
+#define Tex_Text_1					L"Media/Sprite/ActionGame_Sprite/text1.png"
+#define Tex_Text_2					L"Media/Sprite/ActionGame_Sprite/text2.png"
+#define Tex_Text_3					L"Media/Sprite/ActionGame_Sprite/text3.png"
+#define Tex_Text_4					L"Media/Sprite/ActionGame_Sprite/text4.png"
 #define Tex_Arrow					L"Media/Sprite/ActionGame_Sprite/arrow.png"
 
 // ステージ用
