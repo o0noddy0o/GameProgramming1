@@ -36,7 +36,7 @@ void ElectricEel::AttackProcess(XMFLOAT2 _SubmarinePos)
 	}
 	else
 	{
-		m_coolDown = rand() % 60 + ELECTRICEEL_TURRET_COOL_DOWN;
+		m_coolDown = rand() % 60 + ELECTRICEEL_TURRET_COOL_DOWN + 30;
 		// カウンターをリセットする
 		m_coolDownCnt = 0;
 
@@ -87,44 +87,48 @@ void ElectricEel::MoveProcess(XMFLOAT2 _SubmarinePos, float _deltaTime)
 	float diffY = _SubmarinePos.y - _EnemyPos.y;
 	float mag = sqrtf(diffX * diffX + diffY * diffY);
 	// 敵から潜水艦への方向
-	if (_EnemyPos.x - 1300.f <= _SubmarinePos.x && _SubmarinePos.x <= _EnemyPos.x + 1300.f && _EnemyPos.y - 800.f <= _SubmarinePos.y && _SubmarinePos.y <= _EnemyPos.y + 800.f)
+	if (Abs(diffX) < 1100.f && Abs(diffY) < 700.f)
 	{
-		XMFLOAT2 target;
-		target.x = diffX / mag;
-		target.y = diffY / mag;
-
 		XMFLOAT2 EnemyMoveDir = AngleToDirectionVector(m_angle);
 
-		// 外積の計算
-		float cross = (EnemyMoveDir.x * target.y - EnemyMoveDir.y * target.x);
-
-		if (cross >= 0)
+		if (!m_bHitSubmarine)
 		{
-			float angle = Degree(RadianToDegree(acosf(EnemyMoveDir.x * target.x + EnemyMoveDir.y * target.y)));
-			if (Abs(angle) > 200.f * _deltaTime)
+			XMFLOAT2 target;
+			target.x = diffX / mag;
+			target.y = diffY / mag;
+
+			// 外積の計算
+			float cross = (EnemyMoveDir.x * target.y - EnemyMoveDir.y * target.x);
+
+			if (cross >= 0)
 			{
-				m_angle += 200.f * _deltaTime;;
+				float angle = Degree(RadianToDegree(acosf(EnemyMoveDir.x * target.x + EnemyMoveDir.y * target.y)));
+				if (Abs(angle) > 200.f * _deltaTime)
+				{
+					m_angle += 200.f * _deltaTime;;
+				}
+				else
+				{
+					m_angle += angle;
+				}
 			}
 			else
 			{
-				m_angle += angle;
+				float angle = Degree(RadianToDegree(acosf(EnemyMoveDir.x * target.x + EnemyMoveDir.y * target.y)));
+				if (Abs(angle) > 200.f * _deltaTime)
+				{
+					m_angle -= 200.f * _deltaTime;;
+				}
+				else
+				{
+					m_angle -= angle;
+				}
 			}
-		}
-		else
-		{
-			float angle = Degree(RadianToDegree(acosf(EnemyMoveDir.x * target.x + EnemyMoveDir.y * target.y)));
-			if (Abs(angle) > 200.f * _deltaTime)
-			{
-				m_angle -= 200.f * _deltaTime;;
-			}
-			else
-			{
-				m_angle -= angle;
-			}
-		}
 
-		// 敵の移動方向の設定
-		EnemyMoveDir = AngleToDirectionVector(m_angle);
+			// 敵の移動方向の設定
+			EnemyMoveDir = AngleToDirectionVector(m_angle);
+		}
+		
 		XMFLOAT4 EnemyMove = { EnemyMoveDir.x * ENEMY_1_MOVE_SPEED * _deltaTime, EnemyMoveDir.y * ENEMY_1_MOVE_SPEED * _deltaTime, 0.f, 0.f };
 		m_pImg->offsetPos(EnemyMove);
 		{
@@ -141,4 +145,15 @@ void ElectricEel::MoveProcess(XMFLOAT2 _SubmarinePos, float _deltaTime)
 		m_pImg->setAngleZ(m_angle);
 	}
 	m_pBoundingBox->SetPos({ m_pImg->getPos().x, m_pImg->getPos().y });
+	m_bHitSubmarine = false;
+}
+
+XMFLOAT2 ElectricEel::GetMoveDirection()const
+{
+	return AngleToDirectionVector(m_angle);
+}
+
+void ElectricEel::SetMoveDirection(XMFLOAT2 _newMoveDirection)
+{
+	m_angle = DirectionVectorToAngle(_newMoveDirection);
 }

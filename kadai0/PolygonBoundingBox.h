@@ -33,7 +33,9 @@ public:
 	void ResetVertexPos(vector<XMFLOAT2>& _vertexPos);
 	void SetRelativePos(XMFLOAT2 _newRelativePos = { 0.f,0.f });
 	void RotateVertex(float _angle);
-	
+	void FlipHorizontal();
+	void FlipVertical();
+
 	// “–‚½‚è”»’è
 	bool Collision(const BoundingBox* _target, XMFLOAT2* _pDirectionVector = NULL)const override;
 	bool Collision(CPicture* _target, XMFLOAT2* _pDirectionVector = NULL)const override;					// ‰æ‘œ

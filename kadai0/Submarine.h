@@ -25,6 +25,7 @@ class EnemyBullet;
 class BoundingBox;
 class CircleBoundingBox;
 class Boss;
+class Goal;
 
 class Submarine : public CObjectBase
 {
@@ -69,6 +70,7 @@ public:
 		vector<shared_ptr<SceneryObject>>*						_pSceneryObject,
 		Boss*													_pBoss,
 		shared_ptr<vector<shared_ptr<EnemyBullet>>>				_pBossBullet,
+		Goal*													_pGoal,
 		vector<shared_ptr<Item>>*								_pItem);
 		
 	// 潜水艦全体の移動
@@ -110,6 +112,9 @@ private:
 	JetEngine*					m_pJetEngine;
 
 	shared_ptr<CircleBoundingBox>	m_pCircleBoundingBox;
+
+	int  m_invincibleCnt;			// 無敵時間用カウンター
+	bool m_bInvincible;
 
 #if ShowDeltaTimeAndFPS
 	shared_ptr<CText> pDeltaTimeText;

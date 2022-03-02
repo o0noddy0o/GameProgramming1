@@ -51,7 +51,7 @@ void Fish::AttackProcess(XMFLOAT2 _SubmarinePos)
 	}
 	else
 	{
-		m_coolDown = rand() % 60;
+		m_coolDown = rand() % 60 + 30;
 		// カウンターをリセットする
 		m_coolDownCnt = 0;
 
@@ -103,43 +103,45 @@ void Fish::MoveProcess(XMFLOAT2 _SubmarinePos, float _deltaTime)
 	float diffX = _SubmarinePos.x - _EnemyPos.x;
 	float diffY = _SubmarinePos.y - _EnemyPos.y;
 	float mag = sqrtf(diffX * diffX + diffY * diffY);
-	if (_EnemyPos.x - 1300.f <= _SubmarinePos.x && _SubmarinePos.x <= _EnemyPos.x + 1300.f && _EnemyPos.y - 800.f <= _SubmarinePos.y && _SubmarinePos.y <= _EnemyPos.y + 800.f)
+	if (Abs(diffX) < 1100.f && Abs(diffY) < 700.f)
 	{
-		// 敵から潜水艦への方向
-		XMFLOAT2 target;
-		target.x = diffX / mag;
-		target.y = diffY / mag;
-
 		XMFLOAT2 EnemyMoveDir = AngleToDirectionVector(m_angle);
-
-		// 外積の計算
-		float cross = (EnemyMoveDir.x * target.y - EnemyMoveDir.y * target.x);
-
-		if (cross >= 0)
+		if (!m_bHitSubmarine)
 		{
-			float angle = Degree(RadianToDegree(acosf(EnemyMoveDir.x * target.x + EnemyMoveDir.y * target.y)));
-			if (Abs(angle) > 200.f * _deltaTime)
+			// 敵から潜水艦への方向
+			XMFLOAT2 target;
+			target.x = diffX / mag;
+			target.y = diffY / mag;
+
+			// 外積の計算
+			float cross = (EnemyMoveDir.x * target.y - EnemyMoveDir.y * target.x);
+
+			if (cross >= 0)
 			{
-				m_angle += 200.f * _deltaTime;;
+				float angle = Degree(RadianToDegree(acosf(EnemyMoveDir.x * target.x + EnemyMoveDir.y * target.y)));
+				if (Abs(angle) > 200.f * _deltaTime)
+				{
+					m_angle += 200.f * _deltaTime;;
+				}
+				else
+				{
+					m_angle += angle;
+				}
 			}
 			else
 			{
-				m_angle += angle;
+				float angle = Degree(RadianToDegree(acosf(EnemyMoveDir.x * target.x + EnemyMoveDir.y * target.y)));
+				if (Abs(angle) > 200.f * _deltaTime)
+				{
+					m_angle -= 200.f * _deltaTime;;
+				}
+				else
+				{
+					m_angle -= angle;
+				}
 			}
 		}
-		else
-		{
-			float angle = Degree(RadianToDegree(acosf(EnemyMoveDir.x * target.x + EnemyMoveDir.y * target.y)));
-			if (Abs(angle) > 200.f * _deltaTime)
-			{
-				m_angle -= 200.f * _deltaTime;;
-			}
-			else
-			{
-				m_angle -= angle;
-			}
-		}
-
+		
 		// 敵の移動方向の設定
 		EnemyMoveDir = AngleToDirectionVector(m_angle);
 		XMFLOAT4 EnemyMove = { EnemyMoveDir.x * ENEMY_1_MOVE_SPEED * _deltaTime, EnemyMoveDir.y * ENEMY_1_MOVE_SPEED * _deltaTime, 0.f, 0.f };
@@ -158,6 +160,7 @@ void Fish::MoveProcess(XMFLOAT2 _SubmarinePos, float _deltaTime)
 		m_pImg->setAngleZ(m_angle);
 	}
 	m_pBoundingBox->SetPos({ m_pImg->getPos().x, m_pImg->getPos().y });
+	m_bHitSubmarine = false;
 }
 
 //━━━━━━━━━━━━━━━━━━━━━━━
@@ -166,4 +169,14 @@ void Fish::MoveProcess(XMFLOAT2 _SubmarinePos, float _deltaTime)
 BoundingBox* Fish::GetBoundingBox()const
 {
 	return m_pBoundingBox;
+}
+
+XMFLOAT2 Fish::GetMoveDirection()const
+{
+	return AngleToDirectionVector(m_angle);
+}
+
+void Fish::SetMoveDirection(XMFLOAT2 _newMoveDirection)
+{
+	m_angle = DirectionVectorToAngle(_newMoveDirection);
 }

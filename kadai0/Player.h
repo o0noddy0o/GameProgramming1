@@ -31,6 +31,8 @@ public:
 	//m_bMoveableの中身を変える
 	void SetMoveAble(bool _b);
 
+	bool GetMoveAble()const;
+
 	//プレイーの座標を更新
 	void SetPos(XMFLOAT2 _newPos);
 
@@ -62,8 +64,6 @@ private:
 
 	//プレイヤーの移動
 	void Move(float _deltaTime);
-
-
 
 	CPicture* m_pImg;				//プレイヤーキャラクターの画像
 	bool		m_bMoveable;		//プレイヤーが移動できるかフラグ

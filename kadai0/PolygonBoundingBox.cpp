@@ -42,12 +42,12 @@ PolygonBoundingBox::PolygonBoundingBox(XMFLOAT2 _pos, vector<XMFLOAT2>& _vertexP
 				if (i == 0)
 				{
 					pos = (*m_pVertexPos)[i];
-					pos1 = (*m_pVertexPos)[i + 1];
+					pos1 = (*m_pVertexPos)[int(i + 1)];
 				}
 				else
 				{
 					pos = pos1;
-					pos1 = (*m_pVertexPos)[i + 1];
+					pos1 = (*m_pVertexPos)[int(i + 1)];
 				}
 			}
 			else
@@ -406,6 +406,90 @@ void PolygonBoundingBox::RotateVertex(float _angle)
 }
 
 //━━━━━━━━━━━━━━━━━━━━━━━
+// バウンディングボックスを左右反転にする
+//━━━━━━━━━━━━━━━━━━━━━━━
+void PolygonBoundingBox::FlipHorizontal()
+{
+	if (m_bRelativePosActive)
+	{
+		m_pos.x -= m_relativePos.x * 2.f;
+		m_relativePos.x = -m_relativePos.x;
+	}
+
+	float temp = m_maxPos.x;
+	m_maxPos.x = -m_minPos.x;
+	m_minPos.x = -temp;
+
+	int arraySize = (int)m_pVertexPos->size();
+	for (int i = 0; i < arraySize; ++i)
+	{
+		(*m_pVertexPos)[i].x = -(*m_pVertexPos)[i].x;
+	}
+	// 並び替え
+	shared_ptr<vector<XMFLOAT2>> vertexPos(new vector<XMFLOAT2>);
+	vertexPos->push_back((*m_pVertexPos)[0]);
+	for (int i = 1; i < arraySize; ++i)
+	{
+		vertexPos->push_back((*m_pVertexPos)[arraySize - i]);
+	}
+	m_pVertexPos = vertexPos;
+
+	// 並び替え
+	shared_ptr<vector<XMFLOAT2>> vector(new vector<XMFLOAT2>);
+	vector->push_back((*m_pVector)[0]);
+	vector->back().y = -vector->back().y;
+	for (int i = 1; i < arraySize; ++i)
+	{
+		vector->push_back((*m_pVector)[arraySize - i]);
+		// 逆方向にする
+		vector->back().y = -vector->back().y;
+	}
+	m_pVector = vector;
+}
+
+//━━━━━━━━━━━━━━━━━━━━━━━
+// バウンディングボックスを上下反転にする
+//━━━━━━━━━━━━━━━━━━━━━━━
+void PolygonBoundingBox::FlipVertical()
+{
+	if (m_bRelativePosActive)
+	{
+		m_pos.y -= m_relativePos.y * 2.f;
+		m_relativePos.x = -m_relativePos.x;
+	}
+
+	float temp = m_maxPos.y;
+	m_maxPos.y = -m_minPos.y;
+	m_minPos.y = -temp;
+
+	int arraySize = (int)m_pVertexPos->size();
+	for (int i = 0; i < arraySize; ++i)
+	{
+		(*m_pVertexPos)[i].y = -(*m_pVertexPos)[i].y;
+	}
+	// 並び替え
+	shared_ptr<vector<XMFLOAT2>> vertexPos(new vector<XMFLOAT2>);
+	vertexPos->push_back((*m_pVertexPos)[0]);
+	for (int i = 1; i < arraySize; ++i)
+	{
+		vertexPos->push_back((*m_pVertexPos)[arraySize - i]);
+	}
+	m_pVertexPos = vertexPos;
+
+	// 並び替え
+	shared_ptr<vector<XMFLOAT2>> vector(new vector<XMFLOAT2>);
+	vector->push_back((*m_pVector)[0]);
+	vector->back().x = -vector->back().x;
+	for (int i = 1; i < arraySize; ++i)
+	{
+		vector->push_back((*m_pVector)[arraySize - i]);
+		// 逆方向にする
+		vector->back().x = -vector->back().x;
+	}
+	m_pVector = vector;
+}
+
+//━━━━━━━━━━━━━━━━━━━━━━━
 // 他バウンディングボックスとの当たり判定
 //━━━━━━━━━━━━━━━━━━━━━━━
 bool PolygonBoundingBox::Collision(const BoundingBox* _target, XMFLOAT2* _pDirectionVector)const
@@ -580,10 +664,10 @@ bool PolygonBoundingBox::CollisionWithCircle(const CircleBoundingBox* _target)co
 	XMFLOAT2 targetPos = _target->GetPos();
 
 	// 当たれない場所にいたら、直接falseをreturnする
-	/*if (m_pos.x + m_minPos.x > targetPos.x + targetRadius)return false;
+	if (m_pos.x + m_minPos.x > targetPos.x + targetRadius)return false;
 	if (m_pos.x + m_maxPos.x < targetPos.x - targetRadius)return false;
 	if (m_pos.y + m_minPos.y > targetPos.y + targetRadius)return false;
-	if (m_pos.y + m_maxPos.y < targetPos.y - targetRadius)return false;*/
+	if (m_pos.y + m_maxPos.y < targetPos.y - targetRadius)return false;
 
 	// 頂点数を取得
 	int arraySize = (int)m_pVertexPos->size();
@@ -633,7 +717,7 @@ bool PolygonBoundingBox::CollisionWithCircle(const CircleBoundingBox* _target)co
 			}
 
 			// 次の頂点の座標を取得しておく
-			XMFLOAT2 pos2 = (*m_pVertexPos)[(i == arraySize - 1) ? (0) : (i + 1)];
+			XMFLOAT2 pos2 = (*m_pVertexPos)[((i == arraySize - 1) ? (0) : (i + 1))];
 			pos2.x += m_pos.x;
 			pos2.y += m_pos.y;
 
@@ -643,14 +727,14 @@ bool PolygonBoundingBox::CollisionWithCircle(const CircleBoundingBox* _target)co
 			float lengthOfline = sqrtf(pos1ToPos2Vector.x * pos1ToPos2Vector.x + pos1ToPos2Vector.y * pos1ToPos2Vector.y);
 			float d3 = sqrtf(targetVector2.x * targetVector2.x + targetVector2.y * targetVector2.y);
 
-			if (d > lengthOfline + targetRadius)
+			/*if (d > lengthOfline + targetRadius)
 			{
 				return false;
-			}
-			if (d3 > lengthOfline + targetRadius)
+			}*/
+			/*if (d3 > lengthOfline + targetRadius)
 			{
 				return false;
-			}
+			}*/
 			if (d < targetRadius)
 			{
 				throw i;
@@ -674,10 +758,9 @@ bool PolygonBoundingBox::CollisionWithCircle(const CircleBoundingBox* _target)co
 			float z2 = newVector.x * vector.y - newVector.y * vector.x;
 			float z3 = newVector.x * targetVector2.y - newVector.y * targetVector2.x;
 
-			if ((z2 > 0.f && z3 > 0.f) ||
-				(z2 < 0.f && z3 < 0.f))
+			if (z2 < 0.f && z3 > 0.f)
 			{
-				return false;
+				return true;
 			}
 			++cnt;
 			//━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

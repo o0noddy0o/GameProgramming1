@@ -56,3 +56,9 @@ void Enemy::ResetEnemyBullet()
 {
 	m_pEnemyBullet = (shared_ptr<vector<shared_ptr<EnemyBullet>>>)new vector<shared_ptr<EnemyBullet>>;
 }
+
+void Enemy::HitSubmarineProcess(XMFLOAT2 _newMoveDirection)
+{
+	SetMoveDirection(_newMoveDirection);
+	m_bHitSubmarine = true;
+}

@@ -234,6 +234,12 @@
     <ClCompile Include="kadai0\Board.cpp">
       <Filter>ソース ファイル\Object</Filter>
     </ClCompile>
+    <ClCompile Include="kadai0\Goal.cpp">
+      <Filter>ソース ファイル\Object\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="kadai0\Arrow.cpp">
+      <Filter>ソース ファイル\Object\Stage</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Common\CApplication.h">
@@ -415,6 +421,12 @@
     </ClInclude>
     <ClInclude Include="kadai0\Board.h">
       <Filter>ヘッダー ファイル\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="kadai0\Goal.h">
+      <Filter>ヘッダー ファイル\Object\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="kadai0\Arrow.h">
+      <Filter>ヘッダー ファイル\Object\Stage</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

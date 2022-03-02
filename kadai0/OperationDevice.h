@@ -23,7 +23,7 @@ public:
 	void Tick(float _deltaTime);
 
 	//‰æ‘œ‚ğ•`‰æ
-	void RenderDevice();
+	void RenderDevice(float _alpha = 1.f);
 
 	//ƒvƒŒƒCƒ„[‚Æ‚Ì“–‚½‚è”»’è
 	void collisionWithPlayer(Player* _player, float _deltaTime);

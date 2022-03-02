@@ -43,35 +43,34 @@ void Missile::MoveProcess(float _deltaTime, XMFLOAT2 _SubmarinePos)
 			XMFLOAT4 pos = m_pImg->getPos();
 			XMFLOAT2 vector = FindVectorByTwoPos(pos, _SubmarinePos);
 			NormalizeVector(vector);
-
+			
+			// ¶
 			if (CrossProduct(m_moveDirection, vector) > 0.f)
 			{
 				float angle = Degree(RadianToDegree(acosf(m_moveDirection.x * vector.x + m_moveDirection.y * vector.y)));
 				if (Abs(angle) > MISSILE_MAX_ROTATE_SPEED)
 				{
 					VectorRotation(m_moveDirection, MISSILE_MAX_ROTATE_SPEED);
-					m_pImg->setAngleZ(m_pImg->getAngleZ() + MISSILE_MAX_ROTATE_SPEED);
 				}
 				else
 				{
 					VectorRotation(m_moveDirection, angle);
-					m_pImg->setAngleZ(m_pImg->getAngleZ() + angle);
 				}
 			}
+			// ‰E
 			else
 			{
 				float angle = Degree(RadianToDegree(acosf(m_moveDirection.x * vector.x + m_moveDirection.y * vector.y)));
 				if (Abs(angle) > MISSILE_MAX_ROTATE_SPEED)
 				{
 					VectorRotation(m_moveDirection, -MISSILE_MAX_ROTATE_SPEED);
-					m_pImg->setAngleZ(m_pImg->getAngleZ() - MISSILE_MAX_ROTATE_SPEED);
 				}
 				else
 				{
 					VectorRotation(m_moveDirection, -angle);
-					m_pImg->setAngleZ(m_pImg->getAngleZ() - angle);
 				}
 			}
+			m_pImg->setAngleZ(DirectionVectorToAngle(m_moveDirection));
 		}
 	
 		m_pImg->offsetPos(XMFLOAT4(m_moveDirection.x * ENEMY_BULLET_MOVE_SPEED * _deltaTime, m_moveDirection.y * ENEMY_BULLET_MOVE_SPEED * _deltaTime, 0.f, 0.f));

@@ -19,6 +19,9 @@ EnemyBullet::EnemyBullet(GameInfo* _pGameInfo, XMFLOAT2 _pos, float _angle, Type
 	: Super(_pGameInfo)
 	, m_pBoundingBox(NULL)
 	, m_bulletType(_bulletType)
+	, m_pImg(NULL)
+	, m_pEff(NULL)
+	, m_effCnt(0)
 {
 	if (_bulletType == normal)
 	{
@@ -34,6 +37,9 @@ EnemyBullet::EnemyBullet(GameInfo* _pGameInfo, XMFLOAT2 _pos, XMFLOAT2 _moveDire
 	, m_pBoundingBox(NULL)
 	, m_bulletType(_bulletType)
 	, m_moveDirection(_moveDirection)
+	, m_pImg(NULL)
+	, m_pEff(NULL)
+	, m_effCnt(0)
 {
 	if (_bulletType == normal)
 	{
@@ -46,6 +52,9 @@ EnemyBullet::EnemyBullet(GameInfo* _pGameInfo, XMFLOAT2 _pos, XMFLOAT2 _moveDire
 EnemyBullet::EnemyBullet(GameInfo* _pGameInfo, TypeOfEnemyBullet _bulletType)
 	: Super(_pGameInfo)
 	, m_bulletType(_bulletType)
+	, m_pImg(NULL)
+	, m_pEff(NULL)
+	, m_effCnt(0)
 {
 }
 
@@ -54,7 +63,8 @@ EnemyBullet::EnemyBullet(GameInfo* _pGameInfo, TypeOfEnemyBullet _bulletType)
 //━━━━━━━━━━━━━━━━━━━━━━━
 EnemyBullet::~EnemyBullet()
 {
-	DisposeSprite(m_pImg);
+	if (m_pImg)DisposeSprite(m_pImg);
+	if (m_pEff)DisposeSprite(m_pEff);
 	delete m_pBoundingBox;
 }
 
@@ -72,6 +82,20 @@ void EnemyBullet::renderSprite()
 	{
 		RenderSprite(m_pImg);
 	}
+	if (m_pEff)
+	{
+		if (m_effCnt++ >= ENEMY_BULLET_EFFECT_SWITCH_CNT)
+		{
+			m_pEff->stepAnimation();
+			m_effCnt = 0;
+			++m_effAnimIndex;
+			if (m_effAnimIndex > 5)
+			{
+				m_pEff->setActive(false);
+			}
+		}
+		RenderSprite(m_pEff);
+	}
 }
 
 //━━━━━━━━━━━━━━━━━━━━━━━
@@ -87,7 +111,7 @@ void EnemyBullet::SetPos(XMFLOAT2 _newPos)
 //━━━━━━━━━━━━━━━━━━━━━━━
 bool EnemyBullet::GetActive()const
 {
-	return m_pImg->getActive();
+	return (m_pImg->getActive() || ((m_pEff) ? (m_pEff->getActive()) : (false)));
 }
 
 //━━━━━━━━━━━━━━━━━━━━━━━
@@ -95,7 +119,12 @@ bool EnemyBullet::GetActive()const
 //━━━━━━━━━━━━━━━━━━━━━━━
 void EnemyBullet::SetActive(bool _b)
 {
-	return m_pImg->setActive(_b);
+	m_pImg->setActive(_b);
+	if (!_b)
+	{
+		if (m_pEff)DisposeSprite(m_pEff);
+		m_pEff = NULL;
+	}
 }
 
 //━━━━━━━━━━━━━━━━━━━━━━━
@@ -139,10 +168,35 @@ void EnemyBullet::MoveProcess(float _deltaTime, XMFLOAT2 _SubmarinePos)
 }
 
 //━━━━━━━━━━━━━━━━━━━━━━━
-// 当たり判定
+// バウンディングボックスを取得
 //━━━━━━━━━━━━━━━━━━━━━━━
 BoundingBox* EnemyBullet::GetBoundingBox() const
 {
 	return m_pBoundingBox;
 }
 
+//━━━━━━━━━━━━━━━━━━━━━━━
+// 弾が何かをあたった後の処理
+//━━━━━━━━━━━━━━━━━━━━━━━
+void EnemyBullet::Hit()
+{
+	if (!m_pImg->getActive())return;
+	m_pImg->setActive(false);
+
+	if (!ExplosionEffectOn)return;
+
+	if (!m_pEff)m_pEff = CreateSprite(Tex_Bong, 45.f, 45.f, kTexelExplosionEff);
+	else
+	{
+		m_pEff->setActive(true);
+		m_pEff->setAnimation(0);
+	}
+	m_pEff->setPos(m_pImg->getPos());
+	m_effCnt = 0;
+	m_effAnimIndex = 0;
+}
+
+bool EnemyBullet::ImgActive()const
+{
+	return m_pImg->getActive();
+}

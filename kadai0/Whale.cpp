@@ -11,7 +11,7 @@
 #include "Fire.h"
 #include "Fish.h"
 #include "Fish2.h"
-#include "RectangleBoundingBox.h"
+#include "PolygonBoundingBox.h"
 #include "Laser.h"
 #include "CameraManager.h"
 
@@ -25,15 +25,19 @@ Whale::Whale(GameInfo* _pGameInfo, XMFLOAT2 _pos, vector<shared_ptr<Enemy>>* _pE
 	: Super(_pGameInfo)
 	, m_pMissileLauncher(NULL)
 	, m_pos(_pos)
-	, m_cooldown(1 * 60)
+	, m_cooldown(2 * 60)
 	, pEnemy(_pEnemy)
+	, m_bFacingRight(false)
 {
 	// 初期化
 	m_nowAction = ActionPattern::none;
+	m_lastTimeAction = ActionPattern::none;
 
 	// クジラ本体の画像を作成
 	m_pImg.push_back(CreateSprite(Tex_Whale, WHALE_SIZE_X, WHALE_SIZE_Y));
-	m_pImg[0]->setPos(_pos);
+	m_pImg.back()->setPos(_pos);
+	m_pImg.push_back(CreateSprite(Tex_WhaleTooth, WHALE_TOOTH_SIZE_X, WHALE_TOOTH_SIZE_Y, kTexelWhaleTooth));
+	m_pImg.back()->setPos(_pos.x + WHALE_TOOTH_RELATIVE_POS_X, _pos.y + WHALE_TOOTH_RELATIVE_POS_Y);
 
 	// クジラに乗せるミサイル発射機を作成
 	XMFLOAT2 missileLauncherPos = _pos;
@@ -46,7 +50,24 @@ Whale::Whale(GameInfo* _pGameInfo, XMFLOAT2 _pos, vector<shared_ptr<Enemy>>* _pE
 	m_maxHp = WHALE_MAX_HP;
 	m_hpBarSize = XMFLOAT2(WHALE_HP_BAR_SIZE_X, WHALE_HP_BAR_SIZE_Y);
 
-	m_pBoundingBox.push_back(new RectangleBoundingBox(_pos, XMFLOAT2(WHALE_SIZE_X, WHALE_SIZE_Y)));
+	vector<XMFLOAT2> boundingBoxVertex = {
+		{ -730.f, 14.f },
+		{ -742.f, 146.f },
+		{ -672.f, 298.f },
+		{ -498.f, 400.f },
+		{ -218.f, 422.f },
+		{ 414.f, 372.f },
+		{ 530.f, 340.f },
+		{ 634.f, 264.f },
+		{ 750.f, 110.f },
+		{ 740.f, -255.f },
+		{ 714.f, -328.f },
+		{ 596.f, -382.f },
+		{ 156.f, -420.f },
+		{ -422.f, -280.f },
+		{ -630.f, -176.f },
+	};
+	m_pBoundingBox.push_back(new PolygonBoundingBox(_pos, boundingBoxVertex));
 
 	m_pHpBar = CreateSprite(Tex_HPBar, WHALE_HP_BAR_SIZE_X, WHALE_HP_BAR_SIZE_Y);
 	m_pFreamOfHpBar = CreateSprite(Tex_HPBarFream, WHALE_HP_BAR_FREAM_SIZE_X, WHALE_HP_BAR_FREAM_SIZE_Y);
@@ -54,6 +75,9 @@ Whale::Whale(GameInfo* _pGameInfo, XMFLOAT2 _pos, vector<shared_ptr<Enemy>>* _pE
 
 	m_pHpBar->setPos(cameraPos.x + WHALE_HP_BAR_RELATIVE_POS_X, cameraPos.y + WHALE_HP_BAR_RELATIVE_POS_Y);
 	m_pFreamOfHpBar->setPos(cameraPos.x + WHALE_HP_BAR_RELATIVE_POS_X, cameraPos.y + WHALE_HP_BAR_RELATIVE_POS_Y);
+
+	m_moveRangeOfXAxis[0] = CameraManager::GetCameraRangeMin().x + WINDOW_LEFT;
+	m_moveRangeOfXAxis[1] = CameraManager::GetCameraRangeMax().x + WINDOW_RIGHT;
 }
 
 //━━━━━━━━━━━━━━━━━━━━━━━
@@ -83,12 +107,13 @@ void Whale::DecideActionPattern(XMFLOAT2 _SubmarinePos)
 	XMFLOAT2 vectorToSubmarine = FindVectorByTwoPos(m_pos, _SubmarinePos);
 
 	// 同じパターンを繰り返さないように
-	if (rand() % 5 > 1)
+	if (Percent(70))
 	{
 		// クジラが火を吹くところから潜水艦までのベクトルを取り、正規化する
 		XMFLOAT2 vector = WAHLE_RELATIVE_POS_OF_MOUTH;
-		vector.x = _SubmarinePos.x - (vector.x + m_pos.x);
-		vector.y = _SubmarinePos.y - (vector.y + m_pos.y);
+		if (m_bFacingRight)vector.x = -vector.x;
+		vector.x = _SubmarinePos.x - (m_pos.x + vector.x);
+		vector.y = _SubmarinePos.y - (m_pos.y + vector.y);
 		
 		// 潜水艦が一定程度近づいている
 		if (FindDistanceByCoordinateDifference(vector) < WHALE_PATTERN1_BIOW_FIRE_DISTANCE)
@@ -99,25 +124,70 @@ void Whale::DecideActionPattern(XMFLOAT2 _SubmarinePos)
 			NormalizeVector(vector);
 
 			// 潜水艦が範囲に入っている
-			if (vector.x * -1.f > cosBiowFireAngle)
+			if (vector.x * ((m_bFacingRight)?(1.f):(-1.f)) > cosBiowFireAngle)
 			{
-				m_nowAction = ActionPattern::biowFire;
+				if (m_lastTimeAction == ActionPattern::biowFire)
+				{
+					if (Percent(30))
+					{
+						m_nowAction = ActionPattern::biowFire;
+						return;
+					}
+				}
+				else
+				{
+					m_nowAction = ActionPattern::biowFire;
+					return;
+				}
+			}
+		}
+	}
+
+	if (Abs(_SubmarinePos.x - m_pos.x) < WHALE_SIZE_X / 2.f)
+	{
+		if (Percent(70))
+		{
+			if (m_lastTimeAction == ActionPattern::dash)
+			{
+				if (Percent(20))
+				{
+					m_nowAction = ActionPattern::dash;
+					return;
+				}
+			}
+			else
+			{
+				m_nowAction = ActionPattern::dash;
 				return;
 			}
 		}
 	}
 	else
 	{
-		// 潜水艦が一定程度近づいている
-		if (Abs(vectorToSubmarine.x) < WHALE_PATTERN2_DASH_DISTANCE * 1.75f)
+		if (Percent(70))
 		{
-			m_nowAction = ActionPattern::dash;
-			return;
+			if (m_lastTimeAction == ActionPattern::laser)
+			{
+				if (Percent(30))
+				{
+					m_nowAction = ActionPattern::laser;
+					return;
+				}
+			}
+			else
+			{
+				m_nowAction = ActionPattern::laser;
+				return;
+			}
 		}
 	}
 
 	// 残りはランダムで
-	m_nowAction = ActionPattern(rand() % (ActionPattern::Total - 3) + 3);
+	m_nowAction = ActionPattern(rand() % (ActionPattern::Total - 2) + 2);
+	if (m_nowAction == m_lastTimeAction)
+	{
+		m_nowAction = ActionPattern(rand() % (ActionPattern::Total - 2) + 2);
+	}
 }
 
 //━━━━━━━━━━━━━━━━━━━━━━━
@@ -134,6 +204,7 @@ void Whale::Tick(XMFLOAT2 _SubmarinePos, float _deltaTime)
 	if (m_nowAction == ActionPattern::none)
 	{
 		DecideActionPattern(_SubmarinePos);
+		m_lastTimeAction = m_nowAction;
 	}
 
 	switch (m_nowAction)
@@ -142,7 +213,7 @@ void Whale::Tick(XMFLOAT2 _SubmarinePos, float _deltaTime)
 	case ActionPattern::biowFire:		BiowFireProcess(_SubmarinePos);		break;
 	case ActionPattern::dash:			DashProcess();						break;
 	case ActionPattern::laser:			LaserProcess(_SubmarinePos);		break;
-	case ActionPattern::summonEnemy:	SummonEnemyProcess();				break;
+	//case ActionPattern::summonEnemy:	SummonEnemyProcess();				break;
 	}
 }
 
@@ -171,6 +242,7 @@ void Whale::BiowFireProcess(XMFLOAT2 _SubmarinePos)
 
 	// 弾を生成する座標を計算
 	XMFLOAT2 pos = WAHLE_RELATIVE_POS_OF_MOUTH;
+	if (m_bFacingRight)pos.x = -pos.x;
 	pos.x += m_pos.x;
 	pos.y += m_pos.y;
 
@@ -183,16 +255,30 @@ void Whale::BiowFireProcess(XMFLOAT2 _SubmarinePos)
 	
 	bool bOverRange = false;
 	float angle;
-	if (vector.x * -1.f < cosBiowFireAngle)
+	if (vector.x * ((m_bFacingRight)?(1.f):(-1.f)) < cosBiowFireAngle)
 	{
 		bOverRange = true;
 		if (vector.y > 0.f)
 		{
-			angle = 180.f - WHALE_PATTERN1_BIOW_FIRE_ANGLE / 2.f;
+			if (m_bFacingRight)
+			{
+				angle = WHALE_PATTERN1_BIOW_FIRE_ANGLE / 2.f;
+			}
+			else
+			{
+				angle = 180.f - WHALE_PATTERN1_BIOW_FIRE_ANGLE / 2.f;
+			}
 		}
 		else
 		{
-			angle = 180.f + WHALE_PATTERN1_BIOW_FIRE_ANGLE / 2.f;
+			if (m_bFacingRight)
+			{
+				angle = -WHALE_PATTERN1_BIOW_FIRE_ANGLE / 2.f;
+			}
+			else
+			{
+				angle = 180.f + WHALE_PATTERN1_BIOW_FIRE_ANGLE / 2.f;
+			}
 		}
 	}
 
@@ -235,25 +321,52 @@ void Whale::BiowFireProcess(XMFLOAT2 _SubmarinePos)
 //━━━━━━━━━━━━━━━━━━━━━━━
 void Whale::DashProcess()
 {
+	static XMFLOAT2 pos; // 座標を保存用
 	if (m_actionTimeCnt++ > WHALE_PATTERN2_DURATION_TIME)
 	{
 		m_actionTimeCnt = 0;
 		m_cooldown = WHALE_COUNTDOWN_BETWEEN_ACTION;
 		m_nowAction = ActionPattern::none;
 	}
-	if (m_actionTimeCnt < WHALE_PATTERN2_DURATION_TIME * 2 / 5)
+	// 下げる
+	if (m_actionTimeCnt < WHALE_PATTERN2_RETREAT_TIME)
 	{
-		XMFLOAT2 newPos = { m_pImg[0]->getPos().x + WHALE_PATTERN2_DASH_DISTANCE / 4.f / float(WHALE_PATTERN2_DURATION_TIME * 2 / 5), m_pImg[0]->getPos().y };
+		float yAxisDistanceOfWhaleAndCamera = CameraManager::GetCameraPos().y - m_pImg[0]->getPos().y;
+		if (Abs(yAxisDistanceOfWhaleAndCamera) > WHALE_PATTERN2_Y_AXIS_MOVE_LIMIT)yAxisDistanceOfWhaleAndCamera = (yAxisDistanceOfWhaleAndCamera > 0.f) ? (WHALE_PATTERN2_Y_AXIS_MOVE_LIMIT) : (-WHALE_PATTERN2_Y_AXIS_MOVE_LIMIT);
+		
+		XMFLOAT2 newPos = {
+			m_pImg[0]->getPos().x + ((m_bFacingRight)?(-WHALE_RETREAT_DISTANCE):(WHALE_RETREAT_DISTANCE)) / (float)WHALE_PATTERN2_RETREAT_TIME,
+			m_pImg[0]->getPos().y + yAxisDistanceOfWhaleAndCamera
+		};
 		this->SetPos(newPos);
 	}
-	else if(m_actionTimeCnt < WHALE_PATTERN2_DURATION_TIME * 3 / 5)
+	// ダッシュ
+	else if (m_actionTimeCnt < WHALE_PATTERN2_RETREAT_TIME + WHALE_PATTERN2_DASH_TIME)
 	{
-		XMFLOAT2 newPos = { m_pImg[0]->getPos().x - WHALE_PATTERN2_DASH_DISTANCE * 1.25f / float(WHALE_PATTERN2_DURATION_TIME * 1 / 5), m_pImg[0]->getPos().y };
+		if (m_actionTimeCnt == WHALE_PATTERN2_RETREAT_TIME)
+		{
+			pos.x = m_pImg[0]->getPos().x;
+		}
+		XMFLOAT2 newPos = { 
+			pos.x + (((m_bFacingRight) ? (m_moveRangeOfXAxis[1] + WINDOW_RIGHT + WHALE_SIZE_X * 0.7f) : (m_moveRangeOfXAxis[0] + WINDOW_LEFT - WHALE_SIZE_X * 0.7f)) - pos.x) * ((float)(m_actionTimeCnt - WHALE_PATTERN2_RETREAT_TIME) / (float)WHALE_PATTERN2_DASH_TIME),
+			m_pImg[0]->getPos().y 
+		};
 		this->SetPos(newPos);
 	}
-	else
+	// 左右反転
+	else if(m_actionTimeCnt == WHALE_PATTERN2_RETREAT_TIME + WHALE_PATTERN2_DASH_TIME)
 	{
-		XMFLOAT2 newPos = { m_pImg[0]->getPos().x + WHALE_PATTERN2_DASH_DISTANCE / float(WHALE_PATTERN2_DURATION_TIME * 2 / 5), m_pImg[0]->getPos().y };
+		this->FlipHorizontal();
+		pos.x = m_pImg[0]->getPos().x;
+		pos.y = CameraManager::GetCameraPos().y;
+	}
+	// 画面外から入る
+	else if (m_actionTimeCnt < WHALE_PATTERN2_DURATION_TIME)
+	{
+		XMFLOAT2 newPos = {
+			pos.x + (((m_bFacingRight) ? (m_moveRangeOfXAxis[0]) : (m_moveRangeOfXAxis[1])) - pos.x) * ((float)(m_actionTimeCnt - WHALE_PATTERN2_RETREAT_TIME - WHALE_PATTERN2_DASH_TIME - WHALE_PATTERN2_WAIT_TIME_AFTER_DASH) / (float)WHALE_PATTERN2_ENTER_SCREEN_TIME),
+			pos.y
+		};
 		this->SetPos(newPos);
 	}
 }
@@ -272,14 +385,28 @@ void Whale::LaserProcess(XMFLOAT2 _SubmarinePos)
 		m_actionTimeCnt = 0;
 		m_cooldown = WHALE_COUNTDOWN_BETWEEN_ACTION;
 		m_nowAction = ActionPattern::none;
-		for (int i = 0; i < (int)m_pBullet->size(); ++i)
+		for (auto i = m_pBullet->begin(); i != m_pBullet->end();)
 		{
-			// あったらその要素番号を保存する
-			if ((*m_pBullet)[i]->GetBulletType() == TypeOfEnemyBullet::laser)
+			if ((*i)->GetBulletType() == TypeOfEnemyBullet::laser)
 			{
-				(*m_pBullet)[i]->SetActive(false);
-				break;
+				if (i == m_pBullet->begin())
+				{
+					++i;
+					m_pBullet->erase(i - 1);
+					if (m_pBullet->size() == 0)
+					{
+						break;
+					}
+				}
+				else
+				{
+					--i;
+					m_pBullet->erase(i + 1);
+					++i;
+				}
+				continue;
 			}
+			++i;
 		}
 		return;
 	}
@@ -293,6 +420,7 @@ void Whale::LaserProcess(XMFLOAT2 _SubmarinePos)
 		{
 			index = i;
 			XMFLOAT2 pos = WAHLE_RELATIVE_POS_OF_MOUTH;
+			if (m_bFacingRight)pos.x = -pos.x;
 			pos.x += m_pos.x;
 			pos.y += m_pos.y;
 			(*m_pBullet)[i]->SetPos(pos);
@@ -305,6 +433,7 @@ void Whale::LaserProcess(XMFLOAT2 _SubmarinePos)
 	if (index == -1)
 	{
 		XMFLOAT2 pos = WAHLE_RELATIVE_POS_OF_MOUTH;
+		if (m_bFacingRight)pos.x = -pos.x;
 		pos.x += m_pos.x;
 		pos.y += m_pos.y;
 		m_pBullet->push_back((shared_ptr<EnemyBullet>)new Laser(m_pGameInfo, WHALE_PATTERN3_LASER_SIZE, pos, WHALE_PATTERN3_LASER_START_ANGLE));
@@ -312,13 +441,27 @@ void Whale::LaserProcess(XMFLOAT2 _SubmarinePos)
 	}
 
 	float angle;
-	if (m_bLaserStartFromDown)
+	if (!m_bFacingRight)
 	{
-		angle = WHALE_PATTERN3_LASER_START_ANGLE + m_actionTimeCnt * (WHALE_PATTERN3_LASER_END_ANGLE - WHALE_PATTERN3_LASER_START_ANGLE) / WHALE_PATTERN3_DURATION_TIME;
+		if (m_bLaserStartFromDown)
+		{
+			angle = WHALE_PATTERN3_LASER_START_ANGLE + m_actionTimeCnt * (WHALE_PATTERN3_LASER_END_ANGLE - WHALE_PATTERN3_LASER_START_ANGLE) / WHALE_PATTERN3_DURATION_TIME;
+		}
+		else
+		{
+			angle = WHALE_PATTERN3_LASER_END_ANGLE + m_actionTimeCnt * (WHALE_PATTERN3_LASER_START_ANGLE - WHALE_PATTERN3_LASER_END_ANGLE) / WHALE_PATTERN3_DURATION_TIME;
+		}
 	}
 	else
 	{
-		angle = WHALE_PATTERN3_LASER_END_ANGLE + m_actionTimeCnt * (WHALE_PATTERN3_LASER_START_ANGLE - WHALE_PATTERN3_LASER_END_ANGLE) / WHALE_PATTERN3_DURATION_TIME;
+		if (m_bLaserStartFromDown)
+		{
+			angle = 180.f + WHALE_PATTERN3_LASER_END_ANGLE + m_actionTimeCnt * (WHALE_PATTERN3_LASER_START_ANGLE - WHALE_PATTERN3_LASER_END_ANGLE) / WHALE_PATTERN3_DURATION_TIME;
+		}
+		else
+		{
+			angle = 180.f + WHALE_PATTERN3_LASER_START_ANGLE + m_actionTimeCnt * (WHALE_PATTERN3_LASER_END_ANGLE - WHALE_PATTERN3_LASER_START_ANGLE) / WHALE_PATTERN3_DURATION_TIME;
+		}
 	}
 
 //#if DEBUG
@@ -342,33 +485,33 @@ void Whale::LaserProcess(XMFLOAT2 _SubmarinePos)
 //━━━━━━━━━━━━━━━━━━━━━━━
 // 敵を召喚するときの処理
 //━━━━━━━━━━━━━━━━━━━━━━━
-void Whale::SummonEnemyProcess()
-{
-	if (pEnemy->size() > WHALE_PATTERN4_SUMMON_ENEMY_NUM / 5 * 2)
-	{
-		m_nowAction = ActionPattern::none;
-		return;
-	}
-
-	XMFLOAT3 cameraPos = CameraManager::GetCameraPos();
-	for (int i = 0; i < WHALE_PATTERN4_SUMMON_ENEMY_NUM; ++i)
-	{
-		if (rand() % 2)
-		{
-			//pEnemy->push_back((shared_ptr<Enemy>)new Fish(m_pGameInfo, XMFLOAT2(cameraPos.x + (float)((rand() % int(WINDOW_WIDTH / 5.f) + 960.f) * ((rand() % 2 == 0) ? (1) : (-1))), cameraPos.y + (float)((rand() % int(WINDOW_HEIGHT / 5.f) + 540.f) * ((rand() % 2 == 0) ? (1) : (-1)))), (float)(rand() % 360)));
-			pEnemy->push_back((shared_ptr<Enemy>)new Fish(m_pGameInfo, XMFLOAT2(cameraPos.x + (float)((rand() % int(WINDOW_WIDTH / 5.f) + 960.f)), cameraPos.y + (float)((rand() % int(WINDOW_HEIGHT / 3.f)) * ((rand() % 2 == 0) ? (1) : (-1)))), (float)(rand() % 360)));
-		}
-		else
-		{
-			//pEnemy->push_back((shared_ptr<Enemy>)new Fish2(m_pGameInfo, XMFLOAT2(cameraPos.x + (float)((rand() % int(WINDOW_WIDTH / 5.f) + 960.f) * ((rand() % 2 == 0) ? (1) : (-1))), cameraPos.y + (float)((rand() % int(WINDOW_HEIGHT / 5.f) + 540.f) * ((rand() % 2 == 0) ? (1) : (-1)))), (float)(rand() % 360)));
-			pEnemy->push_back((shared_ptr<Enemy>)new Fish2(m_pGameInfo, XMFLOAT2(cameraPos.x + (float)((rand() % int(WINDOW_WIDTH / 5.f) + 960.f)), cameraPos.y + (float)((rand() % int(WINDOW_HEIGHT / 3.f)) * ((rand() % 2 == 0) ? (1) : (-1)))), (float)(rand() % 360)));
-		}
-	}
-
-	m_actionTimeCnt = 0;
-	m_cooldown = WHALE_COOLDOWN_AFTER_PATTERN4;
-	m_nowAction = ActionPattern::none;
-}
+//void Whale::SummonEnemyProcess()
+//{
+//	if (pEnemy->size() > WHALE_PATTERN4_SUMMON_ENEMY_NUM / 5 * 2)
+//	{
+//		m_nowAction = ActionPattern::none;
+//		return;
+//	}
+//
+//	XMFLOAT3 cameraPos = CameraManager::GetCameraPos();
+//	for (int i = 0; i < WHALE_PATTERN4_SUMMON_ENEMY_NUM; ++i)
+//	{
+//		if (rand() % 2)
+//		{
+//			//pEnemy->push_back((shared_ptr<Enemy>)new Fish(m_pGameInfo, XMFLOAT2(cameraPos.x + (float)((rand() % int(WINDOW_WIDTH / 5.f) + 960.f) * ((rand() % 2 == 0) ? (1) : (-1))), cameraPos.y + (float)((rand() % int(WINDOW_HEIGHT / 5.f) + 540.f) * ((rand() % 2 == 0) ? (1) : (-1)))), (float)(rand() % 360)));
+//			pEnemy->push_back((shared_ptr<Enemy>)new Fish(m_pGameInfo, XMFLOAT2(cameraPos.x + (float)((rand() % int(WINDOW_WIDTH / 5.f) + 960.f)), cameraPos.y + (float)((rand() % int(WINDOW_HEIGHT / 3.f)) * ((rand() % 2 == 0) ? (1) : (-1)))), (float)(rand() % 360)));
+//		}
+//		else
+//		{
+//			//pEnemy->push_back((shared_ptr<Enemy>)new Fish2(m_pGameInfo, XMFLOAT2(cameraPos.x + (float)((rand() % int(WINDOW_WIDTH / 5.f) + 960.f) * ((rand() % 2 == 0) ? (1) : (-1))), cameraPos.y + (float)((rand() % int(WINDOW_HEIGHT / 5.f) + 540.f) * ((rand() % 2 == 0) ? (1) : (-1)))), (float)(rand() % 360)));
+//			pEnemy->push_back((shared_ptr<Enemy>)new Fish2(m_pGameInfo, XMFLOAT2(cameraPos.x + (float)((rand() % int(WINDOW_WIDTH / 5.f) + 960.f)), cameraPos.y + (float)((rand() % int(WINDOW_HEIGHT / 3.f)) * ((rand() % 2 == 0) ? (1) : (-1)))), (float)(rand() % 360)));
+//		}
+//	}
+//
+//	m_actionTimeCnt = 0;
+//	m_cooldown = WHALE_COOLDOWN_AFTER_PATTERN4;
+//	m_nowAction = ActionPattern::none;
+//}
 
 //━━━━━━━━━━━━━━━━━━━━━━━
 // クジラの座標を設置する
@@ -376,9 +519,19 @@ void Whale::SummonEnemyProcess()
 void Whale::SetPos(XMFLOAT2 _newPos)
 {
 	for (int i = 0; i < (int)m_pImg.size(); ++i)m_pImg[i]->setPos(_newPos);
+	m_pImg[1]->setPos(_newPos.x + ((m_bFacingRight) ? (-WHALE_TOOTH_RELATIVE_POS_X) : (WHALE_TOOTH_RELATIVE_POS_X)), _newPos.y + WHALE_TOOTH_RELATIVE_POS_Y);
 	XMFLOAT2 pos = { WHALE_MISSILELAUNCHER_RELATIVE_POS_X, WHALE_MISSILELAUNCHER_RELATIVE_POS_Y };
-	pos.x += _newPos.x;
-	pos.y += _newPos.y;
+	if (m_bFacingRight)
+	{
+		pos.x = _newPos.x - pos.x;
+		pos.y = _newPos.y + pos.y;
+	}
+	else
+	{
+		pos.x = _newPos.x + pos.x;
+		pos.y = _newPos.y + pos.y;
+	}
+
 	m_pMissileLauncher->SetPosAndAngle(pos, 0.f);
 	for (int i = 0; i < (int)m_pBoundingBox.size(); ++i)m_pBoundingBox[i]->SetPos(_newPos);
 	m_pos = _newPos;
@@ -395,4 +548,35 @@ void Whale::GetDamege(int _damage)
 
 	m_pHpBar->setScale(percents, 1.f);
 	m_pHpBar->setPos(cameraPos.x + m_hpBarRelativePos.x , cameraPos.y + m_hpBarRelativePos.y);
+
+	m_pImg[1]->setAnimation(int(10 - int(percents * 11.f)));
+}
+
+//━━━━━━━━━━━━━━━━━━━━━━━
+// 左右反転にする
+//━━━━━━━━━━━━━━━━━━━━━━━
+void Whale::FlipHorizontal()
+{
+	for (int i = 0; i < (int)m_pImg.size(); ++i) 
+	{
+		float angleZ = m_pImg[i]->getAngleZ();
+		m_pImg[i]->setAngle(0.f, (m_bFacingRight)?(0.f):(180.f), angleZ );
+	}
+	m_pImg[1]->setPos(m_pos.x + ((m_bFacingRight) ? (-WHALE_TOOTH_RELATIVE_POS_X) : (WHALE_TOOTH_RELATIVE_POS_X)), m_pos.y + WHALE_TOOTH_RELATIVE_POS_Y);
+
+	XMFLOAT2 pos = { WHALE_MISSILELAUNCHER_RELATIVE_POS_X, WHALE_MISSILELAUNCHER_RELATIVE_POS_Y };
+	if (!m_bFacingRight)
+	{
+		pos.x = m_pos.x - pos.x;
+		pos.y = m_pos.y + pos.y;
+	}
+	else
+	{
+		pos.x = m_pos.x + pos.x;
+		pos.y = m_pos.y + pos.y;
+	}
+
+	m_pMissileLauncher->SetPosAndAngle(pos, 0.f);
+	m_bFacingRight = !m_bFacingRight;
+	((PolygonBoundingBox*)m_pBoundingBox[0])->FlipHorizontal();
 }

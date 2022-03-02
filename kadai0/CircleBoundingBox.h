@@ -28,9 +28,9 @@ public:
 	float GetRadius()const;		// ‰~‚Ì”¼Œa
 
 	// Šî–{î•ñ‚Ìİ’u
-	void SetPos(XMFLOAT2 _pos);
-	void ChangeRadius(float _newRadius);
-	void SetRelativePos(XMFLOAT2 _newRelativePos = { 0.f,0.f });
+	inline void SetPos(XMFLOAT2 _pos);
+	inline void ChangeRadius(float _newRadius);
+	inline void SetRelativePos(XMFLOAT2 _newRelativePos = { 0.f,0.f });
 
 	// “–‚½‚è”»’è
 	bool Collision(const BoundingBox* _target, XMFLOAT2* _pDirectionVector = NULL)const override;

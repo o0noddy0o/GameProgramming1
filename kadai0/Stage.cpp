@@ -25,6 +25,8 @@
 #include "Boss.h"
 #include "Whale.h"
 #include "CameraManager.h"
+#include "Goal.h"
+#include "Arrow.h"
 
 //━━━━━━━━━━━━━━━━━━━━━━━
 // コンストラクタ
@@ -36,6 +38,8 @@ Stage::Stage(GameInfo* _pGameInfo)
 	, m_nowStageNum(0)
 	, m_pBoss(NULL)
 	, m_bBossBettle(false)
+	, m_pGoal(NULL)
+	, m_pArrow(NULL)
 {
 	srand((unsigned)time(NULL));
 
@@ -58,7 +62,6 @@ Stage::~Stage()
 //━━━━━━━━━━━━━━━━━━━━━━━
 void Stage::RenderProcess()
 {
-	
 	for (int i = 0; i < (int)m_pSceneryObject.size(); ++i)
 	{
 		m_pSceneryObject[i]->renderSprite();
@@ -70,6 +73,8 @@ void Stage::RenderProcess()
 		m_pBoard[i]->RenderBoard();
 	}
 
+	if(m_pGoal)m_pGoal->rendingSprite();
+  
 	m_pSubmarine->RenderProcess();
 
 #if HaveEnemy
@@ -93,6 +98,8 @@ void Stage::RenderProcess()
 
 	if (m_pBoss)m_pBoss->renderSprite();
 
+	if (m_pSubmarine->GetKilledEnemyCnt() >= GOAL_ON_THRESHOLD)
+		if (m_pArrow)m_pArrow->RenderSprite();
 #endif
 }
 
@@ -140,15 +147,13 @@ void Stage::Tick()
 				(*m_pEnemyBullet)[i].get()->MoveProcess(m_deltaTime, SubmarinePos);
 			}
 		}
-
-		if (m_pSubmarine->GetKilledEnemyCnt() == MAX_ENEMY_NUM && !m_bBossBettle)
-		{
-			StartBossBattle();
-		}
 	}
 #endif
 
-	m_pSubmarine->CollisionProcess(&m_pEnemy, m_pEnemyBullet, &m_pSceneryObject, (m_pBoss.get())?(m_pBoss.get()):(NULL),m_pBossBullet , NULL);
+	if(m_pSubmarine->GetKilledEnemyCnt() >= GOAL_ON_THRESHOLD)
+		if (m_pArrow)m_pArrow->Tick();
+
+	m_pSubmarine->CollisionProcess(&m_pEnemy, m_pEnemyBullet, &m_pSceneryObject, (m_pBoss.get())?(m_pBoss.get()):(NULL), m_pBossBullet, m_pGoal.get(), NULL);
 	m_pSubmarine->Tick(m_deltaTime);
 }
 
@@ -170,10 +175,10 @@ void Stage::StartBossBattle()
 	switch (m_nowStageNum)
 	{
 	case 1:
-		m_pBoss = (shared_ptr<Boss>)new Whale(m_pGameInfo, XMFLOAT2(cameraPos.x + WHALE_RELATIVE_POS_X_FROM_CAMERA, cameraPos.y + WHALE_RELATIVE_POS_Y_FROM_CAMERA), &m_pEnemy);
+		m_pBoss = (shared_ptr<Boss>)new Whale(m_pGameInfo, XMFLOAT2(cameraPos.x + CameraManager::GetCameraRangeMax().x, cameraPos.y), &m_pEnemy);
 		break;
 	case 2:
-		m_pBoss = (shared_ptr<Boss>)new Whale(m_pGameInfo, XMFLOAT2(cameraPos.x + WHALE_RELATIVE_POS_X_FROM_CAMERA, cameraPos.y + WHALE_RELATIVE_POS_Y_FROM_CAMERA), &m_pEnemy);
+		m_pBoss = (shared_ptr<Boss>)new Whale(m_pGameInfo, XMFLOAT2(cameraPos.x + CameraManager::GetCameraRangeMax().x, cameraPos.y), &m_pEnemy);
 		break;
 	}
 	

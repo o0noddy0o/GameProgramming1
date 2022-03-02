@@ -33,6 +33,8 @@ protected:
 	void renderFont(CFont* object, int num_, XMFLOAT4 _col = XMFLOAT4(1.f, 1.f, 1.f, 1.f));
 	void disposeFont(CFont* object);
 
+	void SetTexels(CPicture* _object, std::vector<QuadrangleTexel> _texels, XMFLOAT2 _size = { 0.f, 0.f });
+
 	// “ü—Í‚ğæ“¾‚·‚éƒƒ\ƒbƒh
 	std::shared_ptr<CDirectInput> GetInput();
 

@@ -102,13 +102,17 @@ void UI::SetHP(float _newHp)
 //„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
 void UI::SetNumOfKilledEnemy(int _numOfKilledEnemy)
 {
-	if (_numOfKilledEnemy < 10)
+	if (_numOfKilledEnemy > GOAL_ON_THRESHOLD)
 	{
-		m_text = " " + std::to_string(_numOfKilledEnemy) + "-" + std::to_string(MAX_ENEMY_NUM);
+		m_text = "";
+	}
+	else if (_numOfKilledEnemy < 10)
+	{
+		m_text = " " + std::to_string(_numOfKilledEnemy) + "-" + std::to_string(GOAL_ON_THRESHOLD);
 	}
 	else
 	{
-		m_text = std::to_string(_numOfKilledEnemy) + "-" + std::to_string(MAX_ENEMY_NUM);
+		m_text = std::to_string(_numOfKilledEnemy) + "-" + std::to_string(GOAL_ON_THRESHOLD);
 	}
 
 	m_pNumOfEnemy->SetText(m_text);

@@ -14,6 +14,9 @@ shared_ptr<Stage> pStage = nullptr;
 #if ShowGamePadInput
 shared_ptr<CText> pText2 = nullptr;
 #endif
+#if ShowMousePos
+shared_ptr<CText> mousePos = nullptr;
+#endif
 
 // カメラの初期座標を保存用変数
 XMFLOAT3 cameraPos;
@@ -28,8 +31,11 @@ void CActionGameApp::procPlayBegin()
 	pText->SetText("STAGE-1");
 
 #if ShowGamePadInput
-  pText->setPos(-900.f, 350.f);
+	pText->setPos(-900.f, 350.f);
 	pText2 = shared_ptr<CText>(new CText(getGameInfo(), Tex_Text, kTexelText, XMFLOAT2(28.f, 28.f), XMFLOAT2(-900, 0.f), XMFLOAT2(5.f, 14.f)));
+#endif
+#if ShowMousePos
+	mousePos = shared_ptr<CText>(new CText(getGameInfo(), Tex_Text, kTexelText, XMFLOAT2(28.f, 28.f), XMFLOAT2(500, 350.f), XMFLOAT2(5.f, 14.f)));
 #endif
 
 	pStage = shared_ptr<Stage>(new Stage(getGameInfo()));
@@ -44,29 +50,56 @@ void CActionGameApp::procPlayMain()
 {
 	renderSprite(pBackground);
 
-#if ShowGamePadInput
+#if ShowGamePadInput || ShowMousePos
 	XMFLOAT3 camPos = m_pCamera->getPos();
 #endif
 
-	try
-	{
-		pStage->Tick();
-	}
-	catch (string _msg)
-	{
-		if (_msg == "GameClear")
-		{
-			GamePhase = eEnd;
-			goNextStatusFromPlaying = eGameClear;
-		}
-		else if (_msg == "GameOver")
-		{
-			GamePhase = eEnd;
-			goNextStatusFromPlaying = eGameOver;
-		}
-	}
-	pStage->RenderProcess();
 
+//━━━━━━━━━━━━━━━━━━━━━━━
+// 　　　↓↓↓　　メイン処理　　↓↓↓
+//━━━━━━━━━━━━━━━━━━━━━━━
+	{
+		try
+		{
+			pStage->Tick();
+		}
+		catch (string _msg)
+		{
+			if (_msg == "GameClear")
+			{
+				GamePhase = eEnd;
+				goNextStatusFromPlaying = eGameClear;
+			}
+			else if (_msg == "GameOver")
+			{
+				GamePhase = eEnd;
+				goNextStatusFromPlaying = eGameOver;
+			}
+			else if (_msg == "Goal")
+			{
+				try
+				{
+					pStage->SetNextStage();
+				}
+				catch(string _msg)
+				{
+					if (_msg == "EndOfAllStage")
+					{
+						GamePhase = eEnd;
+						goNextStatusFromPlaying = eGameClear;
+					}
+				}
+			}
+		}
+		pStage->RenderProcess();
+	}
+//━━━━━━━━━━━━━━━━━━━━━━━
+// 　　　↑↑↑　　メイン処理　　↑↑↑
+//━━━━━━━━━━━━━━━━━━━━━━━
+
+//━━━━━━━━━━━━━━━━━━━━━━━
+// 　　　↓↓↓　　デバッグ用　　↓↓↓
+//━━━━━━━━━━━━━━━━━━━━━━━
 #if DEBUG
 	// Xキーを押したら、インゲーム画面からゲームクリア画面へ移す
 	if (getInput()->isPressedOnce(DIK_X))
@@ -79,46 +112,86 @@ void CActionGameApp::procPlayMain()
 		GamePhase = eEnd;
 		goNextStatusFromPlaying = eGameOver;
 	}
-#endif
 
+	static bool showText = false;
+	if (getInput()->isPressedOnce(DIK_SEMICOLON))showText = !showText;
+	if (showText)
+	{
 #if ShowGamePadInput
-	pText->setPos(camPos.x - 900.f, camPos.y + 350.f);
-	pText2->setPos(camPos.x - 900, camPos.y);
+		{
+			pText->setPos(camPos.x - 900.f, camPos.y + 350.f);
+			pText2->setPos(camPos.x - 900, camPos.y);
 
-	float x = getInput()->GetLeftAnalogStickX(0);
-	float y = getInput()->GetLeftAnalogStickY(0);
+			float x = getInput()->GetAnalogStickX(0);
+			float y = getInput()->GetAnalogStickY(0);
 
-	string text = "GAMEPAD 1\nX ";
-	if (x < 0.f)text += "-";
-	text += to_string(Abs(x)) + "\nY ";
-	if (y < 0.f)text += "-";
-	text += to_string(Abs(y));
-	if (getInput()->IsGamePadButtonPressed(GAMEPAD_A, 0))text += "\n\"A\"IS PRESSED!";
-	if (getInput()->IsGamePadButtonPressed(GAMEPAD_B, 0))text += "\n\"B\"IS PRESSED!";
-	if (getInput()->IsGamePadButtonPressed(GAMEPAD_X, 0))text += "\n\"X\"IS PRESSED!";
-	if (getInput()->IsGamePadButtonPressed(GAMEPAD_Y, 0))text += "\n\"Y\"IS PRESSED!";
+			string text = "GAMEPAD 1\nX ";
+			if (x < 0.f)text += "-";
+			text += to_string(Abs(x)) + "\nY ";
+			if (y < 0.f)text += "-";
+			text += to_string(Abs(y));
+			if (getInput()->IsGamePadButtonPressed(GAMEPAD_A, 0))text += "\n\"A\"IS PRESSED!";
+			if (getInput()->IsGamePadButtonPressed(GAMEPAD_B, 0))text += "\n\"B\"IS PRESSED!";
+			if (getInput()->IsGamePadButtonPressed(GAMEPAD_X, 0))text += "\n\"X\"IS PRESSED!";
+			if (getInput()->IsGamePadButtonPressed(GAMEPAD_Y, 0))text += "\n\"Y\"IS PRESSED!";
 
-	pText->SetText(text);
-	
+			pText->SetText(text);
 
-	x = getInput()->GetLeftAnalogStickX(1);
-	y = getInput()->GetLeftAnalogStickY(1);
 
-	text = "GAMEPAD 2\nX ";
-	if (x < 0.f)text += "-";
-	text += to_string(Abs(x)) + "\nY ";
-	if (y < 0.f)text += "-";
-	text += to_string(Abs(y));
-	if (getInput()->IsGamePadButtonPressed(GAMEPAD_A, 1))text += "\n\"A\"IS PRESSED!";
-	if (getInput()->IsGamePadButtonPressed(GAMEPAD_B, 1))text += "\n\"B\"IS PRESSED!";
-	if (getInput()->IsGamePadButtonPressed(GAMEPAD_X, 1))text += "\n\"X\"IS PRESSED!";
-	if (getInput()->IsGamePadButtonPressed(GAMEPAD_Y, 1))text += "\n\"Y\"IS PRESSED!";
+			x = getInput()->GetAnalogStickX(1);
+			y = getInput()->GetAnalogStickY(1);
 
-	pText2->SetText(text);
+			text = "GAMEPAD 2\nX ";
+			if (x < 0.f)text += "-";
+			text += to_string(Abs(x)) + "\nY ";
+			if (y < 0.f)text += "-";
+			text += to_string(Abs(y));
+			if (getInput()->IsGamePadButtonPressed(GAMEPAD_A, 1))text += "\n\"A\"IS PRESSED!";
+			if (getInput()->IsGamePadButtonPressed(GAMEPAD_B, 1))text += "\n\"B\"IS PRESSED!";
+			if (getInput()->IsGamePadButtonPressed(GAMEPAD_X, 1))text += "\n\"X\"IS PRESSED!";
+			if (getInput()->IsGamePadButtonPressed(GAMEPAD_Y, 1))text += "\n\"Y\"IS PRESSED!";
 
-	pText->RenderText(0, COLOR_YELLOW);
-	pText2->RenderText(0, COLOR_YELLOW);
+			pText2->SetText(text);
+
+			pText->RenderText(0, COLOR_YELLOW);
+			pText2->RenderText(0, COLOR_YELLOW);
+	}
 #endif
+#if ShowMousePos
+		{
+			mousePos->setPos(camPos.x + 500.f, camPos.y + 350.f);
+			string text = "CAMERA POS\nX ";
+			if (camPos.x < 0.f)text += "-";
+			text += to_string(Abs(camPos.x)) + "\nY ";
+			if (camPos.y < 0.f)text += "-";
+			text += to_string(Abs(camPos.y)) + "\n\nMOUSE POS\nX ";
+			XMFLOAT2 MousePos = getInput()->getMousePos();
+			if (!SchoolPC)
+			{
+				static XMFLOAT2 dpi = DPI;
+				MousePos.x = (MousePos.x + 960.f) / dpi.x * 1920.f - 960.f;
+				MousePos.y = (MousePos.y - 540.f) / dpi.y * 1080.f + 540.f;
+			}
+			if (MousePos.x < 0.f)text += "-";
+			text += to_string(Abs(MousePos.x)) + "\nY ";
+			if (MousePos.y < 0.f)text += "-";
+			text += to_string(Abs(MousePos.y)) + "\n\nX ";
+			MousePos.x += camPos.x;
+			MousePos.y += camPos.y;
+			if (MousePos.x < 0.f)text += "-";
+			text += to_string(Abs(MousePos.x)) + "\nY ";
+			if (MousePos.y < 0.f)text += "-";
+			text += to_string(Abs(MousePos.y));
+
+			mousePos->SetText(text);
+			mousePos->RenderText(0, COLOR_YELLOW);
+		}
+#endif
+	}
+#endif
+//━━━━━━━━━━━━━━━━━━━━━━━
+// 　　　↑↑↑　　デバッグ用　　↑↑↑
+//━━━━━━━━━━━━━━━━━━━━━━━
 }
 
 //━━━━━━━━━━━━━━━━━━━━━━━

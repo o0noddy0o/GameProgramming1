@@ -16,6 +16,8 @@ public:
 
 	// ƒJƒƒ‰‚ÌÀ•W‚ğæ“¾‚·‚é
 	static XMFLOAT3 GetCameraPos();
+	static XMFLOAT2 GetCameraRangeMax();
+	static XMFLOAT2 GetCameraRangeMin();
 
 	friend Submarine::Submarine(GameInfo*, XMFLOAT2);
 	friend void Submarine::MoveCamera(float);

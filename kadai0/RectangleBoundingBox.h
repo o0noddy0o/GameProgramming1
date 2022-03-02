@@ -24,13 +24,13 @@ public:
 	~RectangleBoundingBox();
 
 	// Šî–{î•ñ‚Ìæ“¾
-	XMFLOAT2 GetPos()const;
-	XMFLOAT2 GetSize()const;
+	inline XMFLOAT2 GetPos()const;
+	inline XMFLOAT2 GetSize()const;
 
 	// Šî–{î•ñ‚Ìİ’u
-	void SetPos(XMFLOAT2 _pos);
-	void ChangeSize(XMFLOAT2 _newSize);
-	void SetRelativePos(XMFLOAT2 _newRelativePos = { 0.f,0.f });
+	inline void SetPos(XMFLOAT2 _pos);
+	inline void ChangeSize(XMFLOAT2 _newSize);
+	inline void SetRelativePos(XMFLOAT2 _newRelativePos = { 0.f,0.f });
 
 	// “–‚½‚è”»’è
 	bool Collision(const BoundingBox* _target, XMFLOAT2* _pDirectionVector = NULL)const override;

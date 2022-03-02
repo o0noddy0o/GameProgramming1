@@ -51,45 +51,50 @@ void Fish2::MoveProcess(XMFLOAT2 _SubmarinePos, float _deltaTime)
 {
 	// “G‚ÌÀ•W‚ðŽæ“¾
 	XMFLOAT4 _EnemyPos = m_pImg->getPos();
-	if (_EnemyPos.x + 60.f > _SubmarinePos.x || _EnemyPos.x - 60.f < _SubmarinePos.x || _EnemyPos.y + 40.f > _SubmarinePos.y || _EnemyPos.y - 40.f < _SubmarinePos.y)
+	float diffX = _SubmarinePos.x - _EnemyPos.x;
+	float diffY = _SubmarinePos.y - _EnemyPos.y;
+	float mag = sqrtf(diffX * diffX + diffY * diffY);
+
+	if (Abs(diffX) < 1100.f && Abs(diffY) < 700.f)
 	{
-		float diffX = _SubmarinePos.x - _EnemyPos.x;
-		float diffY = _SubmarinePos.y - _EnemyPos.y;
-		float mag = sqrtf(diffX * diffX + diffY * diffY);
 		if (_EnemyPos.x - 1300.f <= _SubmarinePos.x && _SubmarinePos.x <= _EnemyPos.x + 1300.f && _EnemyPos.y - 800.f <= _SubmarinePos.y && _SubmarinePos.y <= _EnemyPos.y + 800.f)
 		{
-			// “G‚©‚çö…ŠÍ‚Ö‚Ì•ûŒü
-			XMFLOAT2 target;
-			target.x = diffX / mag;
-			target.y = diffY / mag;
-
 			XMFLOAT2 EnemyMoveDir = AngleToDirectionVector(m_angle);
 
-			// ŠOÏ‚ÌŒvŽZ
-			float cross = (EnemyMoveDir.x * target.y - EnemyMoveDir.y * target.x);
+			if (!m_bHitSubmarine)
+			{
+				// “G‚©‚çö…ŠÍ‚Ö‚Ì•ûŒü
+				XMFLOAT2 target;
+				target.x = diffX / mag;
+				target.y = diffY / mag;
 
-			if (cross >= 0)
-			{
-				float angle = Degree(RadianToDegree(acosf(EnemyMoveDir.x * target.x + EnemyMoveDir.y * target.y)));
-				if (Abs(angle) > 200.f * _deltaTime)
+
+				// ŠOÏ‚ÌŒvŽZ
+				float cross = (EnemyMoveDir.x * target.y - EnemyMoveDir.y * target.x);
+
+				if (cross >= 0)
 				{
-					m_angle += 200.f * _deltaTime;;
+					float angle = Degree(RadianToDegree(acosf(EnemyMoveDir.x * target.x + EnemyMoveDir.y * target.y)));
+					if (Abs(angle) > 200.f * _deltaTime)
+					{
+						m_angle += 200.f * _deltaTime;;
+					}
+					else
+					{
+						m_angle += angle;
+					}
 				}
 				else
 				{
-					m_angle += angle;
-				}
-			}
-			else
-			{
-				float angle = Degree(RadianToDegree(acosf(EnemyMoveDir.x * target.x + EnemyMoveDir.y * target.y)));
-				if (Abs(angle) > 200.f * _deltaTime)
-				{
-					m_angle -= 200.f * _deltaTime;;
-				}
-				else
-				{
-					m_angle -= angle;
+					float angle = Degree(RadianToDegree(acosf(EnemyMoveDir.x * target.x + EnemyMoveDir.y * target.y)));
+					if (Abs(angle) > 200.f * _deltaTime)
+					{
+						m_angle -= 200.f * _deltaTime;;
+					}
+					else
+					{
+						m_angle -= angle;
+					}
 				}
 			}
 
@@ -113,7 +118,7 @@ void Fish2::MoveProcess(XMFLOAT2 _SubmarinePos, float _deltaTime)
 		
 		m_pBoundingBox->SetPos({ m_pImg->getPos().x, m_pImg->getPos().y });
 	}
-	
+	m_bHitSubmarine = false;
 }
 
 //„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª„ª
@@ -122,4 +127,14 @@ void Fish2::MoveProcess(XMFLOAT2 _SubmarinePos, float _deltaTime)
 BoundingBox* Fish2::GetBoundingBox()const
 {
 	return m_pBoundingBox;
+}
+
+XMFLOAT2 Fish2::GetMoveDirection()const
+{
+	return AngleToDirectionVector(m_angle);
+}
+
+void Fish2::SetMoveDirection(XMFLOAT2 _newMoveDirection)
+{
+	m_angle = DirectionVectorToAngle(_newMoveDirection);
 }

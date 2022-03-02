@@ -378,53 +378,56 @@ void Player::CollisionWithWallAndFloor(vector<Submarine::Wall>* _pWall, vector<S
 			}
 
 			//ハシゴに当たり判定
-			bool b = false;
-			for (int i = 0; i < (int)_pLadder->size(); ++i)
+			if (m_bMoveable)
 			{
-				if ((*_pLadder)[i].ob->collision(m_pImg) != false)
+				bool b = false;
+				for (int i = 0; i < (int)_pLadder->size(); ++i)
 				{
-					m_bClimbable = true;
-
-					if (m_bClimbable != false)
+					if ((*_pLadder)[i].ob->collision(m_pImg) != false)
 					{
-						switch (m_playerIndex)
+						m_bClimbable = true;
+
+						if (m_bClimbable != false)
 						{
-						case 1:
-							if (GetInput()->isKeyPressed(DIK_UPARROW) || GetInput()->GetLeftAnalogStickY(m_playerIndex - 1) > 0.f)
+							switch (m_playerIndex)
 							{
-								m_relativePos.x = (*_pLadder)[i].relativePos.x;
-								m_relativePos.y += 0.4f;
-								m_bClimbing = true;
+							case 1:
+								if (GetInput()->isKeyPressed(DIK_UPARROW) || GetInput()->GetLeftAnalogStickY(m_playerIndex - 1) > 0.f)
+								{
+									m_relativePos.x = (*_pLadder)[i].relativePos.x;
+									m_relativePos.y += 0.4f;
+									m_bClimbing = true;
+								}
+								else if (GetInput()->isKeyPressed(DIK_DOWNARROW) || GetInput()->GetLeftAnalogStickY(m_playerIndex - 1) < 0.f)
+								{
+									m_relativePos.x = (*_pLadder)[i].relativePos.x;
+									m_relativePos.y -= 0.4f;
+									m_bClimbing = true;
+								}
+								break;
+							case 2:
+								if (GetInput()->isKeyPressed(DIK_W) || GetInput()->GetLeftAnalogStickY(m_playerIndex - 1) > 0.f)
+								{
+									m_relativePos.x = (*_pLadder)[i].relativePos.x;
+									m_relativePos.y += 0.4f;
+									m_bClimbing = true;
+								}
+								else if (GetInput()->isKeyPressed(DIK_S) || GetInput()->GetLeftAnalogStickY(m_playerIndex - 1) < 0.f)
+								{
+									m_relativePos.x = (*_pLadder)[i].relativePos.x;
+									m_relativePos.y -= 0.4f;
+									m_bClimbing = true;
+								}
+								break;
 							}
-							else if (GetInput()->isKeyPressed(DIK_DOWNARROW) || GetInput()->GetLeftAnalogStickY(m_playerIndex - 1) < 0.f)
-							{
-								m_relativePos.x = (*_pLadder)[i].relativePos.x;
-								m_relativePos.y -= 0.4f;
-								m_bClimbing = true;
-							}
-							break;
-						case 2:
-							if (GetInput()->isKeyPressed(DIK_W) || GetInput()->GetLeftAnalogStickY(m_playerIndex - 1) > 0.f)
-							{
-								m_relativePos.x = (*_pLadder)[i].relativePos.x;
-								m_relativePos.y += 0.4f;
-								m_bClimbing = true;
-							}
-							else if (GetInput()->isKeyPressed(DIK_S) || GetInput()->GetLeftAnalogStickY(m_playerIndex - 1) < 0.f)
-							{
-								m_relativePos.x = (*_pLadder)[i].relativePos.x;
-								m_relativePos.y -= 0.4f;
-								m_bClimbing = true;
-							}
-							break;
 						}
+						b = true;
 					}
-					b = true;
 				}
-			}
-			if (!b)
-			{
-				m_bClimbing = false;
+				if (!b)
+				{
+					m_bClimbing = false;
+				}
 			}
 		}
 	}
@@ -505,7 +508,6 @@ void Player::Move(float _deltaTime)
 
 	}
 
-
 	//上側
 	if (m_relativePos.y > BorderOfSubmarine.y - YUKA_UP_SIZE_Y / 2.f)
 	{
@@ -520,9 +522,7 @@ void Player::Move(float _deltaTime)
 			m_relativePos.x = (YUKA_UP_SIZE_X / 2.f);
 			m_bMovingRight = false;
 		}
-
 	}
-
 }
 
 //━━━━━━━━━━━━━━━━━━━━━━━
@@ -552,4 +552,12 @@ CPicture* Player::GetImg() const
 int Player::getPlayerIdx() const
 {
 	return m_playerIndex;
+}
+
+//━━━━━━━━━━━━━━━━━━━━━━━
+// プレイヤーが動けるかを取得する
+//━━━━━━━━━━━━━━━━━━━━━━━
+bool Player::GetMoveAble()const
+{
+	return m_bMoveable;
 }

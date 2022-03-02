@@ -69,9 +69,9 @@ void OperationDevice::Tick(float _deltaTime)
 //━━━━━━━━━━━━━━━━━━━━━━━
 // 画像を描画
 //━━━━━━━━━━━━━━━━━━━━━━━
-void OperationDevice::RenderDevice()
+void OperationDevice::RenderDevice(float _alpha)
 {
-	RenderSprite(m_pImg);
+	RenderSprite(m_pImg, XMFLOAT4(1.f, 1.f, 1.f, _alpha));
 }
 
 //━━━━━━━━━━━━━━━━━━━━━━━
@@ -82,7 +82,13 @@ void OperationDevice::collisionWithPlayer(Player* _player, float _deltaTime)
 	switch (_player->getPlayerIdx())
 	{
 	case 1:
+		// 他のプレイヤーが使っている
 		if (m_bPlayer2IsUsing)return;
+
+		// 他のを使ている
+		if (!m_bPlayer1IsUsing)
+			if (!_player->GetMoveAble())return;
+
 		if ((bool)m_pImg->collision(_player->GetImg()) == true)
 		{
 			if (GetInput()->isPressedOnce(DIK_NUMPAD3) || GetInput()->IsGamePadButtonPressedOnce(GAMEPAD_KEY_UseOperationDevice, _player->getPlayerIdx() - 1))
@@ -103,7 +109,13 @@ void OperationDevice::collisionWithPlayer(Player* _player, float _deltaTime)
 		break;
 
 	case 2:
+		// 他のプレイヤーが使っている
 		if (m_bPlayer1IsUsing)return;
+
+		// 他のを使ている
+		if (!m_bPlayer2IsUsing)
+			if (!_player->GetMoveAble())return;
+
 		if ((bool)m_pImg->collision(_player->GetImg()) == true)
 		{
 			if (GetInput()->isPressedOnce(DIK_M) || GetInput()->IsGamePadButtonPressedOnce(GAMEPAD_KEY_UseOperationDevice, _player->getPlayerIdx() - 1))

@@ -6,6 +6,7 @@
 // 　　　　　　　：2021/11/27 コリジョンの実装
 // 　　　　　　　：2021/12/26 丸いバウンディングボックスとの当たり判定を修正
 // 　　　　　　　：2021/12/26 全部のコリジョンメソッドに二つ目の引数を追加
+// 　　　　　　　：2022/02/17 丸いバウンディングボックスとの当たり判定を修正
 //━━━━━━━━━━━━━━━━━━━━━━━
 #include "Define.h"
 #include "CPicture.h"
@@ -146,6 +147,10 @@ bool RectangleBoundingBox::CollisionWithCircle(const CircleBoundingBox* _target)
 	if (m_pos.x < targetPos.x - m_size.x / 2.f - targetRadius)return false;
 	if (m_pos.y > targetPos.y + m_size.y / 2.f + targetRadius)return false;
 	if (m_pos.y < targetPos.y - m_size.y / 2.f - targetRadius)return false;
+
+	if (Abs(m_pos.x - targetPos.x) < m_size.x / 2.f &&
+		Abs(m_pos.y - targetPos.y) < m_size.y / 2.f)
+		return true;
 
 	// ターゲットが自分の斜めの方向じゃない場合
 	if (Abs(targetPos.x - m_pos.x) < m_size.x / 2.f)

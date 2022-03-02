@@ -32,6 +32,12 @@ public:
 	// 移動の処理(ステージ用)
 	virtual void MoveProcess(XMFLOAT2 _SubmarinePos, float _deltaTime) = 0;
 
+	virtual XMFLOAT2 GetMoveDirection()const = 0;
+
+	virtual void SetMoveDirection(XMFLOAT2 _newMoveDirection) = 0;
+
+	virtual void HitSubmarineProcess(XMFLOAT2 _newMoveDirection);
+
 	float GetDamage()const;
 
 	static void ResetEnemyBullet();
@@ -46,4 +52,6 @@ protected:
 	static shared_ptr<vector<shared_ptr<EnemyBullet>>> m_pEnemyBullet;
 
 	float m_damage;
+
+	bool m_bHitSubmarine;
 };
